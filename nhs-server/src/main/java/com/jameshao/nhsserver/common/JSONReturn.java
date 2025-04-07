@@ -4,7 +4,7 @@ package com.jameshao.nhsserver.common;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.neudu.yyzx_service.utils.FLAGS;
+import com.jameshao.nhsserver.utils.FLAGS;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 

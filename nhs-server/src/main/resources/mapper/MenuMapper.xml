@@ -17,4 +17,14 @@
         id,menus_index,title,
         icon,path,parent_id
     </sql>
+    <select id="selectbypid" resultMap="BaseResultMap">
+        select * from menu where parent_id = #{id}
+    </select>
+
+    <select id="selectbyroleid" resultMap="BaseResultMap">
+        select menu.* from menu, rolemenu
+        where parent_id = 0
+          and menu.id = rolemenu.menu
+          and rolemenu.role_id=#{roleid}
+    </select>
 </mapper>

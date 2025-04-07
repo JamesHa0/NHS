@@ -2,8 +2,9 @@ package com.jameshao.nhsserver.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jameshao.nhsserver.common.JSONReturn;
-import com.neudu.yyzx_service.utils.FLAGS;
+import com.jameshao.nhsserver.utils.FLAGS;
 import com.jameshao.nhsserver.po.User;
 import com.jameshao.nhsserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.neudu.yyzx_service.utils.FLAGS.RETURN_SUCCESS;
 
 @RestController
 @CrossOrigin
@@ -124,8 +124,8 @@ public class UserController {
 
     //退出登录
     @RequestMapping("/logout")
-    public String logout(){
+    public String logout() throws JsonProcessingException {
 
-        return RETURN_SUCCESS;
+        return jsonReturn.returnSuccess();
     }
 }

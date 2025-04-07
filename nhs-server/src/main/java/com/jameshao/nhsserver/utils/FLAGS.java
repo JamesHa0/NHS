@@ -1,4 +1,4 @@
-package com.neudu.yyzx_service.utils;
+package com.jameshao.nhsserver.utils;
 
 public class FLAGS {
 

@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jameshao.nhsserver.po.Menu;
 import com.jameshao.nhsserver.service.MenuService;
 import com.jameshao.nhsserver.mapper.MenuMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
 * @author JamesHao
@@ -14,7 +17,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu>
     implements MenuService{
+    @Autowired
+    MenuMapper menuMapper;
 
+
+    @Override
+    public List<Menu> getByroleid(Integer roleid) {
+        return menuMapper.selectbyroleid(roleid);
+    }
 }
 
 
