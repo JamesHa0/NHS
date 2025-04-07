@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jameshao.nhsserver.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.jameshao.nhsserver.po.User">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="DATE"/>
+            <result property="createBy" column="create_by" jdbcType="INTEGER"/>
+            <result property="updateTime" column="update_time" jdbcType="DATE"/>
+            <result property="updateBy" column="update_by" jdbcType="INTEGER"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+            <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+            <result property="username" column="username" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="sex" column="sex" jdbcType="INTEGER"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="phoneNumber" column="phone_number" jdbcType="VARCHAR"/>
+            <result property="roleId" column="role_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,create_time,create_by,
+        update_time,update_by,is_deleted,
+        nickname,username,password,
+        sex,email,phone_number,
+        role_id
+    </sql>
+</mapper>

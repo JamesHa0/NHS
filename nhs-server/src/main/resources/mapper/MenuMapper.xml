@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jameshao.nhsserver.mapper.MenuMapper">
+
+    <resultMap id="BaseResultMap" type="com.jameshao.nhsserver.po.Menu">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="menusIndex" column="menus_index" jdbcType="VARCHAR"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="icon" column="icon" jdbcType="VARCHAR"/>
+            <result property="path" column="path" jdbcType="VARCHAR"/>
+            <result property="parentId" column="parent_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,menus_index,title,
+        icon,path,parent_id
+    </sql>
+</mapper>
