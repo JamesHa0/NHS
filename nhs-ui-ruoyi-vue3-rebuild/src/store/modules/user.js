@@ -23,6 +23,8 @@ const useUserStore = defineStore(
         const uuid = userInfo.uuid
         return new Promise((resolve, reject) => {
           login(username, password, code, uuid).then(res => {
+            console.log(`登录成功`);
+
             setToken(res.token)
             this.token = res.token
             resolve()
