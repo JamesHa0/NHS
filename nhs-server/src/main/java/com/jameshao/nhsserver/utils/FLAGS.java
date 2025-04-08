@@ -22,4 +22,7 @@ public class FLAGS {
 
     //登陆失败提示语
     public static final String LOGIN_FAIL = "用户名或密码不正确";
+
+    //token关键词
+    public static final String TOKEN = "token";
 }

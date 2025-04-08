@@ -80,6 +80,9 @@ public class User {
      */
     private Integer roleId;
 
+    @TableField(exist = false)
+    private String token;
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {

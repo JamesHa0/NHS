@@ -7,6 +7,7 @@ import com.jameshao.nhsserver.common.JSONReturn;
 import com.jameshao.nhsserver.utils.FLAGS;
 import com.jameshao.nhsserver.po.User;
 import com.jameshao.nhsserver.service.UserService;
+import com.jameshao.nhsserver.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +36,11 @@ public class UserController {
             List<User> users = userService.list(queryWrapper);
 
             if (users != null && users.size() > 0){//登录成功
-                return jsonReturn.returnSuccess(users.get(0));
+                //生成Token
+                String token = TokenUtil.createToken();
+                User loginUser = users.get(0);
+                loginUser.setToken(token);
+                return jsonReturn.returnSuccess(loginUser);
             } else {//登陆失败
                 return jsonReturn.returnFailed(FLAGS.LOGIN_FAIL);
             }
