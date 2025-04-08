@@ -62,7 +62,8 @@ public class JSONReturn {
         resultMap.put(FLAGS.SUCCESS_MSG, null);
 
         result.append(FLAGS.RETURN_FLAG).append(":").append(FLAGS.RETURN_FAILED)
-                .append(FLAGS.FAILED_MSG).append(":").append(FLAGS.ERROR_MSG);
+                .append(",")
+                .append(FLAGS.FAILED_MSG).append(":").append(errorMsg);
         return result.toString();
     }
 }
