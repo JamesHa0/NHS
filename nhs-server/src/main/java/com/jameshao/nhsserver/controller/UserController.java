@@ -10,6 +10,7 @@ import com.jameshao.nhsserver.service.UserService;
 import com.jameshao.nhsserver.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +28,8 @@ public class UserController {
 
     //登录验证
     @RequestMapping("/login")
-    public String login(User user){
+    public String login(@RequestBody User user){
+        System.out.println(user);
         try {
             //查询信息
             LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
