@@ -24,9 +24,8 @@ const useUserStore = defineStore(
         return new Promise((resolve, reject) => {
           login(username, password, code, uuid).then(res => {
             console.log(`登录成功`);
-
-            setToken(res.token)
-            this.token = res.token
+            setToken(res.data.token)
+            this.token = res.data.token
             resolve()
           }).catch(error => {
             reject(error)
