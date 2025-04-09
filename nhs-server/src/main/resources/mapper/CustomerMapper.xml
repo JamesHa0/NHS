@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jameshao.nhsserver.mapper.CustomerMapper">
+
+    <resultMap id="BaseResultMap" type="com.jameshao.nhsserver.po.Customer">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+            <result property="customerName" column="customer_name" jdbcType="VARCHAR"/>
+            <result property="customerAge" column="customer_age" jdbcType="INTEGER"/>
+            <result property="customerSex" column="customer_sex" jdbcType="INTEGER"/>
+            <result property="idcard" column="idcard" jdbcType="VARCHAR"/>
+            <result property="roomNo" column="room_no" jdbcType="VARCHAR"/>
+            <result property="buildingNo" column="building_no" jdbcType="VARCHAR"/>
+            <result property="checkinDate" column="checkin_date" jdbcType="DATE"/>
+            <result property="expirationDate" column="expiration_date" jdbcType="DATE"/>
+            <result property="contactTel" column="contact_tel" jdbcType="VARCHAR"/>
+            <result property="bedId" column="bed_id" jdbcType="INTEGER"/>
+            <result property="psychosomaticState" column="psychosomatic_state" jdbcType="VARCHAR"/>
+            <result property="attention" column="attention" jdbcType="VARCHAR"/>
+            <result property="birthday" column="birthday" jdbcType="DATE"/>
+            <result property="height" column="height" jdbcType="VARCHAR"/>
+            <result property="weight" column="weight" jdbcType="VARCHAR"/>
+            <result property="bloodType" column="blood_type" jdbcType="VARCHAR"/>
+            <result property="filepath" column="filepath" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="levelId" column="level_id" jdbcType="INTEGER"/>
+            <result property="familyMember" column="family_member" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,is_deleted,customer_name,
+        customer_age,customer_sex,idcard,
+        room_no,building_no,checkin_date,
+        expiration_date,contact_tel,bed_id,
+        psychosomatic_state,attention,birthday,
+        height,weight,blood_type,
+        filepath,user_id,level_id,
+        family_member
+    </sql>
+</mapper>

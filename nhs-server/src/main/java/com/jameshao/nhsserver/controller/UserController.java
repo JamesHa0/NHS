@@ -18,7 +18,6 @@ import java.util.List;
 
 
 @RestController
-@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -28,7 +27,7 @@ public class UserController {
 
     //登录验证
     @RequestMapping("/login")
-    public String login(@RequestBody User user){
+    public String login(User user){
         System.out.println(user);
         try {
             //查询信息

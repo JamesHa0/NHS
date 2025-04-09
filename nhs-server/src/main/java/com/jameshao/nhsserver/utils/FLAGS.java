@@ -21,7 +21,7 @@ public class FLAGS {
     public static final String ERROR_MSG = "process error";
 
     //登陆失败提示语
-    public static final String LOGIN_FAIL = "用户名或密码不正确";
+    public static final String LOGIN_FAIL = "用户名或密码不正确(wrong username or password!)";
 
     //token关键词
     public static final String TOKEN = "token";

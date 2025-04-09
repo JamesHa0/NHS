@@ -25,7 +25,7 @@ public class UserIntercepter implements HandlerInterceptor {
         try {
             String token = request.getHeader(FLAGS.TOKEN);
             if (token == null || token.trim().isEmpty()){
-                response.getWriter().write(jsonReturn.returnError("未登录或登录超时，请重新登录！"));
+                response.getWriter().write(jsonReturn.returnError("未登录或登录超时，请重新登录！(You'll need to log in!)"));
                 //不调用拦截器，直接返回
                 return false;
             }
