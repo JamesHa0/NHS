@@ -1,14 +1,22 @@
 package com.jameshao.nhsserver.intercepter;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.jameshao.nhsserver.common.JSONReturn;
 import com.jameshao.nhsserver.utils.FLAGS;
-import com.jameshao.nhsserver.utils.TokenUtil;
+import com.jameshao.nhsserver.utils.RedisUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 public class UserIntercepter implements HandlerInterceptor {
+
+    @Autowired
+    RedisUtils redisUtils; //这个东西需要 所在的拦截器 也注册进Spring成组件
+    //在注册的Config里查看
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -20,7 +28,7 @@ public class UserIntercepter implements HandlerInterceptor {
         System.out.print(methodName);
         System.out.println("]==========");
 
-        JSONReturn jsonReturn = new JSONReturn();
+        /*JSONReturn jsonReturn = new JSONReturn();
         //验证Token
         try {
             String token = request.getHeader(FLAGS.TOKEN);
@@ -37,7 +45,30 @@ public class UserIntercepter implements HandlerInterceptor {
             e.printStackTrace();
             response.getWriter().write(jsonReturn.returnError(e.getMessage()));
             return false;
+        }*/
+        String token = request.getHeader("token");
+
+        JSONReturn jsonReturn = new JSONReturn();
+
+        if(token == null || token.trim().isEmpty()){   // 401
+            response.getWriter().write(jsonReturn.returnFailed(FLAGS.NO_LOGIN));
+            return false;
         }
+
+        System.out.println(token);
+        if (!redisUtils.hasKey(token)){
+            response.getWriter().write(jsonReturn.returnFailed(FLAGS.LOGIN_OUTOFTINE));
+            return false;
+        }
+
+        JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256("22023237")).build();
+        try {
+            jwtVerifier.verify(token);
+        } catch (JWTVerificationException e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
 
     }
 }

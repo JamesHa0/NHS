@@ -7,6 +7,7 @@ import com.jameshao.nhsserver.common.JSONReturn;
 import com.jameshao.nhsserver.utils.FLAGS;
 import com.jameshao.nhsserver.po.User;
 import com.jameshao.nhsserver.service.UserService;
+import com.jameshao.nhsserver.utils.RedisUtils;
 import com.jameshao.nhsserver.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,6 +25,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private JSONReturn jsonReturn;
+    @Autowired
+    private RedisUtils redisUtils;
 
     //登录验证
     @RequestMapping("/login")
@@ -39,7 +42,10 @@ public class UserController {
             if (users != null && users.size() > 0){//登录成功
                 //生成Token
                 String token = TokenUtil.createToken();
+                redisUtils.set("token", token);
                 User loginUser = users.get(0);
+                redisUtils.set(loginUser.getUsername(), loginUser);
+
                 loginUser.setToken(token);
                 return jsonReturn.returnSuccess(loginUser);
             } else {//登陆失败
