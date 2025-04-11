@@ -32,10 +32,15 @@ export function register(data) {
 }
 
 // 获取用户详细信息
-export function getInfo() {
+export function getInfo(username, password) {
+  const data = {
+    username,
+    password
+  }
   return request({
     url: '/getInfo',
-    method: 'get'
+    method: 'get',
+    data: data
   })
 }
 

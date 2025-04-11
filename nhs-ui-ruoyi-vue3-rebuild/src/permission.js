@@ -19,7 +19,9 @@ const isWhiteList = (path) => {
 
 router.beforeEach((to, from, next) => {
   NProgress.start()
+  console.log(`==========发送请求==========`)
   if (getToken()) {
+    console.log(`进入守卫`)
     to.meta.title && useSettingsStore().setTitle(to.meta.title)
     /* has token*/
     if (to.path === '/login') {

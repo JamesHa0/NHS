@@ -27,7 +27,7 @@ public class UserController {
 
     //登录验证
     @RequestMapping("/login")
-    public String login(User user){
+    public String login(@RequestBody User user){
         System.out.println(user);
         try {
             //查询信息

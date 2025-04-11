@@ -15,7 +15,7 @@ public class MenuController {
     @Autowired
     MenuService menuService;
     //获取菜单：当前项目是角色决定菜单，所以查询条件是角色id
-    @RequestMapping("getmenus")
+    @RequestMapping("/getRouters")
     public String getMenusByRoleId(Integer roleid){
         try {
             return jsonReturn.returnSuccess(menuService.getByroleid(roleid));

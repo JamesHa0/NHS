@@ -23,11 +23,12 @@ const useUserStore = defineStore(
         const uuid = userInfo.uuid
         return new Promise((resolve, reject) => {
           login(username, password, code, uuid).then(res => {
-            console.log(`登录成功`);
             setToken(res.data.token)
+            console.log(`登录成功`);
             this.token = res.data.token
             resolve()
           }).catch(error => {
+            console.log(`登录失败`);
             reject(error)
           })
         })
@@ -36,19 +37,20 @@ const useUserStore = defineStore(
       getInfo() {
         return new Promise((resolve, reject) => {
           getInfo().then(res => {
-            const user = res.user
-            let avatar = user.avatar || ""
+            console.log(`获取用户信息成功`);
+            let avatar = res.data.avatar || ""
             if (!isHttp(avatar)) {
               avatar = (isEmpty(avatar)) ? defAva : import.meta.env.VITE_APP_BASE_API + avatar
             }
-            if (res.roles && res.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-              this.roles = res.roles
-              this.permissions = res.permissions
+            if (res.data.roleId && res.data.roleId.length > 0) { // 验证返回的roles是否是一个非空数组
+              this.roles = res.data.roleId
+              this.permissions = "PERMISSIONS_DEFAULT"
+              //this.permissions = res.permissions // 这里没有权限（我的数据库里角色代表了权限）
             } else {
               this.roles = ['ROLE_DEFAULT']
             }
-            this.id = user.userId
-            this.name = user.userName
+            this.id = res.data.id
+            this.name = res.data.nickname
             this.avatar = avatar
             resolve(res)
           }).catch(error => {
