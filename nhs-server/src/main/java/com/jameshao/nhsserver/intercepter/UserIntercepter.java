@@ -61,7 +61,7 @@ public class UserIntercepter implements HandlerInterceptor {
             return false;
         }
 
-        JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256("22023237")).build();
+        JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(FLAGS.SECRET)).build();
         try {
             jwtVerifier.verify(token);
         } catch (JWTVerificationException e){

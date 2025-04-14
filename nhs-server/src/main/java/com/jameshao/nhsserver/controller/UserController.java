@@ -39,12 +39,12 @@ public class UserController {
                     .eq(User::getPassword, user.getPassword()).select(User::getNickname, User::getUsername, User::getRoleId);
             List<User> users = userService.list(queryWrapper);
 
-            if (users != null && users.size() > 0){//登录成功
+            if (users != null && !users.isEmpty()){//登录成功
                 //生成Token
                 String token = TokenUtil.createToken();
-                redisUtils.set("token", token);
+                redisUtils.set(token, "token token", 60*60*3);
                 User loginUser = users.get(0);
-                redisUtils.set(loginUser.getUsername(), loginUser);
+                redisUtils.set(loginUser.getUsername(), loginUser, 60*60*3);
 
                 loginUser.setToken(token);
                 return jsonReturn.returnSuccess(loginUser);

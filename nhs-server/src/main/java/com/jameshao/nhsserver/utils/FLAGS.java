@@ -29,5 +29,8 @@ public class FLAGS {
     public static String NO_LOGIN = "no login";
     public static String LOGIN_OUTOFTINE = "logout of time";
 
+    //token密钥
+    public static String SECRET = "22023237";
+
     public static Integer REDIS_OUTOF_TIME = 50;
 }
