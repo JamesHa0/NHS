@@ -32,13 +32,11 @@ export function checkPermi(value) {
  */
 export function checkRole(value) {
   if (value && value instanceof Array && value.length > 0) {
-    const roles = useUserStore().roles
+    const roleId = useUserStore().roleId
     const permissionRoles = value
     const super_admin = "admin";
 
-    const hasRole = roles.some(role => {
-      return super_admin === role || permissionRoles.includes(role)
-    })
+    const hasRole = super_admin === roleId || permissionRoles.includes(roleId);
 
     if (!hasRole) {
       return false

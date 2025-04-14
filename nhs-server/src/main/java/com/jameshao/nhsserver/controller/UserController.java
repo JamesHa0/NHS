@@ -36,7 +36,7 @@ public class UserController {
             //查询信息
             LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(User::getUsername, user.getUsername())
-                    .eq(User::getPassword, user.getPassword()).select(User::getNickname, User::getUsername, User::getRoleId);
+                    .eq(User::getPassword, user.getPassword()).select(User::getId, User::getNickname, User::getUsername, User::getRoleId);
             List<User> users = userService.list(queryWrapper);
 
             if (users != null && !users.isEmpty()){//登录成功
@@ -60,17 +60,11 @@ public class UserController {
 
     //获取用户信息
     @RequestMapping("/getInfo")
-    public String getInfo(User conds){
+    public String getInfo(String id){
         try{
             LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-            //ObjectUtils.isEmpty(conds.getUsername())
-            queryWrapper.eq(!ObjectUtils.isEmpty(conds.getUsername()), User::getUsername, conds.getUsername())
-                    .eq(!ObjectUtils.isEmpty(conds.getPassword()), User::getPassword, conds.getPassword())
-                    .eq(!ObjectUtils.isEmpty(conds.getId()), User::getId, conds.getId())
-                    .like(!ObjectUtils.isEmpty(conds.getNickname()), User::getNickname, conds.getNickname())
-                    .eq(!ObjectUtils.isEmpty(conds.getPhoneNumber()), User::getPhoneNumber, conds.getPhoneNumber())
-                    .eq(!ObjectUtils.isEmpty(conds.getSex()), User::getSex, conds.getSex())
-                    .select(User::getId, User::getNickname, User::getUsername, User::getRoleId);
+            queryWrapper.eq(User::getId, id)
+                    .select(User::getNickname, User::getUsername, User::getRoleId);
             List<User> users = userService.list(queryWrapper);
             return jsonReturn.returnSuccess(users);
         }catch(Exception e){

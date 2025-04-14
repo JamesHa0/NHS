@@ -30,13 +30,14 @@ router.beforeEach((to, from, next) => {
     } else if (isWhiteList(to.path)) {
       next()
     } else {
-      if (useUserStore().roles.length === 0) {
+      if (useUserStore().roleId == '') {
         isRelogin.show = true
+        console.log(`获取存储的用户ID：`, useUserStore().userId)
         // 判断当前用户是否已拉取完user_info信息
-        useUserStore().getInfo().then(() => {
+        useUserStore().getInfo(useUserStore().userId).then(() => {
           isRelogin.show = false
           usePermissionStore().generateRoutes().then(accessRoutes => {
-            // 根据roles权限生成可访问的路由表
+            // 根据roleId权限生成可访问的路由表
             accessRoutes.forEach(route => {
               if (!isHttp(route.path)) {
                 router.addRoute(route) // 动态添加可访问路由表

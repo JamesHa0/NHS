@@ -14,11 +14,9 @@ function authPermission(permission) {
 
 function authRole(role) {
   const super_admin = "admin";
-  const roles = useUserStore().roles
+  const roleId = useUserStore().roleId
   if (role && role.length > 0) {
-    return roles.some(v => {
-      return super_admin === v || v === role
-    })
+    return super_admin === roleId || roleId === role
   } else {
     return false
   }

@@ -1,5 +1,5 @@
 import { login, logout, getInfo } from '@/api/login'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken, getUserId, setUserId } from '@/utils/auth'
 import { isHttp, isEmpty } from "@/utils/validate"
 import defAva from '@/assets/images/profile.jpg'
 
@@ -8,10 +8,10 @@ const useUserStore = defineStore(
   {
     state: () => ({
       token: getToken(),
-      id: '',
+      userId: getUserId(),
       name: '',
       avatar: '',
-      roles: [],
+      roleId: '',
       permissions: []
     }),
     actions: {
@@ -24,7 +24,9 @@ const useUserStore = defineStore(
         return new Promise((resolve, reject) => {
           login(username, password, code, uuid).then(res => {
             setToken(res.data.token)
+            setUserId(res.data.id)
             console.log(`登录成功`);
+            this.userId = res.data.id
             this.token = res.data.token
             resolve()
           }).catch(error => {
@@ -34,22 +36,22 @@ const useUserStore = defineStore(
         })
       },
       // 获取用户信息
-      getInfo() {
+      getInfo(userId) {
+        console.log(`获取用户信息：`, userId);
         return new Promise((resolve, reject) => {
-          getInfo().then(res => {
-            console.log(`获取用户信息成功`);
+          getInfo(userId).then(res => {
+            console.log(`获取用户信息成功`, res.data);
             let avatar = res.data.avatar || ""
             if (!isHttp(avatar)) {
               avatar = (isEmpty(avatar)) ? defAva : import.meta.env.VITE_APP_BASE_API + avatar
             }
-            if (res.data.roleId && res.data.roleId.length > 0) { // 验证返回的roles是否是一个非空数组
-              this.roles = res.data.roleId
+            if (res.data.roleId) { // 验证返回的roles是否非空
+              this.roleId = res.data.roleId
               this.permissions = "PERMISSIONS_DEFAULT"
               //this.permissions = res.permissions // 这里没有权限（我的数据库里角色代表了权限）
             } else {
-              this.roles = ['ROLE_DEFAULT']
+              this.roleId = '-1';
             }
-            this.id = res.data.id
             this.name = res.data.nickname
             this.avatar = avatar
             resolve(res)
@@ -63,7 +65,7 @@ const useUserStore = defineStore(
         return new Promise((resolve, reject) => {
           logout(this.token).then(() => {
             this.token = ''
-            this.roles = []
+            this.roles = ''
             this.permissions = []
             removeToken()
             resolve()
