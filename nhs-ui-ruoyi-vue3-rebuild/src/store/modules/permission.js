@@ -36,8 +36,8 @@ const usePermissionStore = defineStore(
       generateRoutes(roles) {
         return new Promise(resolve => {
           // 向后端请求路由数据
-          console.log('获取存储的角色id：', useUserStore().roles)
-          getRouters(useUserStore().roleId).then(res => {
+          console.log('获取存储的角色：', useUserStore().roles)
+          getRouters(useUserStore().roles).then(res => {
             const sdata = JSON.parse(JSON.stringify(res.data))
             const rdata = JSON.parse(JSON.stringify(res.data))
             const defaultData = JSON.parse(JSON.stringify(res.data))
@@ -58,31 +58,63 @@ const usePermissionStore = defineStore(
   })
 
 // 遍历后台传来的路由字符串，转换为组件对象
+// function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
+//   return asyncRouterMap.filter(route => {
+//     if (type && route.children) {
+//       route.children = filterChildren(route.children)
+//     }
+//     if (route.component) {
+//       // Layout ParentView 组件特殊处理
+//       if (route.component === 'Layout') {
+//         route.component = Layout
+//       } else if (route.component === 'ParentView') {
+//         route.component = ParentView
+//       } else if (route.component === 'InnerLink') {
+//         route.component = InnerLink
+//       } else {
+//         route.component = loadView(route.component)
+//       }
+//     }
+//     if (route.children != null && route.children && route.children.length) {
+//       route.children = filterAsyncRouter(route.children, route, type)
+//     } else {
+//       delete route['children']
+//       delete route['redirect']
+//     }
+//     return true
+//   })
+// }
 function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
   return asyncRouterMap.filter(route => {
-    if (type && route.children) {
-      route.children = filterChildren(route.children)
-    }
-    if (route.component) {
-      // Layout ParentView 组件特殊处理
-      if (route.component === 'Layout') {
-        route.component = Layout
-      } else if (route.component === 'ParentView') {
-        route.component = ParentView
-      } else if (route.component === 'InnerLink') {
-        route.component = InnerLink
-      } else {
-        route.component = loadView(route.component)
+    const newRoute = {
+      name: route.title,
+      path: route.path || '/', // 如果 path 不存在，设置默认值为 '/'
+      hidden: false,
+      component: route.component ? loadView(route.component) : Layout,
+      meta: {
+        title: route.title,
+        icon: route.icon,
+        noCache: false,
+        link: null
       }
+    };
+
+    if (type && route.children) {
+      newRoute.children = filterChildren(route.children)
     }
-    if (route.children != null && route.children && route.children.length) {
-      route.children = filterAsyncRouter(route.children, route, type)
+
+    if (route.children && route.children.length) {
+      newRoute.children = filterAsyncRouter(route.children, newRoute, type)
     } else {
-      delete route['children']
-      delete route['redirect']
+      delete newRoute['children']
+      delete newRoute['redirect']
     }
-    return true
-  })
+
+    // 将新路由对象的属性覆盖原路由对象
+    Object.assign(route, newRoute);
+
+    return true;
+  });
 }
 
 function filterChildren(childrenMap, lastRouter = false) {

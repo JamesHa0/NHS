@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jameshao.nhsserver.mapper.NurselevelMapper">
+
+    <resultMap id="BaseResultMap" type="com.jameshao.nhsserver.po.Nurselevel">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="levelName" column="level_name" jdbcType="VARCHAR"/>
+            <result property="levelStatus" column="level_status" jdbcType="INTEGER"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,level_name,level_status,
+        is_deleted
+    </sql>
+</mapper>

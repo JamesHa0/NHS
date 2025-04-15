@@ -54,7 +54,7 @@ const { proxy } = getCurrentInstance();
 
 const loginForm = ref({
   username: "admin",
-  password: "admin123",
+  password: "admin",
   rememberMe: false,
   code: "",
   uuid: ""

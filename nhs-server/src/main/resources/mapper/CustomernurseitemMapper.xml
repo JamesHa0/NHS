@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jameshao.nhsserver.mapper.CustomernurseitemMapper">
+
+    <resultMap id="BaseResultMap" type="com.jameshao.nhsserver.po.Customernurseitem">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="itemId" column="item_id" jdbcType="INTEGER"/>
+            <result property="custormerId" column="custormer_id" jdbcType="INTEGER"/>
+            <result property="levelId" column="level_id" jdbcType="INTEGER"/>
+            <result property="nurseNumber" column="nurse_number" jdbcType="INTEGER"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+            <result property="buyTime" column="buy_time" jdbcType="DATE"/>
+            <result property="maturityTime" column="maturity_time" jdbcType="DATE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,item_id,custormer_id,
+        level_id,nurse_number,is_deleted,
+        buy_time,maturity_time
+    </sql>
+</mapper>

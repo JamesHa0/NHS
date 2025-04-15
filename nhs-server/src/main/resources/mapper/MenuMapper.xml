@@ -11,6 +11,7 @@
             <result property="icon" column="icon" jdbcType="VARCHAR"/>
             <result property="path" column="path" jdbcType="VARCHAR"/>
             <result property="parentId" column="parent_id" jdbcType="INTEGER"/>
+            <collection property="children" select="selectbypid" column="id" ofType="menu" fetchType="lazy"/>
     </resultMap>
 
     <sql id="Base_Column_List">

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jameshao.nhsserver.mapper.CustomerpreferenceMapper">
+
+    <resultMap id="BaseResultMap" type="com.jameshao.nhsserver.po.Customerpreference">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="customerId" column="customer_id" jdbcType="INTEGER"/>
+            <result property="preferences" column="preferences" jdbcType="VARCHAR"/>
+            <result property="attention" column="attention" jdbcType="VARCHAR"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,customer_id,preferences,
+        attention,remark,is_deleted
+    </sql>
+</mapper>

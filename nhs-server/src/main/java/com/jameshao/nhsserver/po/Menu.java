@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 
  * @TableName menu
@@ -43,6 +45,15 @@ public class Menu {
      * 父级Id
      */
     private Integer parentId;
+
+    private String component;
+
+    @TableField(exist = false)
+    private List<Menu> children;
+
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
+
 
     @Override
     public boolean equals(Object that) {

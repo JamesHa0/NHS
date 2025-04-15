@@ -48,6 +48,7 @@ router.beforeEach((to, from, next) => {
           usePermissionStore().generateRoutes().then(accessRoutes => {
             // 根据roleId权限生成可访问的路由表
             accessRoutes.forEach(route => {
+              console.log('路由对象:', route);
               if (!isHttp(route.path)) {
                 router.addRoute(route) // 动态添加可访问路由表
               }

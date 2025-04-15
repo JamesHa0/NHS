@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jameshao.nhsserver.mapper.FoodMapper">
+
+    <resultMap id="BaseResultMap" type="com.jameshao.nhsserver.po.Food">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="foodName" column="food_name" jdbcType="VARCHAR"/>
+            <result property="foodType" column="food_type" jdbcType="VARCHAR"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="isHalal" column="is_halal" jdbcType="INTEGER"/>
+            <result property="foodImg" column="food_img" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,food_name,food_type,
+        price,is_halal,food_img
+    </sql>
+</mapper>
