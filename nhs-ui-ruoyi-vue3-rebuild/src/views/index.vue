@@ -16,7 +16,7 @@
           <el-button type="primary" plain @click="goTarget('https://github.com/JamesHa0/NHS')"><svg-icon
               icon-class="github" />&nbsp;&nbsp;访问GitHub
           </el-button>
-          <el-button type="primary" icon="Cloudy" plain @click="goTarget('https://gitee.com/james-hao/')">访问码云
+          <el-button type="primary" icon="Cloudy" plain @click="goTarget('https://gitee.com/james-hao/NHS')">访问码云
           </el-button>
 
           <el-button icon="HomeFilled" plain @click="goTarget('http://47.239.28.73:8088/')">访问主页</el-button>

@@ -83,6 +83,26 @@ export const constantRoutes = [
         meta: { title: '个人中心', icon: 'user' }
       }
     ]
+  },
+  {
+    path: '/nurse',
+    component: Layout,
+    hidden: true,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'nurseLevel',
+        component: () => import('@/views/nurse/nurseLevel/index'),
+        name: 'nurseLevel',
+        meta: { title: '护理级别', icon: 'online' }
+      },
+      {
+        path: 'nurseItem',
+        component: () => import('@/views/nurse/nurseItem/index'),
+        name: 'nurseItem',
+        meta: { title: '护理项目', icon: 'list' }
+      }
+    ]
   }
 ]
 
