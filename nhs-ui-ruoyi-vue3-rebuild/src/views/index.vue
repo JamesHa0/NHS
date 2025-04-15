@@ -13,7 +13,8 @@
           <el-tag type="danger">&yen;学生作品，免费开源&yen;</el-tag>
         </p>
         <p>
-          <el-button type="primary" icon="Link" plain @click="goTarget('https://github.com/JamesHa0/NHS')">访问GitHub
+          <el-button type="primary" plain @click="goTarget('https://github.com/JamesHa0/NHS')"><svg-icon
+              icon-class="github" />&nbsp;&nbsp;访问GitHub
           </el-button>
           <el-button type="primary" icon="Cloudy" plain @click="goTarget('https://gitee.com/james-hao/')">访问码云
           </el-button>
@@ -69,14 +70,10 @@
               </el-icon> 官网：<el-link href="http://47.239.28.73:8088/" target="_blank">http://jameshao.fun/</el-link>
             </p>
             <p>
-              <el-icon>
-                <ChatDotRound />
-              </el-icon> 微信：<a href="javascript:;">James-Hao-</a>
+              <svg-icon icon-class="wechat" /> 微信：<a href="javascript:;">James-Hao-</a>
             </p>
             <p>
-              <el-icon>
-                <ChatDotSquare />
-              </el-icon> QQ：<a href="javascript:;">2258693275</a>
+              <svg-icon icon-class="qq" /> QQ：<a href="javascript:;">2258693275</a>
             </p>
           </div>
         </el-card>
