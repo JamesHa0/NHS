@@ -1,4 +1,6 @@
 <template>
+  <!--    <router-link to="/main">跳转到主页</router-link>-->
+
   <div class="border">
     <el-form :model="loginForm" class="login-box">
       <h3 class="login-title" style="color: #888888">请登录</h3>
@@ -6,10 +8,10 @@
         <el-input type="text" v-model="loginForm.name" style="width:200px" size="small"></el-input>
       </el-form-item>
       <el-form-item label="密&emsp;码" prop="pswd">
-        <el-input type="password" v-model="loginForm.pswd" style="width:200px" size="small"></el-input>
+        <el-input type="password" v-model="loginForm.pswd" style="width:200px"></el-input>
       </el-form-item>
       <el-form-item style="position: relative; left:20%">
-        <el-button class="el-button" @click="gotoMain" style="width: 150px; ">登录</el-button>
+        <el-button class="el-button" @click="login" style="width: 150px; ">登录</el-button>
       </el-form-item>
     </el-form>
     <div>{{ errorMsg }}</div>
@@ -17,19 +19,46 @@
 </template>
 
 <script setup>
+import { reactive } from "vue";
 import router from "@/util/router";
-import { reactive } from 'vue';
+import http from '@/axios/http';
+import qs from "qs";
+import { useUserStore } from "@/store/userStore";
 
-let errorMsg = reactive({});
+let loginForm = reactive({});
+let errorMsg = reactive();
 
-let loginForm = reactive({
-  name: '',
-  pswd: ''
-});
+function login() {
+  /*    console.log(loginForm);
+      //路由通过渲染组件
+      router.push({
+        path: '/MainPage',
+        state: loginForm
+      });*/
+  //组参数
+  const logindata = {
+    username: loginForm.name,
+    password: loginForm.pswd
+  };
+  http.post('/lyy/login', qs.stringify(logindata)).then((res) => {
+    let result = res.data;
 
-function gotoMain() {
-  console.log(loginForm);
-  router.push({ path: '/index' });
+    if (result.result === "success") {
+
+      //获取当前用户信息
+      let loginUser = result.data;
+      console.log('当前用户：' + loginUser);
+
+      //存token
+      let token = loginUser.token;
+      const userStore = useUserStore();
+      userStore.setToken(token);
+      console.log("userStore.getToken" + userStore.getToken);
+      router.push({ path: '/', state: result.data });
+    } else {
+      errorMsg = result.error;
+    }
+  })
 }
 
 </script>
@@ -47,6 +76,6 @@ function gotoMain() {
 }
 
 .login-title {
-  text-align: center;
+  text-algin: center;
 }
 </style>
