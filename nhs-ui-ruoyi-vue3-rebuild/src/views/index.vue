@@ -10,7 +10,7 @@
           <b>当前版本:</b> <span>v{{ version }}</span>
         </p>
         <p>
-          <el-tag type="danger">&yen;免费开源&yen;</el-tag>
+          <el-tag type="danger">&yen;学生作品，免费开源&yen;</el-tag>
         </p>
         <p>
           <el-button type="primary" icon="Link" plain @click="goTarget('https://github.com/JamesHa0/NHS')">访问GitHub
@@ -33,10 +33,9 @@
             <h4>后端技术</h4>
             <ul>
               <li>SpringBoot</li>
-              <li>Spring Security</li>
               <li>JWT</li>
               <li>MyBatis</li>
-              <li>Druid</li>
+              <li>MyBatisPlus</li>
               <li>Fastjson</li>
               <li>...</li>
             </ul>
@@ -45,11 +44,9 @@
             <h4>前端技术</h4>
             <ul>
               <li>Vue</li>
-              <li>Vuex</li>
+              <li>Pinia</li>
               <li>Element-ui</li>
               <li>Axios</li>
-              <li>Sass</li>
-              <li>Quill</li>
               <li>...</li>
             </ul>
           </el-col>

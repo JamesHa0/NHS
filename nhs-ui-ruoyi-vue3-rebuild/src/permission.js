@@ -30,7 +30,16 @@ router.beforeEach((to, from, next) => {
     } else if (isWhiteList(to.path)) {
       next()
     } else {
-      if (useUserStore().roleId == '') {
+      console.log(`当前用户:`);
+      // 打印用户信息
+      console.log('Token:', useUserStore().token);
+      console.log('User ID:', useUserStore().userId);
+      console.log('Name:', useUserStore().name);
+      console.log('Avatar:', useUserStore().avatar);
+      console.log('Roles:', useUserStore().roles);
+      console.log('Permissions:', useUserStore().permissions);
+
+      if (useUserStore().roles.length === 0) {
         isRelogin.show = true
         console.log(`获取存储的用户ID：`, useUserStore().userId)
         // 判断当前用户是否已拉取完user_info信息

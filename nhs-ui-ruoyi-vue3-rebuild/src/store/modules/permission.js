@@ -4,6 +4,7 @@ import { getRouters } from '@/api/menu'
 import Layout from '@/layout/index'
 import ParentView from '@/components/ParentView'
 import InnerLink from '@/layout/components/InnerLink'
+import useUserStore from '@/store/modules/user'
 
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('./../../views/**/*.vue')
@@ -35,7 +36,8 @@ const usePermissionStore = defineStore(
       generateRoutes(roles) {
         return new Promise(resolve => {
           // 向后端请求路由数据
-          getRouters().then(res => {
+          console.log('获取存储的角色id：', useUserStore().roles)
+          getRouters(useUserStore().roleId).then(res => {
             const sdata = JSON.parse(JSON.stringify(res.data))
             const rdata = JSON.parse(JSON.stringify(res.data))
             const defaultData = JSON.parse(JSON.stringify(res.data))
