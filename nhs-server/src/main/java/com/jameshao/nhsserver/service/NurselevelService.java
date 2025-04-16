@@ -9,5 +9,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2025-04-15 11:26:39
 */
 public interface NurselevelService extends IService<Nurselevel> {
+    boolean deleteById(Integer id);
 
 }

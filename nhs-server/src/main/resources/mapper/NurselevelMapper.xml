@@ -15,4 +15,7 @@
         id,level_name,level_status,
         is_deleted
     </sql>
+    <update id="deletebyid">
+        update nurselevel set is_deleted = 1 where id = #{id}
+    </update>
 </mapper>

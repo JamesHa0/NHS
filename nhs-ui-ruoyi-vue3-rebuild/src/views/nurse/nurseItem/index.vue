@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <el-form :model="queryParams" ref="queryRef" :inline="true">
+        <el-form :model="queryParams" ref="queryRef" :inline="true" @submit.native.prevent>
             <el-form-item label="项目名称" prop="nursingName">
                 <el-input v-model="queryParams.nursingName" placeholder="请输入要查询的项目名称" clearable style="width: 200px"
                     @keyup.enter="handleQuery" />
@@ -182,7 +182,7 @@ let queryParams = ref({
     nursingName: undefined
 });
 
-/** 查询登录日志列表 */
+/** 查询护理项目列表 */
 function getList() {
     loading.value = true;
     initData(queryParams.value).then(response => {

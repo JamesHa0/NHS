@@ -1,9 +1,11 @@
 package com.jameshao.nhsserver.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.jameshao.nhsserver.mapper.NursecontentMapper;
 import com.jameshao.nhsserver.po.Nurselevel;
 import com.jameshao.nhsserver.service.NurselevelService;
 import com.jameshao.nhsserver.mapper.NurselevelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,6 +16,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class NurselevelServiceImpl extends ServiceImpl<NurselevelMapper, Nurselevel>
     implements NurselevelService{
+    @Autowired
+    private NurselevelMapper nursecontentMapper;
+
+    @Override
+    public boolean deleteById(Integer id) {
+        return nursecontentMapper.deletebyid(id);
+    }
 
 }
 

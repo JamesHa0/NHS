@@ -1,34 +1,36 @@
 package com.jameshao.nhsserver.controller.nurse;
 
-
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.jameshao.nhsserver.common.JSONReturn;
-import com.jameshao.nhsserver.po.Nursecontent;
-import com.jameshao.nhsserver.service.NursecontentService;
+import com.jameshao.nhsserver.po.Nurselevel;
+import com.jameshao.nhsserver.service.NurselevelService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/nurse/nurseItem")
-public class NurseItemController {
+@RequestMapping("/nurse/nurseLevel")
+public class NurseLevelController {
 
     @Autowired
-    private NursecontentService nurseContentService;
+    private NurselevelService nurseLevelService;
     @Autowired
     private JSONReturn jsonReturn;
 
     @RequestMapping("/list")
-            public String list(String nursingName){
-                try{
-                    LambdaQueryWrapper<Nursecontent> queryWrapper = new LambdaQueryWrapper<>();
-                    queryWrapper.like(!ObjectUtils.isEmpty(nursingName),Nursecontent::getNursingName, nursingName)
-                            .eq(Nursecontent::getIsDeleted, 0)
-                            .select(Nursecontent::getId, Nursecontent::getSerialNumber, Nursecontent::getNursingName, Nursecontent::getServicePrice, Nursecontent::getMessage, Nursecontent::getStatus, Nursecontent::getExecutionCycle, Nursecontent::getExecutionTimes);
-            List<Nursecontent> nursecontentList = nurseContentService.list(queryWrapper);
-            return jsonReturn.returnSuccess(nursecontentList);
+    public String list(String levelName){
+        try{
+            LambdaQueryWrapper<Nurselevel> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.like(!ObjectUtils.isEmpty(levelName), Nurselevel::getLevelName, levelName)
+                    .eq(Nurselevel::getIsDeleted, 0)
+                    .select(Nurselevel::getId, Nurselevel::getLevelName, Nurselevel::getLevelStatus);
+            List<Nurselevel> nurseLevelList = nurseLevelService.list(queryWrapper);
+            return jsonReturn.returnSuccess(nurseLevelList);
         }catch(Exception e){
             e.printStackTrace();
             return jsonReturn.returnError(e.getMessage());
@@ -36,9 +38,9 @@ public class NurseItemController {
     }
 
     @RequestMapping("/add")
-    public String add(@RequestBody Nursecontent nursecontent){
+    public String add(@RequestBody Nurselevel nurselevel){
         try{
-            boolean save = nurseContentService.save(nursecontent);
+            boolean save = nurseLevelService.save(nurselevel);
             if(save){
                 return jsonReturn.returnSuccess();
             }else{
@@ -51,9 +53,9 @@ public class NurseItemController {
     }
 
     @RequestMapping("/update")
-    public String update(@RequestBody Nursecontent nursecontent){
+    public String update(@RequestBody Nurselevel nurselevel){
         try{
-            boolean update = nurseContentService.updateById(nursecontent);
+            boolean update = nurseLevelService.updateById(nurselevel);
             if(update){
                 return jsonReturn.returnSuccess();
             }else{
@@ -69,7 +71,7 @@ public class NurseItemController {
     @DeleteMapping("/delete")
     public String delete(Integer id){
         try{
-            boolean delete = nurseContentService.deleteById(id);
+            boolean delete = nurseLevelService.deleteById(id);
             if(delete){
                 return jsonReturn.returnSuccess();
             }else{
@@ -80,7 +82,4 @@ public class NurseItemController {
             return jsonReturn.returnError(e.getMessage());
         }
     }
-
-
-
 }
