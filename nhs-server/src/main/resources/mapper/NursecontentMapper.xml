@@ -21,4 +21,7 @@
         service_price,message,status,
         execution_cycle,execution_times,is_deleted
     </sql>
+    <update id="deletebyid">
+        update nursecontent set is_deleted = 1 where id = #{id}
+    </update>
 </mapper>

@@ -10,4 +10,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface NursecontentService extends IService<Nursecontent> {
 
+    boolean deleteById(Integer id);
 }
