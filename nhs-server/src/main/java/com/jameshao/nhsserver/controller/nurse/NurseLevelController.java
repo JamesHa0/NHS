@@ -37,6 +37,19 @@ public class NurseLevelController {
         }
     }
 
+
+    @RequestMapping("/items")
+    public String getAllLevelsWithItems() {
+
+        try{
+            List<Nurselevel> list =  nurseLevelService.getAllLevelsWithItems();
+            return jsonReturn.returnSuccess(list);
+        }catch(Exception e){
+            e.printStackTrace();
+            return jsonReturn.returnError(e.getMessage());
+        }
+    }
+
     @RequestMapping("/add")
     public String add(@RequestBody Nurselevel nurselevel){
         try{

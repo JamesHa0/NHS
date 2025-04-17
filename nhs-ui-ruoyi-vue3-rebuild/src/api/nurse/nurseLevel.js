@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询护理项目列表
 export function list(query) {
     return request({
-        url: '/nurse/nurseLevel/list',
+        url: '/nurse/nurseLevel/items',
         method: 'get',
         params: query
     })

@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 
  * @TableName nurselevel
@@ -33,6 +35,9 @@ public class Nurselevel {
      * 逻辑删除标记（0：显示；1：隐藏）
      */
     private Integer isDeleted;
+
+    @TableField(exist = false)
+    private List<Nursecontent> nurseContents;
 
     @Override
     public boolean equals(Object that) {

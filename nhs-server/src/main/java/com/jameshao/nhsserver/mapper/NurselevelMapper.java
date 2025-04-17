@@ -2,6 +2,12 @@ package com.jameshao.nhsserver.mapper;
 
 import com.jameshao.nhsserver.po.Nurselevel;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Many;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
 * @author JamesHao
@@ -10,6 +16,15 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity com.jameshao.nhsserver.po.Nurselevel
 */
 public interface NurselevelMapper extends BaseMapper<Nurselevel> {
+
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "levelName", column = "level_name"),
+            @Result(property = "levelStatus", column = "level_status"),
+            @Result(property = "nurseContents", column = "id", many = @Many(select = "com.jameshao.nhsserver.mapper.NursecontentMapper.getNurseContentsByLevelId"))
+    })
+    @Select("SELECT * FROM nurselevel WHERE is_deleted = '0'")
+    List<Nurselevel> getAllLevelsWithItems();
 
     boolean deletebyid(Integer id);
 }

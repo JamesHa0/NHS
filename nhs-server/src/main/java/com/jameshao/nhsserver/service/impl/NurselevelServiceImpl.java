@@ -8,6 +8,8 @@ import com.jameshao.nhsserver.mapper.NurselevelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
 * @author JamesHao
 * @description 针对表【nurselevel】的数据库操作Service实现
@@ -17,11 +19,16 @@ import org.springframework.stereotype.Service;
 public class NurselevelServiceImpl extends ServiceImpl<NurselevelMapper, Nurselevel>
     implements NurselevelService{
     @Autowired
-    private NurselevelMapper nursecontentMapper;
+    private NurselevelMapper nurselevelMapper;
+
+    @Override
+    public List<Nurselevel> getAllLevelsWithItems() {
+        return nurselevelMapper.getAllLevelsWithItems();
+    }
 
     @Override
     public boolean deleteById(Integer id) {
-        return nursecontentMapper.deletebyid(id);
+        return nurselevelMapper.deletebyid(id);
     }
 
 }
