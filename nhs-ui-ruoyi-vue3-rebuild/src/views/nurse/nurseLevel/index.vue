@@ -9,26 +9,73 @@
                 <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
                 <el-button icon="Refresh" @click="resetQuery">重置</el-button>
             </el-form-item>
-            <el-form-item>
-                <el-button type="primary" icon="Plus" @click="addNurseItem">添加</el-button>
-            </el-form-item>
         </el-form>
 
         <el-row :gutter="10" class="mb8">
-            <el-col :span="1.5">
-                <el-button type="primary" plain icon="Plus" @click="handleAdd"
-                    v-hasPermi="['system:menu:add']">新增</el-button>
-            </el-col>
-            <el-col :span="1.5">
+
+            <el-col :span="3">
                 <el-button type="info" plain icon="Sort" @click="toggleExpandAll">展开/折叠</el-button>
+            </el-col>
+            <el-col :span="3">
+                <el-button type="primary" icon="Plus" @click="addNurseLevel">新的护理级别</el-button>
             </el-col>
             <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>
 
 
-        <el-table v-if="refreshTable" v-loading="loading" :data="nurseLevelList" row-key="id"
-            :default-expand-all="isExpandAll" :tree-props="{ children: 'nurseContents', hasChildren: 'hasChildren' }">
-            <el-table-column prop="levelName" label="护理级别" :show-overflow-tooltip="true" width="160"></el-table-column>
+        <el-table v-if="refreshTable" v-loading="loading"
+            :data="nurseLevelList.slice((pageNum - 1) * pageSize, pageNum * pageSize)" style="width: 100%;"
+            :default-expand-all="isExpandAll">
+
+            <el-table-column type="expand" lazy>
+                <template #default="props">
+                    <div>
+                        <el-table :data="props.row.nurseContents" :border="childBorder">
+                            <el-table-column label="序号" width="50" type="index" align="center">
+                                <template #default="scope">
+                                    <span>{{ scope.$index + 1 }}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="ID" align="center" prop="id" :show-overflow-tooltip="true"
+                                v-if=false />
+                            <el-table-column label="编号" align="center" prop="serialNumber"
+                                :show-overflow-tooltip="true" />
+                            <el-table-column label="名称" align="center" prop="nursingName"
+                                :show-overflow-tooltip="true" />
+                            <el-table-column label="价格" align="center" prop="servicePrice"
+                                :show-overflow-tooltip="true" />
+                            <el-table-column label="描述" align="center" prop="message" :show-overflow-tooltip="true" />
+                            <el-table-column label="状态" align="center" prop="status" :show-overflow-tooltip="true">
+                                <template #default="scope">
+                                    <el-tag v-if="scope.row.status == 1" type="success">已启用</el-tag>
+                                    <el-tag v-else-if="scope.row.status == 2" type="danger">已停用</el-tag>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="执行周期" align="center" prop="executionCycle"
+                                :show-overflow-tooltip="true" />
+                            <el-table-column label="执行次数" align="center" prop="executionTimes"
+                                :show-overflow-tooltip="true" />
+                            <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+                                <template #default="scope">
+                                    <el-button link type="primary" icon="Delete"
+                                        @click="handleDelete(scope.row)">删除</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <el-divider />
+                        <el-divider />
+                    </div>
+                </template>
+            </el-table-column>
+
+
+            <el-table-column label="序号" width="50" type="index" align="center">
+                <template #default="scope">
+                    <span>{{ (pageNum - 1) * pageSize + scope.$index + 1 }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="ID" align="center" prop="id" :show-overflow-tooltip="true" v-if=false />
+            <el-table-column label="护理级别" align="center" prop="levelName" :show-overflow-tooltip="true" />
             <el-table-column label="状态" align="center" prop="levelStatus" :show-overflow-tooltip="true">
                 <template #default="scope">
                     <el-tag v-if="scope.row.levelStatus == 1" type="success">已启用</el-tag>
@@ -39,10 +86,13 @@
                 <template #default="scope">
                     <el-button type="primary" icon="Edit" @click="editNurseItem(scope.row)">编辑</el-button>
                     <el-button type="danger" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
-                    <el-button type="success" icon="Plus" @click="setNurseLevel(scope.row)">护理内容配置</el-button>
+                    <el-button type="success" icon="Plus" @click="addNurseItem(scope.row)">添加护理内容</el-button>
                 </template>
             </el-table-column>
         </el-table>
+
+        <pagination v-show="total > 0" :total="total" v-model:page="pageNum" v-model:limit="pageSize" />
+
 
         <!--添加护理级别的对话框  BEGIN-->
         <el-dialog v-model="addFormVisible" title="添加护理级别" width="500">
@@ -99,24 +149,30 @@
         <!--编辑护理级别的对话框  END-->
 
 
-        <!--护理内容配置的对话框  BEGIN-->
-        <el-dialog v-model="setFormVisible" title=护理内容配置 width="800">
-            <el-form :model="setForm">
-                <el-form-item label="护理级别" :label-width="100">
-                    <el-input v-model="setForm.levelName" disabled />
+        <!--添加护理内容的对话框  BEGIN-->
+        <el-dialog v-model="addItemFormVisible" title="添加护理内容" width="500">
+            <el-form :model="addItemForm">
+                <el-form-item label="护理级别ID" :label-width="100">
+                    <el-input v-model="addItemForm.id" disabled />
                 </el-form-item>
+                <el-form-item label="护理级别" :label-width="100">
+                    <el-input v-model="addItemForm.levelName" disabled />
+                </el-form-item>
+
 
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
-                    <el-button @click="setFormVisible = false">取消</el-button>
-                    <el-button type="primary" @click="submitSet()">
+                    <el-button @click="addItemFormVisible = false">取消</el-button>
+                    <el-button type="primary" @click="submitAdd()">
                         确定
                     </el-button>
                 </div>
             </template>
         </el-dialog>
-        <!--护理内容配置的对话框  END-->
+        <!--添加护理内容的对话框  END-->
+
+
     </div>
 </template>
 
@@ -131,11 +187,12 @@ const total = ref(0);
 const pageNum = ref(1);
 const pageSize = ref(10);
 const showSearch = ref(true);
+const isExpandAll = ref(false);
 const refreshTable = ref(true);
 
 let addFormVisible = ref(false);
 let editFormVisible = ref(false);
-let setFormVisible = ref(false);
+let addItemFormVisible = ref(false);
 
 let addForm = ref({
     levelName: '',
@@ -151,9 +208,10 @@ let editForm = ref({
     levelName: '',
     message: ''
 });
-let setForm = ref({
+let addItemForm = ref({
     id: '',
-    levelName: ''
+    levelName: '',
+    message: ''
 });
 const statusOptions = ref([
     { id: 1, statusName: "已启用" },
@@ -168,7 +226,7 @@ let queryParams = ref({
 function getList() {
     loading.value = true;
     initData(queryParams.value).then(response => {
-        nurseLevelList.value = proxy.handleTree(response.data, 'id', 'parentId', 'nurseContents');
+        nurseLevelList.value = response.data;
         total.value = response.data.length;
         loading.value = false;
     });
@@ -187,7 +245,7 @@ function resetQuery() {
 }
 
 /** 添加按钮操作 */
-function addNurseItem() {
+function addNurseLevel() {
     addFormVisible.value = true;
 }
 
@@ -214,6 +272,7 @@ function toggleExpandAll() {
     });
 }
 
+
 /** 编辑按钮操作 */
 function editNurseItem(row) {
     beforeEditForm = row;
@@ -236,7 +295,6 @@ function submitEdit() {
     getList();
 }
 
-
 /** 删除按钮操作 */
 function handleDelete(row) {
     proxy.$modal.confirm('是否删除名称为"' + row.levelName + '"的护理级别?').then(function () {
@@ -247,10 +305,11 @@ function handleDelete(row) {
     }).catch(() => { });
 }
 
-/** 护理内容配置按钮操作 */
-function setNurseLevel(row) {
-    setForm = row;
-    setFormVisible.value = true;
+
+/** 添加护理内容按钮操作 */
+function addNurseItem(row) {
+    addItemForm = row;
+    addItemFormVisible.value = true;
 }
 
 getList();
