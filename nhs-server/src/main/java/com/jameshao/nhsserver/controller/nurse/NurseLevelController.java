@@ -4,13 +4,16 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.jameshao.nhsserver.common.JSONReturn;
 import com.jameshao.nhsserver.po.Nurselevel;
+import com.jameshao.nhsserver.po.Nurselevelitem;
 import com.jameshao.nhsserver.service.NurselevelService;
+import com.jameshao.nhsserver.service.NurselevelitemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -19,6 +22,8 @@ public class NurseLevelController {
 
     @Autowired
     private NurselevelService nurseLevelService;
+    @Autowired
+    NurselevelitemService nurseLevelItemService;
     @Autowired
     private JSONReturn jsonReturn;
 
@@ -39,10 +44,12 @@ public class NurseLevelController {
 
 
     @RequestMapping("/items")
-    public String getAllLevelsWithItems() {
-
+    public String getLevelsWithItems(Integer id,String levelName) {
         try{
-            List<Nurselevel> list =  nurseLevelService.getAllLevelsWithItems();
+            if (id != null && levelName != null){
+                levelName = null;
+            }
+            List<Nurselevel> list =  nurseLevelService.getLevelsWithItems(id, levelName);
             return jsonReturn.returnSuccess(list);
         }catch(Exception e){
             e.printStackTrace();
@@ -95,4 +102,42 @@ public class NurseLevelController {
             return jsonReturn.returnError(e.getMessage());
         }
     }
+
+    @RequestMapping("/addItems")
+    public String addItems(Integer levelId, String nurseItemIds){
+        try{
+
+            if (nurseItemIds == null || levelId == null) {
+                return jsonReturn.returnError("Invalid parameters");
+            }
+
+            // 将逗号分隔的字符串转换为整数数组
+            String[] itemsArray = nurseItemIds.split(",");
+            Integer[] itemsId = new Integer[itemsArray.length];
+            for(int i = 0; i < itemsArray.length; i++) {
+                itemsId[i] = Integer.parseInt(itemsArray[i]);
+            }
+            for (Integer itemId : itemsId){
+                if (itemId == null){
+                    continue;
+                }
+                System.out.println(levelId);
+                System.out.println(itemId);
+                Nurselevelitem nurselevelitem = new Nurselevelitem();
+                nurselevelitem.setLevelId(levelId);
+                nurselevelitem.setItemId(itemId);
+                System.out.println(nurselevelitem);
+                boolean save = nurseLevelItemService.save(nurselevelitem);
+                if (!save){
+                    return jsonReturn.returnFailed();
+                }
+            }
+            return jsonReturn.returnSuccess();
+        }catch(Exception e){
+            e.printStackTrace();
+            return jsonReturn.returnError(e.getMessage());
+        }
+    }
+
+
 }

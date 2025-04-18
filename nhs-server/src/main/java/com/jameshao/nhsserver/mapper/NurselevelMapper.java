@@ -23,8 +23,10 @@ public interface NurselevelMapper extends BaseMapper<Nurselevel> {
             @Result(property = "levelStatus", column = "level_status"),
             @Result(property = "nurseContents", column = "id", many = @Many(select = "com.jameshao.nhsserver.mapper.NursecontentMapper.getNurseContentsByLevelId"))
     })
-    @Select("SELECT * FROM nurselevel WHERE is_deleted = '0'")
-    List<Nurselevel> getAllLevelsWithItems();
+    @Select("SELECT * FROM nurselevel WHERE is_deleted = '0' " +
+            "AND (id = #{id} OR #{id} IS NULL) " +
+            "AND (level_name LIKE CONCAT('%', #{levelName}, '%') OR #{levelName} IS NULL) ")
+    List<Nurselevel> getLevelsWithItems(Integer id, String levelName);
 
     boolean deletebyid(Integer id);
 }

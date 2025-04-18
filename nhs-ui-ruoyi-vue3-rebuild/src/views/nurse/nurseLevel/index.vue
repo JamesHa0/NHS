@@ -150,7 +150,7 @@
 
 
         <!--添加护理内容的对话框  BEGIN-->
-        <el-dialog v-model="addItemFormVisible" title="添加护理内容" width="500">
+        <el-dialog v-model="addItemFormVisible" title="添加护理内容" width="800">
             <el-form :model="addItemForm">
                 <el-form-item label="护理级别ID" :label-width="100">
                     <el-input v-model="addItemForm.id" disabled />
@@ -159,12 +159,24 @@
                     <el-input v-model="addItemForm.levelName" disabled />
                 </el-form-item>
 
+                <el-form-item label="护理项目" :label-width="100">
+                    <el-select v-model="addItemForm.nurseItemIds" multiple filterable placeholder="请选择护理项目">
+                        <el-option v-for="item in nurseItemForm" :key="item.id" :label="item.nursingName"
+                            :value="item.id">
+                            <span style="float: left">{{ item.serialNumber }} | {{ item.nursingName }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px">
+                                价格: {{ item.servicePrice }} | 执行周期: {{ item.executionCycle }} | 执行次数: {{
+                                    item.executionTimes }}
+                            </span>
+                        </el-option>
+                    </el-select>
+                </el-form-item>
 
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
                     <el-button @click="addItemFormVisible = false">取消</el-button>
-                    <el-button type="primary" @click="submitAdd()">
+                    <el-button type="primary" @click="submitAddItem()">
                         确定
                     </el-button>
                 </div>
@@ -177,7 +189,9 @@
 </template>
 
 <script setup name="NurseItem">
-import { list as initData, deleteItem, update, add } from "@/api/nurse/nurseLevel";
+import { list as initData, deleteItem, update, add, addItems } from "@/api/nurse/nurseLevel";
+import { list as listNurseItem } from "@/api/nurse/nurseItem"
+import { id } from "element-plus/es/locales.mjs";
 
 const { proxy } = getCurrentInstance();
 
@@ -211,15 +225,20 @@ let editForm = ref({
 let addItemForm = ref({
     id: '',
     levelName: '',
-    message: ''
+    nurseItemIds: []
 });
+let nurseItemForm = ref([]);
+
 const statusOptions = ref([
     { id: 1, statusName: "已启用" },
     { id: 2, statusName: "已停用" }
 ])
 
 let queryParams = ref({
-    nursingName: undefined
+    levelName: undefined
+});
+let queryItemParams = ref({
+    id: undefined
 });
 
 /** 查询护理级别列表 */
@@ -309,7 +328,62 @@ function handleDelete(row) {
 /** 添加护理内容按钮操作 */
 function addNurseItem(row) {
     addItemForm = row;
+    getNurseItemList(row.id);
     addItemFormVisible.value = true;
+}
+
+/** 获取未添加的护理项目列表 */
+function getNurseItemList(id) {
+    proxy.resetForm("queryRef");
+    queryItemParams.value = {
+        id: id
+    };
+    initData(queryItemParams.value).then(response => {
+        const itemsById = response.data[0].nurseContents || [];
+
+        listNurseItem().then(listResponse => {
+            const allItems = listResponse.data || [];
+
+            // 将两个数组的 id 分别存入 Set
+            const idSetById = new Set(itemsById.map(item => item.id));
+            const idSetAll = new Set(allItems.map(item => item.id));
+
+            // 找出两个数组中不重复的 id 集合
+            const uniqueIds = new Set([
+                ...[...idSetById].filter(id => !idSetAll.has(id)),
+                ...[...idSetAll].filter(id => !idSetById.has(id))
+            ]);
+
+            // 根据不重复的 id 集合筛选出对应的项目
+            const finalItems = [...itemsById, ...allItems].filter(item => uniqueIds.has(item.id));
+
+            nurseItemForm.value = finalItems;
+        })
+    })
+    queryItemParams.value = {
+        id: undefined
+    };
+}
+
+
+
+/** 提交添加护理内容 */
+function submitAddItem() {
+    addItemFormVisible.value = false;
+    const data = {
+        levelId: addItemForm.id,
+        nurseItemIds: addItemForm.nurseItemIds.join(',')
+    }
+    addItems(data).then(response => {
+        getList();
+        proxy.$modal.msgSuccess("添加项目成功");
+    })
+        .catch(() => {
+            getList();
+            proxy.$modal.msgError("添加项目失败");
+        });
+
+    proxy.$modal.msgSuccess("添加成功");
 }
 
 getList();

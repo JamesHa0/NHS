@@ -27,11 +27,21 @@ export function update(data) {
     })
 }
 
-// 删除护理项目
+// 删除护理级别
 export function deleteItem(id) {
     return request({
         url: '/nurse/nurseLevel/delete',
         method: 'delete',
         params: { id }
+    })
+}
+
+
+// 护理级别添加护理内容
+export function addItems(data) {
+    return request({
+        url: '/nurse/nurseLevel/addItems',
+        method: 'post',
+        params: data
     })
 }

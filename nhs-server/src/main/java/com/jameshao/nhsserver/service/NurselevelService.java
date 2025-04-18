@@ -12,7 +12,7 @@ import java.util.List;
 */
 public interface NurselevelService extends IService<Nurselevel> {
 
-    List<Nurselevel> getAllLevelsWithItems();
+    List<Nurselevel> getLevelsWithItems(Integer id,String levelName);
 
     boolean deleteById(Integer id);
 

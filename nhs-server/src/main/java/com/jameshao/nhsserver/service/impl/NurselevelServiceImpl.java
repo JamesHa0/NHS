@@ -22,8 +22,8 @@ public class NurselevelServiceImpl extends ServiceImpl<NurselevelMapper, Nursele
     private NurselevelMapper nurselevelMapper;
 
     @Override
-    public List<Nurselevel> getAllLevelsWithItems() {
-        return nurselevelMapper.getAllLevelsWithItems();
+    public List<Nurselevel> getLevelsWithItems(Integer id,String levelName) {
+        return nurselevelMapper.getLevelsWithItems(id, levelName);
     }
 
     @Override

@@ -26,7 +26,8 @@ public class NurseItemController {
                     LambdaQueryWrapper<Nursecontent> queryWrapper = new LambdaQueryWrapper<>();
                     queryWrapper.like(!ObjectUtils.isEmpty(nursingName),Nursecontent::getNursingName, nursingName)
                             .eq(Nursecontent::getIsDeleted, 0)
-                            .select(Nursecontent::getId, Nursecontent::getSerialNumber, Nursecontent::getNursingName, Nursecontent::getServicePrice, Nursecontent::getMessage, Nursecontent::getStatus, Nursecontent::getExecutionCycle, Nursecontent::getExecutionTimes);
+                            .select(Nursecontent::getId, Nursecontent::getSerialNumber, Nursecontent::getNursingName, Nursecontent::getServicePrice, Nursecontent::getMessage, Nursecontent::getStatus, Nursecontent::getExecutionCycle, Nursecontent::getExecutionTimes)
+                            .orderByAsc(Nursecontent::getSerialNumber);
             List<Nursecontent> nursecontentList = nurseContentService.list(queryWrapper);
             return jsonReturn.returnSuccess(nursecontentList);
         }catch(Exception e){
