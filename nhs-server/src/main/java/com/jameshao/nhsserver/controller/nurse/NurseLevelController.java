@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -23,7 +22,7 @@ public class NurseLevelController {
     @Autowired
     private NurselevelService nurseLevelService;
     @Autowired
-    NurselevelitemService nurseLevelItemService;
+    private NurselevelitemService nurseLevelItemService;
     @Autowired
     private JSONReturn jsonReturn;
 
@@ -133,6 +132,22 @@ public class NurseLevelController {
                 }
             }
             return jsonReturn.returnSuccess();
+        }catch(Exception e){
+            e.printStackTrace();
+            return jsonReturn.returnError(e.getMessage());
+        }
+    }
+
+
+    @RequestMapping("/deleteLevelItem")
+    public String deleteLevelItem(@RequestBody Nurselevelitem nurselevelitem){
+        try{
+            boolean delete = nurseLevelItemService.deleteByIds(nurselevelitem.getLevelId(),nurselevelitem.getItemId());
+            if(delete){
+                return jsonReturn.returnSuccess();
+            }else{
+                return jsonReturn.returnFailed();
+            }
         }catch(Exception e){
             e.printStackTrace();
             return jsonReturn.returnError(e.getMessage());

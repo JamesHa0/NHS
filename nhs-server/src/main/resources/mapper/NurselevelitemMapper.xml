@@ -8,9 +8,14 @@
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="levelId" column="level_id" jdbcType="INTEGER"/>
             <result property="itemId" column="item_id" jdbcType="INTEGER"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,level_id,item_id
+        id,level_id,item_id,
+        is_deleted
     </sql>
+    <update id="deleteByIds">
+        update nurselevelitem set is_deleted = 1 where level_id = #{levelId} and item_id = #{itemId}
+    </update>
 </mapper>

@@ -58,7 +58,7 @@
                             <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
                                 <template #default="scope">
                                     <el-button link type="primary" icon="Delete"
-                                        @click="handleDelete(scope.row)">删除</el-button>
+                                        @click="itemDelete(props.row, scope.row)">删除</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -84,9 +84,15 @@
             </el-table-column>
             <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
                 <template #default="scope">
-                    <el-button type="primary" icon="Edit" @click="editNurseItem(scope.row)">编辑</el-button>
-                    <el-button type="danger" icon="Delete" @click="handleDelete(scope.row)">删除</el-button>
-                    <el-button type="success" icon="Plus" @click="addNurseItem(scope.row)">添加护理内容</el-button>
+                    <el-tooltip content="编辑" effect="dark" placement="top">
+                        <el-button type="primary" icon="Edit" @click="editNurseItem(scope.row)" />
+                    </el-tooltip>
+                    <el-tooltip content="删除" effect="dark" placement="top">
+                        <el-button type="danger" icon="Delete" @click="handleDelete(scope.row)" />
+                    </el-tooltip>
+                    <el-tooltip content="添加护理内容" effect="dark" placement="top">
+                        <el-button type="success" icon="Plus" @click="addNurseItem(scope.row)" />
+                    </el-tooltip>
                 </template>
             </el-table-column>
         </el-table>
@@ -96,8 +102,8 @@
 
         <!--添加护理级别的对话框  BEGIN-->
         <el-dialog v-model="addFormVisible" title="添加护理级别" width="500">
-            <el-form :model="addForm">
-                <el-form-item label="护理级别" :label-width="100">
+            <el-form :model="addForm" :rules="rules" ref="addFormRef">
+                <el-form-item label="护理级别" :label-width="100" prop="levelName">
                     <el-input v-model="addForm.levelName" />
                 </el-form-item>
                 <el-form-item label="状态" :label-width="100">
@@ -122,11 +128,11 @@
 
         <!--编辑护理级别的对话框  BEGIN-->
         <el-dialog v-model="editFormVisible" title="护理级别信息" width="500">
-            <el-form :model="editForm">
-                <el-form-item label="护理级别ID" :label-width="100">
+            <el-form :model="editForm" :rules="rules" ref="editFormRef">
+                <el-form-item label="护理级别ID" :label-width="100" v-if="false">
                     <el-input v-model="editForm.id" disabled />
                 </el-form-item>
-                <el-form-item label="护理级别" :label-width="100">
+                <el-form-item label="护理级别" :label-width="100" prop="levelName">
                     <el-input v-model="editForm.levelName" />
                 </el-form-item>
                 <el-form-item label="状态" :label-width="100">
@@ -152,7 +158,7 @@
         <!--添加护理内容的对话框  BEGIN-->
         <el-dialog v-model="addItemFormVisible" title="添加护理内容" width="800">
             <el-form :model="addItemForm">
-                <el-form-item label="护理级别ID" :label-width="100">
+                <el-form-item label="护理级别ID" :label-width="100" v-if="false">
                     <el-input v-model="addItemForm.id" disabled />
                 </el-form-item>
                 <el-form-item label="护理级别" :label-width="100">
@@ -189,9 +195,8 @@
 </template>
 
 <script setup name="NurseItem">
-import { list as initData, deleteItem, update, add, addItems } from "@/api/nurse/nurseLevel";
+import { list as initData, deleteItem, update, add, addItems, deleteLevelItem } from "@/api/nurse/nurseLevel";
 import { list as listNurseItem } from "@/api/nurse/nurseItem"
-import { id } from "element-plus/es/locales.mjs";
 
 const { proxy } = getCurrentInstance();
 
@@ -241,6 +246,14 @@ let queryItemParams = ref({
     id: undefined
 });
 
+const rules = ref({
+    levelName: [
+        { required: true, message: '请输入护理级别', trigger: 'blur' }
+    ]
+});
+const addFormRef = ref(null);
+const editFormRef = ref(null);
+
 /** 查询护理级别列表 */
 function getList() {
     loading.value = true;
@@ -270,15 +283,22 @@ function addNurseLevel() {
 
 /** 提交添加项目 */
 function submitAdd() {
-    addFormVisible.value = false;
-    add(addForm.value).then(response => {
-        getList();
-        proxy.$modal.msgSuccess("添加成功");
-    })
-        .catch(() => {
-            getList();
-            proxy.$modal.msgError("添加失败");
-        });
+    addFormRef.value.validate((valid) => {
+        if (valid) {
+            addFormVisible.value = false;
+            add(addForm.value).then(response => {
+                getList();
+                proxy.$modal.msgSuccess("添加成功");
+            })
+                .catch(() => {
+                    getList();
+                    proxy.$modal.msgError("添加失败");
+                });
+        } else {
+            proxy.$modal.msgError('护理级别不能为空');
+            return false;
+        }
+    });
 }
 
 
@@ -301,17 +321,22 @@ function editNurseItem(row) {
 
 /** 提交编辑 */
 function submitEdit() {
-    update(editForm).then(response => {
-        getList();
-        proxy.$modal.msgSuccess("编辑成功");
-        editFormVisible.value = false;
-    })
-        .catch(() => {
-            getList();
-            proxy.$modal.msgError("编辑失败");
+    editFormRef.value.validate((valid) => {
+        if (valid) {
             editFormVisible.value = false;
-        });
-    getList();
+            update(editForm.value).then(response => {
+                getList();
+                proxy.$modal.msgSuccess("编辑成功");
+            })
+                .catch(() => {
+                    getList();
+                    proxy.$modal.msgError("编辑失败");
+                });
+        } else {
+            proxy.$modal.msgError('护理级别不能为空');
+            return false;
+        }
+    });
 }
 
 /** 删除按钮操作 */
@@ -384,6 +409,25 @@ function submitAddItem() {
         });
 
     proxy.$modal.msgSuccess("添加成功");
+}
+
+
+/** 删除级别下的项目 */
+function itemDelete(prop, row) {
+    const data = {
+        levelId: prop.id,
+        itemId: row.id
+    }
+    proxy.$modal.confirm('是否删除"' + prop.levelName + '"下，名称为"' + row.nursingName + '"的护理项目?').then(function () {
+        return deleteLevelItem(data);
+    }).then(() => {
+        getList();
+        proxy.$modal.msgSuccess("删除成功");
+    }).catch(() => {
+        getList();
+        proxy.$modal.msgError("未删除");
+    });
+
 }
 
 getList();

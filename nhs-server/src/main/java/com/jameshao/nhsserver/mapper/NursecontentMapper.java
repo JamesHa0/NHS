@@ -18,6 +18,7 @@ public interface NursecontentMapper extends BaseMapper<Nursecontent> {
             "JOIN nurselevelitem nli ON nc.id = nli.item_id " +
             "WHERE nli.level_id = #{levelId} " +
             "AND nc.is_deleted = '0' "+
+            "AND nli.is_deleted = '0' "+
             "ORDER BY serial_number")
     List<Nursecontent> getNurseContentsByLevelId(Integer levelId);
     boolean deletebyid(Integer id);

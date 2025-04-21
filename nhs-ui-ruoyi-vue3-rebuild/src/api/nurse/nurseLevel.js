@@ -45,3 +45,12 @@ export function addItems(data) {
         params: data
     })
 }
+
+//删除级别下的项目
+export function deleteLevelItem(data) {
+    return request({
+        url: '/nurse/nurseLevel/deleteLevelItem',
+        method: 'post',
+        data: data
+    })
+}

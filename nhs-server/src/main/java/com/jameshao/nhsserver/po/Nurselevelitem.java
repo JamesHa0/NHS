@@ -29,6 +29,11 @@ public class Nurselevelitem {
      */
     private Integer itemId;
 
+    /**
+     * 逻辑删除标记（0：显示；1：隐藏）
+     */
+    private Integer isDeleted;
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -43,7 +48,8 @@ public class Nurselevelitem {
         Nurselevelitem other = (Nurselevelitem) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getLevelId() == null ? other.getLevelId() == null : this.getLevelId().equals(other.getLevelId()))
-            && (this.getItemId() == null ? other.getItemId() == null : this.getItemId().equals(other.getItemId()));
+            && (this.getItemId() == null ? other.getItemId() == null : this.getItemId().equals(other.getItemId()))
+            && (this.getIsDeleted() == null ? other.getIsDeleted() == null : this.getIsDeleted().equals(other.getIsDeleted()));
     }
 
     @Override
@@ -53,6 +59,7 @@ public class Nurselevelitem {
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getLevelId() == null) ? 0 : getLevelId().hashCode());
         result = prime * result + ((getItemId() == null) ? 0 : getItemId().hashCode());
+        result = prime * result + ((getIsDeleted() == null) ? 0 : getIsDeleted().hashCode());
         return result;
     }
 
@@ -65,6 +72,7 @@ public class Nurselevelitem {
         sb.append(", id=").append(id);
         sb.append(", levelId=").append(levelId);
         sb.append(", itemId=").append(itemId);
+        sb.append(", isDeleted=").append(isDeleted);
         sb.append("]");
         return sb.toString();
     }

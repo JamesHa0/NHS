@@ -46,14 +46,14 @@
 
         <!--添加项目信息的对话框  BEGIN-->
         <el-dialog v-model="addFormVisible" title="添加护理项目" width="500">
-            <el-form :model="addForm">
-                <el-form-item label="项目编号" :label-width="100">
+            <el-form :model="addForm" :rules="rules" ref="addFormRef">
+                <el-form-item label="项目编号" :label-width="100" prop="serialNumber">
                     <el-input v-model="addForm.serialNumber" />
                 </el-form-item>
-                <el-form-item label="名称" :label-width="100">
+                <el-form-item label="名称" :label-width="100" prop="nursingName">
                     <el-input v-model="addForm.nursingName" />
                 </el-form-item>
-                <el-form-item label="价格" :label-width="100">
+                <el-form-item label="价格" :label-width="100" prop="servicePrice">
                     <el-input v-model="addForm.servicePrice" />
                 </el-form-item>
                 <el-form-item label="描述" :label-width="100">
@@ -87,17 +87,17 @@
 
         <!--编辑项目信息的对话框  BEGIN-->
         <el-dialog v-model="editFormVisible" title="护理项目信息" width="500">
-            <el-form :model="editForm">
-                <el-form-item label="项目ID" :label-width="100">
+            <el-form :model="editForm" :rules="rules" ref="editFormRef">
+                <el-form-item label="项目ID" :label-width="100" v-if="false">
                     <el-input v-model="editForm.id" disabled />
                 </el-form-item>
-                <el-form-item label="项目编号" :label-width="100">
+                <el-form-item label="项目编号" :label-width="100" prop="serialNumber">
                     <el-input v-model="editForm.serialNumber" />
                 </el-form-item>
-                <el-form-item label="名称" :label-width="100">
+                <el-form-item label="名称" :label-width="100" prop="nursingName">
                     <el-input v-model="editForm.nursingName" />
                 </el-form-item>
-                <el-form-item label="价格" :label-width="100">
+                <el-form-item label="价格" :label-width="100" prop="servicePrice">
                     <el-input v-model="editForm.servicePrice" />
                 </el-form-item>
                 <el-form-item label="描述" :label-width="100">
@@ -182,6 +182,21 @@ let queryParams = ref({
     nursingName: undefined
 });
 
+const rules = ref({
+    serialNumber: [
+        { required: true, message: '项目编号不能为空', trigger: 'blur' }
+    ],
+    nursingName: [
+        { required: true, message: '名称不能为空', trigger: 'blur' }
+    ],
+    servicePrice: [
+        { required: true, message: '价格不能为空', trigger: 'blur' }
+    ],
+});
+const addFormRef = ref(null);
+const editFormRef = ref(null);
+
+
 /** 查询护理项目列表 */
 function getList() {
     loading.value = true;
@@ -211,15 +226,22 @@ function addNurseItem() {
 
 /** 提交添加项目 */
 function submitAdd() {
-    addFormVisible.value = false;
-    add(addForm.value).then(response => {
-        getList();
-        proxy.$modal.msgSuccess("添加成功");
-    })
-        .catch(() => {
-            getList();
-            proxy.$modal.msgError("添加失败");
-        });
+    addFormRef.value.validate((valid) => {
+        if (valid) {
+            addFormVisible.value = false;
+            add(addForm.value).then(response => {
+                getList();
+                proxy.$modal.msgSuccess("添加成功");
+            })
+                .catch(() => {
+                    getList();
+                    proxy.$modal.msgError("添加失败");
+                });
+        } else {
+            proxy.$modal.msgError('必填项不能为空');
+            return false;
+        }
+    });
 }
 
 
@@ -232,17 +254,22 @@ function editNurseItem(row) {
 
 /** 提交编辑 */
 function submitEdit() {
-    update(editForm).then(response => {
-        getList();
-        proxy.$modal.msgSuccess("编辑成功");
-        editFormVisible.value = false;
-    })
-        .catch(() => {
-            getList();
-            proxy.$modal.msgError("编辑失败");
+    editFormRef.value.validate((valid) => {
+        if (valid) {
             editFormVisible.value = false;
-        });
-    getList();
+            update(editForm.value).then(response => {
+                getList();
+                proxy.$modal.msgSuccess("编辑成功");
+            })
+                .catch(() => {
+                    getList();
+                    proxy.$modal.msgError("编辑失败");
+                });
+        } else {
+            proxy.$modal.msgError('必填项不能为空');
+            return false;
+        }
+    });
 }
 
 

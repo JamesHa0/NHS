@@ -11,7 +11,7 @@
  Target Server Version : 80037 (8.0.37)
  File Encoding         : 65001
 
- Date: 16/04/2025 18:12:31
+ Date: 21/04/2025 15:21:37
 */
 
 SET NAMES utf8mb4;
@@ -363,7 +363,7 @@ CREATE TABLE `nursecontent`  (
   `execution_times` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '执行次数',
   `is_deleted` int NULL DEFAULT 0 COMMENT '逻辑删除标记（0：显示；1：隐藏）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of nursecontent
@@ -387,6 +387,7 @@ INSERT INTO `nursecontent` VALUES (20, 'HLXM0019', '协助外出', '100/次', ''
 INSERT INTO `nursecontent` VALUES (21, 'HLXM0020', '瑜伽辅导', '80/次', '', 2, '每周', '2', 0);
 INSERT INTO `nursecontent` VALUES (22, 'test', '测试', '111', NULL, 1, '1', '1', 1);
 INSERT INTO `nursecontent` VALUES (23, 'tses2', 'test2', '222', 'tset2', 2, '2', '2', 1);
+INSERT INTO `nursecontent` VALUES (24, 'HLXM0000', 'HLXM0000', '00', '******', 2, '0', '0', 0);
 
 -- ----------------------------
 -- Table structure for nurselevel
@@ -394,23 +395,26 @@ INSERT INTO `nursecontent` VALUES (23, 'tses2', 'test2', '222', 'tset2', 2, '2',
 DROP TABLE IF EXISTS `nurselevel`;
 CREATE TABLE `nurselevel`  (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `level_name` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '护理级别',
-  `level_status` int NULL DEFAULT NULL COMMENT '级别状态 1：启用；2：停用',
-  `is_deleted` int NULL DEFAULT NULL COMMENT '逻辑删除标记（0：显示；1：隐藏）',
+  `level_name` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '未命名' COMMENT '护理级别',
+  `level_status` int NULL DEFAULT 1 COMMENT '级别状态 1：启用；2：停用',
+  `is_deleted` int NULL DEFAULT 0 COMMENT '逻辑删除标记（0：显示；1：隐藏）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of nurselevel
 -- ----------------------------
-INSERT INTO `nurselevel` VALUES (1, '一级', 1, NULL);
-INSERT INTO `nurselevel` VALUES (2, '二级', 1, NULL);
-INSERT INTO `nurselevel` VALUES (3, '三级', 1, NULL);
-INSERT INTO `nurselevel` VALUES (4, '四级', 1, NULL);
-INSERT INTO `nurselevel` VALUES (5, '五级', 2, NULL);
-INSERT INTO `nurselevel` VALUES (7, '六级', 2, NULL);
-INSERT INTO `nurselevel` VALUES (8, 'x', 1, NULL);
-INSERT INTO `nurselevel` VALUES (9, '八级', 1, NULL);
+INSERT INTO `nurselevel` VALUES (1, '一级', 1, 0);
+INSERT INTO `nurselevel` VALUES (2, '二级', 1, 0);
+INSERT INTO `nurselevel` VALUES (3, '三级', 1, 0);
+INSERT INTO `nurselevel` VALUES (4, '四级', 1, 0);
+INSERT INTO `nurselevel` VALUES (5, '五级', 2, 0);
+INSERT INTO `nurselevel` VALUES (7, '六级', 2, 0);
+INSERT INTO `nurselevel` VALUES (8, 'x', 2, 0);
+INSERT INTO `nurselevel` VALUES (9, '八级', 1, 0);
+INSERT INTO `nurselevel` VALUES (10, '999', 1, 1);
+INSERT INTO `nurselevel` VALUES (11, 'xxx', 1, 0);
+INSERT INTO `nurselevel` VALUES (16, 'test', 1, 1);
 
 -- ----------------------------
 -- Table structure for nurselevelitem
@@ -420,38 +424,41 @@ CREATE TABLE `nurselevelitem`  (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
   `level_id` int NOT NULL COMMENT '关联护理级别',
   `item_id` int NOT NULL COMMENT '关联护理项目',
+  `is_deleted` int NULL DEFAULT 0 COMMENT '逻辑删除标记（0：显示；1：隐藏）',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `nurselevel_id_fk`(`level_id` ASC) USING BTREE,
   INDEX `nurseItem_id_fk`(`item_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 92 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 94 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of nurselevelitem
 -- ----------------------------
-INSERT INTO `nurselevelitem` VALUES (23, 1, 2);
-INSERT INTO `nurselevelitem` VALUES (25, 1, 4);
-INSERT INTO `nurselevelitem` VALUES (28, 2, 1);
-INSERT INTO `nurselevelitem` VALUES (29, 2, 2);
-INSERT INTO `nurselevelitem` VALUES (39, 3, 2);
-INSERT INTO `nurselevelitem` VALUES (40, 3, 3);
-INSERT INTO `nurselevelitem` VALUES (41, 3, 5);
-INSERT INTO `nurselevelitem` VALUES (53, 4, 1);
-INSERT INTO `nurselevelitem` VALUES (54, 4, 2);
-INSERT INTO `nurselevelitem` VALUES (55, 4, 3);
-INSERT INTO `nurselevelitem` VALUES (63, 1, 5);
-INSERT INTO `nurselevelitem` VALUES (71, 4, 5);
-INSERT INTO `nurselevelitem` VALUES (72, 3, 1);
-INSERT INTO `nurselevelitem` VALUES (73, 3, 6);
-INSERT INTO `nurselevelitem` VALUES (74, 1, 6);
-INSERT INTO `nurselevelitem` VALUES (76, 8, 2);
-INSERT INTO `nurselevelitem` VALUES (77, 8, 3);
-INSERT INTO `nurselevelitem` VALUES (78, 8, 14);
-INSERT INTO `nurselevelitem` VALUES (79, 9, 2);
-INSERT INTO `nurselevelitem` VALUES (80, 9, 4);
-INSERT INTO `nurselevelitem` VALUES (82, 9, 1);
-INSERT INTO `nurselevelitem` VALUES (83, 2, 3);
-INSERT INTO `nurselevelitem` VALUES (87, 2, 5);
-INSERT INTO `nurselevelitem` VALUES (91, 1, 1);
+INSERT INTO `nurselevelitem` VALUES (23, 1, 2, 0);
+INSERT INTO `nurselevelitem` VALUES (25, 1, 4, 0);
+INSERT INTO `nurselevelitem` VALUES (28, 2, 1, 0);
+INSERT INTO `nurselevelitem` VALUES (29, 2, 2, 0);
+INSERT INTO `nurselevelitem` VALUES (39, 3, 2, 0);
+INSERT INTO `nurselevelitem` VALUES (40, 3, 3, 0);
+INSERT INTO `nurselevelitem` VALUES (41, 3, 5, 0);
+INSERT INTO `nurselevelitem` VALUES (53, 4, 1, 0);
+INSERT INTO `nurselevelitem` VALUES (54, 4, 2, 0);
+INSERT INTO `nurselevelitem` VALUES (55, 4, 3, 0);
+INSERT INTO `nurselevelitem` VALUES (63, 1, 5, 0);
+INSERT INTO `nurselevelitem` VALUES (71, 4, 5, 0);
+INSERT INTO `nurselevelitem` VALUES (72, 3, 1, 0);
+INSERT INTO `nurselevelitem` VALUES (73, 3, 6, 0);
+INSERT INTO `nurselevelitem` VALUES (74, 1, 6, 0);
+INSERT INTO `nurselevelitem` VALUES (76, 8, 2, 0);
+INSERT INTO `nurselevelitem` VALUES (77, 8, 3, 0);
+INSERT INTO `nurselevelitem` VALUES (78, 8, 14, 0);
+INSERT INTO `nurselevelitem` VALUES (79, 9, 2, 0);
+INSERT INTO `nurselevelitem` VALUES (80, 9, 4, 0);
+INSERT INTO `nurselevelitem` VALUES (82, 9, 1, 0);
+INSERT INTO `nurselevelitem` VALUES (83, 2, 3, 0);
+INSERT INTO `nurselevelitem` VALUES (87, 2, 5, 0);
+INSERT INTO `nurselevelitem` VALUES (91, 1, 1, 0);
+INSERT INTO `nurselevelitem` VALUES (92, 1, 3, 0);
+INSERT INTO `nurselevelitem` VALUES (93, 1, 7, 0);
 
 -- ----------------------------
 -- Table structure for nurserecord
