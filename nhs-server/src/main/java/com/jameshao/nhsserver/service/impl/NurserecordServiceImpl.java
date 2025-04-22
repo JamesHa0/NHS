@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.jameshao.nhsserver.po.Nurserecord;
 import com.jameshao.nhsserver.service.NurserecordService;
 import com.jameshao.nhsserver.mapper.NurserecordMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
 * @author JamesHao
@@ -14,7 +17,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class NurserecordServiceImpl extends ServiceImpl<NurserecordMapper, Nurserecord>
     implements NurserecordService{
+    @Autowired
+    private NurserecordMapper nurserecordMapper;
 
+    @Override
+    public List<Nurserecord> getByCustomerId(Integer customerId) {
+        return nurserecordMapper.getByCustomerId(customerId);
+    }
 }
 
 

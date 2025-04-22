@@ -30,9 +30,9 @@ public class CustomerController {
     }
 
     @RequestMapping("/get_by_id")
-    public String getById(@RequestParam("customerid") Integer customerid){
+    public String getById(@RequestParam("customerId") Integer customerId){
         try {
-            Customer customer = customerService.getById(customerid);
+            Customer customer = customerService.getById(customerId);
             return jsonReturn.returnSuccess(customer);
         } catch (Exception e) {
             e.printStackTrace();

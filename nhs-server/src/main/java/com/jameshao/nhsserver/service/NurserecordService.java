@@ -3,6 +3,8 @@ package com.jameshao.nhsserver.service;
 import com.jameshao.nhsserver.po.Nurserecord;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
 * @author JamesHao
 * @description 针对表【nurserecord】的数据库操作Service
@@ -10,4 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface NurserecordService extends IService<Nurserecord> {
 
+    List<Nurserecord> getByCustomerId(Integer customerId);
 }

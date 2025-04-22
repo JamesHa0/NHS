@@ -21,6 +21,10 @@ public interface NursecontentMapper extends BaseMapper<Nursecontent> {
             "AND nli.is_deleted = '0' "+
             "ORDER BY serial_number")
     List<Nursecontent> getNurseContentsByLevelId(Integer levelId);
+
+
+    @Select("SELECT * FROM nursecontent WHERE id = #{id} AND is_deleted = '0'")
+    Nursecontent getNurseContentById(Integer id);
     boolean deletebyid(Integer id);
 }
 

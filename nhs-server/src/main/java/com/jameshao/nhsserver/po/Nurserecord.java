@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.Date;
+import java.util.List;
+
 import lombok.Data;
 
 /**
@@ -54,6 +56,16 @@ public class Nurserecord {
      * 护理人员ID
      */
     private Integer userId;
+
+
+    @TableField(exist = false)
+    private List<Nursecontent> nurseContentInfo;
+
+    @TableField(exist = false)
+    private List<Customer> customerInfo;
+
+    @TableField(exist = false)
+    private List<User> userInfo;
 
     @Override
     public boolean equals(Object that) {
