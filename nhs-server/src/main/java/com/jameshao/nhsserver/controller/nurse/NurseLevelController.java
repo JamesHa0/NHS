@@ -120,12 +120,9 @@ public class NurseLevelController {
                 if (itemId == null){
                     continue;
                 }
-                System.out.println(levelId);
-                System.out.println(itemId);
                 Nurselevelitem nurselevelitem = new Nurselevelitem();
                 nurselevelitem.setLevelId(levelId);
                 nurselevelitem.setItemId(itemId);
-                System.out.println(nurselevelitem);
                 boolean save = nurseLevelItemService.save(nurselevelitem);
                 if (!save){
                     return jsonReturn.returnFailed();

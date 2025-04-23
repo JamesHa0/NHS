@@ -1,11 +1,54 @@
 <template>
     <div class="app-container">
-        <el-row :gutter="15">
+        <el-row :gutter="10">
             <el-col :span="8">
-                <customers :customersList="customersList" />
+                <customers :customersList="customersList" v-if="customersList.length > 0" />
             </el-col>
             <el-col :span="16">
-                2
+                <el-form :model="queryParams" ref="queryRef" :inline="true" @submit.native.prevent>
+                    <el-form-item label="护理记录">
+                        <el-button type="primary" icon="Plus" @click="addNurseItem">添加</el-button>
+                    </el-form-item>
+
+                    <el-table v-loading="loading"
+                        :data="nurseRecordsList.slice((pageNum - 1) * pageSize, pageNum * pageSize)"
+                        style="width: 100%;">
+                        <el-table-column label="序号" width="50" type="index" align="center">
+                            <template #default="scope">
+                                <span>{{ (pageNum - 1) * pageSize + scope.$index + 1 }}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="ID" align="center" prop="id" :show-overflow-tooltip="true" v-if=false />
+                        <el-table-column label="客户姓名" align="center" prop="customerInfo[0].customerName"
+                            :show-overflow-tooltip="true" width="80" />
+                        <el-table-column label="护理项目" align="center" prop="nurseContentInfo[0].nursingName"
+                            :show-overflow-tooltip="true" />
+                        <el-table-column label="护理时间" align="center" :show-overflow-tooltip="true" width="100">
+                            <template #default="scope">
+                                {{ formatDate(scope.row.nursingTime) }}
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="数量" align="center" prop="nursingCount" :show-overflow-tooltip="true"
+                            width="50" />
+                        <el-table-column label="护理内容" align="center" prop="nursingContent"
+                            :show-overflow-tooltip="true" />
+                        <el-table-column label="护理人员" align="center" prop="userInfo[0].nickname"
+                            :show-overflow-tooltip="true" width="80" />
+                        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+                            <template #default="scope">
+                                <el-tooltip content="编辑" effect="dark" placement="top">
+                                    <el-button type="primary" icon="Edit" @click="editNurseItem(scope.row)" />
+                                </el-tooltip>
+                                <el-tooltip content="删除" effect="dark" placement="top">
+                                    <el-button type="danger" icon="Delete" @click="handleDelete(scope.row)" />
+                                </el-tooltip>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+
+                    <pagination v-show="total > 0" :total="total" v-model:page="pageNum" v-model:limit="pageSize" />
+
+                </el-form>
             </el-col>
         </el-row>
     </div>
@@ -24,66 +67,16 @@ const total = ref(0);
 const pageNum = ref(1);
 const pageSize = ref(10);
 
-let addFormVisible = ref(false);
-let editFormVisible = ref(false);
-
-let addForm = ref({
-    serialNumber: '',
-    nursingName: '',
-    servicePrice: '',
-    message: '',
-    status: '',
-    executionCycle: '',
-    executionTimes: ''
-});
-let beforeEditForm = ref({
-    id: '',
-    serialNumber: '',
-    nursingName: '',
-    servicePrice: '',
-    message: '',
-    status: '',
-    executionCycle: '',
-    executionTimes: ''
-});
-let editForm = ref({
-    id: '',
-    serialNumber: '',
-    nursingName: '',
-    servicePrice: '',
-    message: '',
-    status: '',
-    executionCycle: '',
-    executionTimes: ''
-});
-const statusOptions = ref([
-    { id: 1, statusName: "已启用" },
-    { id: 2, statusName: "已停用" }
-])
-
 let queryParams = ref({
     nursingName: undefined
 });
-
-const rules = ref({
-    serialNumber: [
-        { required: true, message: '项目编号不能为空', trigger: 'blur' }
-    ],
-    nursingName: [
-        { required: true, message: '名称不能为空', trigger: 'blur' }
-    ],
-    servicePrice: [
-        { required: true, message: '价格不能为空', trigger: 'blur' }
-    ],
-});
-const addFormRef = ref(null);
-const editFormRef = ref(null);
-
 
 /** 查询护理记录列表 */
 function getList() {
     loading.value = true;
     initData(queryParams.value).then(response => {
+        console.log(response);
+
         nurseRecordsList.value = response.data;
         total.value = response.data.length;
 
@@ -92,8 +85,19 @@ function getList() {
         const uniqueCustomerInfo = Array.from(new Set(customerInfoArray.map(JSON.stringify)), JSON.parse);
         customersList.value = uniqueCustomerInfo;
 
+
         loading.value = false;
     });
+}
+
+// 格式化时间戳
+function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
 }
 
 /** 搜索按钮操作 */
@@ -111,3 +115,5 @@ function resetQuery() {
 
 getList();
 </script>
+
+<style scoped></style>
