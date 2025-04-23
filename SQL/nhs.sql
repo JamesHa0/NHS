@@ -11,7 +11,7 @@
  Target Server Version : 80037 (8.0.37)
  File Encoding         : 65001
 
- Date: 21/04/2025 15:21:37
+ Date: 23/04/2025 15:30:34
 */
 
 SET NAMES utf8mb4;
@@ -174,18 +174,18 @@ CREATE TABLE `customer`  (
 -- ----------------------------
 -- Records of customer
 -- ----------------------------
-INSERT INTO `customer` VALUES (27, 0, '刘茂元', 76, 0, '610104194707211657', '1001', '606', '2023-11-17', '2025-11-30', '18176756743', 6, '', NULL, '1947-07-21', NULL, NULL, 'O', '@/assets/tou.png', -1, NULL, '刘其元');
-INSERT INTO `customer` VALUES (28, 0, '高廉武', 83, 0, '610404194103010017', '1002', '606', '2023-11-17', '2024-11-30', '13767675481', 9, '', NULL, '1941-03-01', NULL, NULL, 'A', '@/assets/tou.png', 5, NULL, '高校蓝');
-INSERT INTO `customer` VALUES (29, 0, '刘玉珍', 72, 1, '610402194112240335', '2002', '606', '2023-11-17', '2025-11-27', '13534786754', 35, '', NULL, '1951-12-24', NULL, NULL, 'B', '@/assets/tou.png', -1, NULL, '刘宇');
-INSERT INTO `customer` VALUES (30, 0, '石秀英', 73, 1, '610422195102220029', '2018', '606', '2023-11-17', '2025-12-31', '13867541321', 52, '', NULL, '1951-02-22', NULL, NULL, 'O', '@/assets/tou.png', 5, NULL, '石杰颖');
-INSERT INTO `customer` VALUES (31, 0, '何风云', 62, 1, '610402196111166507', '2017', '606', '2023-11-17', '2025-11-29', '18765652312', 51, '', NULL, '1961-11-16', NULL, NULL, 'O', '@/assets/tou.png', 3, NULL, '何方');
-INSERT INTO `customer` VALUES (32, 0, '毛兰香', 73, 1, '61040419501227002x', '2016', '606', '2023-11-17', '2027-11-12', '15816164587', 50, '', NULL, '1950-12-27', NULL, NULL, 'O', '@/assets/tou.png', -1, NULL, '毛参');
-INSERT INTO `customer` VALUES (33, 0, '李艾青', 83, 1, '622801194104150240', '2014', '606', '2023-11-17', '2024-11-29', '18176572345', 48, '', NULL, '1941-04-14', NULL, NULL, 'B', '@/assets/tou.png', 2, NULL, '李天');
-INSERT INTO `customer` VALUES (34, 0, '刘海云', 64, 0, '510522196005042710', '1006', '606', '2023-11-17', '2025-01-30', '18798986545', 15, '', NULL, '1960-05-04', NULL, NULL, 'O', '@/assets/tou.png', -1, NULL, '刘高');
+INSERT INTO `customer` VALUES (27, 0, '刘茂元', 76, 0, '610104194707211657', '1001', '606', '2023-11-17', '2025-11-30', '18176756743', 6, '', NULL, '1947-07-21', NULL, NULL, 'O', '@/assets/tou.png', -1, 1, '刘其元');
+INSERT INTO `customer` VALUES (28, 0, '高廉武', 83, 0, '610404194103010017', '1002', '606', '2023-11-17', '2024-11-30', '13767675481', 9, '', NULL, '1941-03-01', NULL, NULL, 'A', '@/assets/tou.png', 5, 2, '高校蓝');
+INSERT INTO `customer` VALUES (29, 0, '刘玉珍', 72, 1, '610402194112240335', '2002', '606', '2023-11-17', '2025-11-27', '13534786754', 35, '', NULL, '1951-12-24', NULL, NULL, 'B', '@/assets/tou.png', -1, 1, '刘宇');
+INSERT INTO `customer` VALUES (30, 0, '石秀英', 73, 1, '610422195102220029', '2018', '606', '2023-11-17', '2025-12-31', '13867541321', 52, '', NULL, '1951-02-22', NULL, NULL, 'O', '@/assets/tou.png', 5, 1, '石杰颖');
+INSERT INTO `customer` VALUES (31, 0, '何风云', 62, 1, '610402196111166507', '2017', '606', '2023-11-17', '2025-11-29', '18765652312', 51, '', NULL, '1961-11-16', NULL, NULL, 'O', '@/assets/tou.png', 3, 3, '何方');
+INSERT INTO `customer` VALUES (32, 0, '毛兰香', 73, 1, '61040419501227002x', '2016', '606', '2023-11-17', '2027-11-12', '15816164587', 50, '', NULL, '1950-12-27', NULL, NULL, 'O', '@/assets/tou.png', -1, 4, '毛参');
+INSERT INTO `customer` VALUES (33, 0, '李艾青', 83, 1, '622801194104150240', '2014', '606', '2023-11-17', '2024-11-29', '18176572345', 48, '', NULL, '1941-04-14', NULL, NULL, 'B', '@/assets/tou.png', 2, 2, '李天');
+INSERT INTO `customer` VALUES (34, 0, '刘海云', 64, 0, '510522196005042710', '1006', '606', '2023-11-17', '2025-01-30', '18798986545', 15, '', NULL, '1960-05-04', NULL, NULL, 'O', '@/assets/tou.png', -1, 2, '刘高');
 INSERT INTO `customer` VALUES (35, 0, '王金堂', 58, 0, '610402196511056517', '1017', '606', '2023-11-17', '2024-11-30', '13423786754', 32, '', NULL, '1965-11-05', NULL, NULL, 'AB', '@/assets/tou.png', 3, 4, '王田雨');
-INSERT INTO `customer` VALUES (36, 0, '刘玉亭', 72, 0, '610123195204158510', '1010', '606', '2023-11-17', '2025-11-26', '18767560987', 22, '', NULL, '1952-04-15', NULL, NULL, 'O', '@/assets/tou.png', 5, NULL, '刘晓');
-INSERT INTO `customer` VALUES (37, 0, '陈泉', 68, 0, '61040219560313030x', '1012', '606', '2023-11-17', '2025-11-20', '18567546712', 26, '', NULL, '1956-03-13', NULL, NULL, 'O', '@/assets/tou.png', -1, NULL, '陈荣光');
-INSERT INTO `customer` VALUES (38, 0, '苗月兰', 67, 1, '622725195701081429', '2005', '606', '2023-11-17', '2025-11-29', '18367541987', 38, '', NULL, '1957-01-08', NULL, NULL, 'A', '@/assets/tou.png', 3, NULL, '苗存义');
+INSERT INTO `customer` VALUES (36, 0, '刘玉亭', 72, 0, '610123195204158510', '1010', '606', '2023-11-17', '2025-11-26', '18767560987', 22, '', NULL, '1952-04-15', NULL, NULL, 'O', '@/assets/tou.png', 5, 2, '刘晓');
+INSERT INTO `customer` VALUES (37, 0, '陈泉', 68, 0, '61040219560313030x', '1012', '606', '2023-11-17', '2025-11-20', '18567546712', 26, '', NULL, '1956-03-13', NULL, NULL, 'O', '@/assets/tou.png', -1, 5, '陈荣光');
+INSERT INTO `customer` VALUES (38, 0, '苗月兰', 67, 1, '622725195701081429', '2005', '606', '2023-11-17', '2025-11-29', '18367541987', 38, '', NULL, '1957-01-08', NULL, NULL, 'A', '@/assets/tou.png', 3, 3, '苗存义');
 INSERT INTO `customer` VALUES (39, 0, '张帆', 77, 0, '610402194701286518', '1014', '606', '2023-11-17', '2024-11-30', '17745189064', 28, '', NULL, '1947-01-28', NULL, NULL, 'O', '@/assets/tou.png', 2, 3, '张明');
 INSERT INTO `customer` VALUES (40, 0, '孙瑞英', 68, 1, '610404195603010027', '2012', '606', '2023-11-17', '2025-11-29', '18167564213', 46, '', NULL, '1956-03-01', NULL, NULL, 'O', '@/assets/tou.png', 2, 2, '孙石');
 
@@ -466,7 +466,7 @@ INSERT INTO `nurselevelitem` VALUES (93, 1, 7, 0);
 DROP TABLE IF EXISTS `nurserecord`;
 CREATE TABLE `nurserecord`  (
   `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `is_deleted` int NOT NULL COMMENT '逻辑删除标记（0：显示；1：隐藏）',
+  `is_deleted` int NOT NULL DEFAULT 0 COMMENT '逻辑删除标记（0：显示；1：隐藏）',
   `customer_id` int NOT NULL COMMENT '客户ID',
   `item_id` int NOT NULL COMMENT '护理项目ID',
   `nursing_time` datetime NOT NULL COMMENT '护理时间',
@@ -620,7 +620,7 @@ CREATE TABLE `user`  (
   `create_by` int NOT NULL COMMENT '创建者',
   `update_time` date NULL DEFAULT NULL COMMENT '更新时间',
   `update_by` int NULL DEFAULT NULL COMMENT '更新者',
-  `is_deleted` int NOT NULL COMMENT '逻辑删除标记（0：显示；1：隐藏）',
+  `is_deleted` int NOT NULL DEFAULT 0 COMMENT '逻辑删除标记（0：显示；1：隐藏）',
   `nickname` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '真实姓名',
   `username` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '系统账号',
   `password` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '密码',

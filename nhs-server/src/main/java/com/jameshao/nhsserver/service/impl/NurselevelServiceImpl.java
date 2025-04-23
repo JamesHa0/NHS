@@ -31,6 +31,12 @@ public class NurselevelServiceImpl extends ServiceImpl<NurselevelMapper, Nursele
         return nurselevelMapper.deletebyid(id);
     }
 
+    @Override
+    public String getNameById(Integer id) {
+        Nurselevel nurselevel = nurselevelMapper.selectById(id);
+        return nurselevel != null ? nurselevel.getLevelName() : null;
+    }
+
 }
 
 

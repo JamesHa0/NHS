@@ -16,4 +16,5 @@ public interface NurselevelService extends IService<Nurselevel> {
 
     boolean deleteById(Integer id);
 
+    String getNameById(Integer id);
 }

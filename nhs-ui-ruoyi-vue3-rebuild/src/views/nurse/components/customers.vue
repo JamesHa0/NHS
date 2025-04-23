@@ -39,7 +39,8 @@
                         <span>{{ scope.row.roomNo }} - {{ scope.row.bedId }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="护理级别" align="center" prop="levelId" :show-overflow-tooltip="true" width="80" />
+                <el-table-column label="护理级别" align="center" prop="levelName" :show-overflow-tooltip="true"
+                    width="80" />
             </el-table>
 
             <pagination v-show="total > 0" :total="total" v-model:page="pageNum" v-model:limit="pageSize"
@@ -85,8 +86,8 @@ function getList() {
             customer.customerName.includes(queryParams.value.customerName)
         );
     }
-    total.value = filteredCustomersList.value.length;
 
+    total.value = filteredCustomersList.value.length;
     loading.value = false;
 }
 

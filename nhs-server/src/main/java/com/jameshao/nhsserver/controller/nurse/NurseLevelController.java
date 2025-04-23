@@ -1,7 +1,6 @@
 package com.jameshao.nhsserver.controller.nurse;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.jameshao.nhsserver.common.JSONReturn;
 import com.jameshao.nhsserver.po.Nurselevel;
 import com.jameshao.nhsserver.po.Nurselevelitem;
@@ -26,15 +25,10 @@ public class NurseLevelController {
     @Autowired
     private JSONReturn jsonReturn;
 
-    @RequestMapping("/list")
-    public String list(String levelName){
+    @RequestMapping("/getNameById")
+    public String getNameById(Integer id){
         try{
-            LambdaQueryWrapper<Nurselevel> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.like(!ObjectUtils.isEmpty(levelName), Nurselevel::getLevelName, levelName)
-                    .eq(Nurselevel::getIsDeleted, 0)
-                    .select(Nurselevel::getId, Nurselevel::getLevelName, Nurselevel::getLevelStatus);
-            List<Nurselevel> nurseLevelList = nurseLevelService.list(queryWrapper);
-            return jsonReturn.returnSuccess(nurseLevelList);
+            return jsonReturn.returnSuccess(nurseLevelService.getNameById(id));
         }catch(Exception e){
             e.printStackTrace();
             return jsonReturn.returnError(e.getMessage());

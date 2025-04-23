@@ -125,6 +125,9 @@ public class Customer {
      */
     private String familyMember;
 
+    @TableField(exist = false)
+    private String levelName;
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {

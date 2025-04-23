@@ -54,3 +54,13 @@ export function deleteLevelItem(data) {
         data: data
     })
 }
+
+
+// 通过id查护理级别名称
+export function getLevelName(id) {
+    return request({
+        url: '/nurse/nurseLevel/getNameById',
+        method: 'get',
+        params: { id }
+    })
+}

@@ -29,6 +29,9 @@ public interface NurselevelMapper extends BaseMapper<Nurselevel> {
     List<Nurselevel> getLevelsWithItems(Integer id, String levelName);
 
     boolean deletebyid(Integer id);
+
+    @Select("SELECT level_name FROM nurselevel WHERE id = #{id}")
+    String getNameById(Integer id);
 }
 
 
