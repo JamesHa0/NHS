@@ -68,7 +68,7 @@
                 <el-form-item label="执行周期" :label-width="100">
                     <el-input v-model="addForm.executionCycle" />
                 </el-form-item>
-                <el-form-item label="执行次数" :label-width="100">
+                <el-form-item label="执行次数" :label-width="100" type="number">
                     <el-input v-model="addForm.executionTimes" />
                 </el-form-item>
 
@@ -231,6 +231,15 @@ function submitAdd() {
             addFormVisible.value = false;
             add(addForm.value).then(response => {
                 getList();
+                addForm = ref({
+                    serialNumber: '',
+                    nursingName: '',
+                    servicePrice: '',
+                    message: '',
+                    status: '',
+                    executionCycle: '',
+                    executionTimes: ''
+                });
                 proxy.$modal.msgSuccess("添加成功");
             })
                 .catch(() => {

@@ -2,13 +2,13 @@
     <div class="app-container">
         <el-row :gutter="10">
             <el-col :span="8">
-                <customers :customersList="customersList" v-if="customersList.length > 0"
+                <customer :customersList="customersList" v-if="customersList.length > 0"
                     @selectOne="handleChildSelected" />
             </el-col>
             <el-col :span="16">
-                <el-form :model="queryParams" ref="queryRef" :inline="true" @submit.native.prevent>
+                <el-form :inline="true" @submit.native.prevent>
                     <el-form-item label="护理记录">
-                        <el-button type="primary" icon="Plus" @click="addNurseItem">添加</el-button>
+                        <el-button type="primary" icon="Plus" @click="addNurseRecord">添加</el-button>
                     </el-form-item>
 
                     <el-table v-loading="loading"
@@ -52,12 +52,68 @@
                 </el-form>
             </el-col>
         </el-row>
+
+
+
+        <!--添加护理记录的对话框  BEGIN-->
+        <el-dialog v-model="addFormVisible" title="添加护理记录" width="700">
+            <el-form :model="addForm" :rules="rules" ref="addFormRef">
+                <el-form-item label="客户姓名" :label-width="100">
+                    <el-select v-model="addForm.customerId" filterable placeholder="请选择客户">
+                        <el-option v-for="item in customers" :key="item.id" :label="item.customerName" :value="item.id">
+                            <span style="float: left">{{ item.customerName }}（{{ item.customerAge }}岁）</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px">
+                                所属楼房: {{ item.buildingNo }} | 房间号: {{ item.roomNo }} | 床号: {{ item.bedId }}
+                            </span>
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="护理项目" :label-width="100">
+                    <el-select v-model="addForm.itemId" filterable placeholder="请选择护理项目">
+                        <el-option v-for="item in items" :key="item.id" :label="item.nursingName" :value="item.id">
+                            <span style="float: left">{{ item.serialNumber }} | {{ item.nursingName }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px">
+                                价格: {{ item.servicePrice }} | 执行周期: {{ item.executionCycle }} | 执行次数: {{
+                                    item.executionTimes }}
+                            </span>
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="护理时间" :label-width="100">
+                    <el-date-picker v-model="addForm.nursingTime" type="datetime" placeholder="选择日期时间"
+                        value-format="timestamp" />
+                </el-form-item>
+                <el-form-item label="护理内容" :label-width="100">
+                    <el-input v-model="addForm.nursingContent" />
+                </el-form-item>
+                <el-form-item label="护理数量" :label-width="100" type="number">
+                    <el-input v-model="addForm.nursingCount" />
+                </el-form-item>
+                <el-form-item label="护理人员" :label-width="100" type="number">
+                    <!-- todo -->
+                </el-form-item>
+
+            </el-form>
+            <template #footer>
+                <div class="dialog-footer">
+                    <el-button @click="addFormVisible = false">取消</el-button>
+                    <el-button type="primary" @click="submitAdd()">
+                        确定
+                    </el-button>
+                </div>
+            </template>
+        </el-dialog>
+        <!--添加护理记录的对话框  END-->
+
+
     </div>
 </template>
 
 <script setup name="NurseItem">
 import { list as initData, deleteItem, update, add } from "@/api/nurse/nurseRecords";
-import customers from "../components/customers.vue";
+import customer from "../components/customer.vue";
+import { list as getCustomers } from "@/api/customer/customer";
+import { list as getItems } from "@/api/nurse/nurseItem";
 
 const { proxy } = getCurrentInstance();
 
@@ -68,8 +124,24 @@ const total = ref(0);
 const pageNum = ref(1);
 const pageSize = ref(10);
 
+let addFormVisible = ref(false);
+let editFormVisible = ref(false);
+
+const customers = ref([]);
+const items = ref([]);
+
+
+let addForm = ref({
+    customerId: undefined,
+    itemId: undefined,
+    nursingTime: undefined,
+    nursingContent: undefined,
+    nursingCount: undefined,
+    userId: undefined
+});
+
 let queryParams = ref({
-    nursingName: undefined
+    customerName: undefined
 });
 
 const currentSelected = ref(-1);
@@ -89,7 +161,7 @@ const filterednurseRecordsList = ref(nurseRecordsList.value);
 /** 查询护理记录列表 */
 function getList() {
     loading.value = true;
-    initData(queryParams.value).then(response => {
+    initData().then(response => {
         nurseRecordsList.value = response.data;
         // 客户信息子组件赋值
         const customerInfoArray = response.data.flatMap(item => item.customerInfo);
@@ -120,18 +192,36 @@ function formatDate(timestamp) {
     return `${year}-${month}-${day}`;
 }
 
-/** 搜索按钮操作 */
-function handleQuery() {
-    pageNum.value = 1;
-    getList();
+/** 添加按钮操作 */
+function addNurseRecord() {
+    getCustomers().then(response => {
+        customers.value = response.data;
+    });
+    getItems().then(response => {
+        items.value = response.data;
+    });
+    addFormVisible.value = true;
 }
 
-/** 重置按钮操作 */
-function resetQuery() {
-    proxy.resetForm("queryRef");
-    handleQuery();
+/** 提交添加项目 */
+function submitAdd() {
+    addFormRef.value.validate((valid) => {
+        if (valid) {
+            addFormVisible.value = false;
+            add(addForm.value).then(response => {
+                getList();
+                proxy.$modal.msgSuccess("添加成功");
+            })
+                .catch(() => {
+                    getList();
+                    proxy.$modal.msgError("添加失败");
+                });
+        } else {
+            proxy.$modal.msgError('护理级别不能为空');
+            return false;
+        }
+    });
 }
-
 
 getList();
 </script>

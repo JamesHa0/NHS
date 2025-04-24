@@ -288,6 +288,10 @@ function submitAdd() {
             addFormVisible.value = false;
             add(addForm.value).then(response => {
                 getList();
+                addForm = ref({
+                    levelName: '',
+                    message: ''
+                });
                 proxy.$modal.msgSuccess("添加成功");
             })
                 .catch(() => {
