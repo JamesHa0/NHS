@@ -60,7 +60,7 @@ const { proxy } = getCurrentInstance();
 const loading = ref(true);
 const total = ref(0);
 const pageNum = ref(1);
-const pageSize = ref(5);
+const pageSize = ref(10);
 const customerTable = ref(null);
 
 let queryParams = ref({
@@ -134,7 +134,7 @@ getList();
 
 <style lang="css" scoped>
 .pagination :deep(.el-pagination__sizes) {
-    margin: 0 0 0 10px;
+    margin: 0 0 0 5px;
 }
 
 .pagination :deep(.el-select) {
@@ -142,18 +142,18 @@ getList();
 }
 
 .pagination :deep(.btn-prev) {
-    margin: 0 0 0 15px;
+    margin: 0 0 0 5px;
 }
 
 .pagination :deep(.el-input) {
-    width: 40px;
+    width: 35px;
 }
 
 .pagination :deep(.btn-next) {
     margin: 0;
 }
 
-.pagination :deep(.el-pagination__jump is-last) {
+.pagination :deep(.el-pagination__jump) {
     margin: 0 0 0 5px;
 }
 

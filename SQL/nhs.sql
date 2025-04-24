@@ -11,7 +11,7 @@
  Target Server Version : 80037 (8.0.37)
  File Encoding         : 65001
 
- Date: 23/04/2025 15:30:34
+ Date: 24/04/2025 09:30:37
 */
 
 SET NAMES utf8mb4;
@@ -474,7 +474,7 @@ CREATE TABLE `nurserecord`  (
   `nursing_count` int NOT NULL COMMENT '护理数量',
   `user_id` int NOT NULL COMMENT '护理人员ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 72 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of nurserecord
@@ -485,6 +485,63 @@ INSERT INTO `nurserecord` VALUES (11, 1, 40, 20, '2023-11-24 13:37:55', '陪同�
 INSERT INTO `nurserecord` VALUES (12, 0, 35, 2, '2023-11-24 13:38:37', '按照医嘱进行喂药', 1, 3);
 INSERT INTO `nurserecord` VALUES (13, 0, 35, 1, '2023-11-24 13:39:22', '仪器型号：XY09,吸氧服务', 1, 3);
 INSERT INTO `nurserecord` VALUES (14, 0, 39, 1, '2023-11-24 18:05:24', '吸氧护理', 1, 2);
+INSERT INTO `nurserecord` VALUES (15, 0, 40, 3, '2023-11-24 13:36:56', '日常血压测量', 1, 2);
+INSERT INTO `nurserecord` VALUES (16, 0, 40, 17, '2023-11-24 13:37:18', '指甲修剪金和保养', 1, 2);
+INSERT INTO `nurserecord` VALUES (17, 0, 40, 20, '2023-11-24 13:37:55', '陪同外出购物', 1, 2);
+INSERT INTO `nurserecord` VALUES (18, 0, 40, 2, '2023-11-24 13:38:37', '按照医嘱进行喂药', 1, 3);
+INSERT INTO `nurserecord` VALUES (19, 0, 40, 1, '2023-11-24 13:39:22', '仪器型号：XY09,吸氧服务', 1, 3);
+INSERT INTO `nurserecord` VALUES (20, 0, 40, 3, '2023-11-24 13:36:56', '日常血压测量', 1, 2);
+INSERT INTO `nurserecord` VALUES (21, 0, 40, 17, '2023-11-24 13:37:18', '指甲修剪金和保养', 1, 2);
+INSERT INTO `nurserecord` VALUES (22, 0, 40, 20, '2023-11-24 13:37:55', '陪同外出购物', 1, 2);
+INSERT INTO `nurserecord` VALUES (23, 0, 40, 2, '2023-11-24 13:38:37', '按照医嘱进行喂药', 1, 3);
+INSERT INTO `nurserecord` VALUES (24, 0, 40, 1, '2023-11-24 13:39:22', '仪器型号：XY09,吸氧服务', 1, 3);
+INSERT INTO `nurserecord` VALUES (25, 0, 33, 3, '2023-11-24 13:36:56', '日常血压测量', 1, 2);
+INSERT INTO `nurserecord` VALUES (26, 0, 33, 17, '2023-11-24 13:37:18', '指甲修剪金和保养', 1, 2);
+INSERT INTO `nurserecord` VALUES (27, 0, 33, 20, '2023-11-24 13:37:55', '陪同外出购物', 1, 2);
+INSERT INTO `nurserecord` VALUES (28, 0, 33, 2, '2023-11-24 13:38:37', '按照医嘱进行喂药', 1, 3);
+INSERT INTO `nurserecord` VALUES (29, 0, 33, 1, '2023-11-24 13:39:22', '仪器型号：XY09,吸氧服务', 1, 3);
+INSERT INTO `nurserecord` VALUES (30, 0, 33, 1, '2023-11-24 18:05:24', '吸氧护理', 1, 2);
+INSERT INTO `nurserecord` VALUES (31, 0, 33, 3, '2023-11-24 13:36:56', '日常血压测量', 1, 2);
+INSERT INTO `nurserecord` VALUES (32, 0, 27, 17, '2023-11-24 13:37:18', '指甲修剪金和保养', 1, 2);
+INSERT INTO `nurserecord` VALUES (33, 0, 27, 20, '2023-11-24 13:37:55', '陪同外出购物', 1, 2);
+INSERT INTO `nurserecord` VALUES (34, 0, 33, 3, '2023-11-24 13:36:56', '日常血压测量', 1, 2);
+INSERT INTO `nurserecord` VALUES (35, 0, 33, 17, '2023-11-24 13:37:18', '指甲修剪金和保养', 1, 2);
+INSERT INTO `nurserecord` VALUES (36, 0, 33, 20, '2023-11-24 13:37:55', '陪同外出购物', 1, 2);
+INSERT INTO `nurserecord` VALUES (37, 0, 33, 2, '2023-11-24 13:38:37', '按照医嘱进行喂药', 1, 3);
+INSERT INTO `nurserecord` VALUES (38, 0, 33, 1, '2023-11-24 13:39:22', '仪器型号：XY09,吸氧服务', 1, 3);
+INSERT INTO `nurserecord` VALUES (39, 0, 33, 1, '2023-11-24 18:05:24', '吸氧护理', 1, 2);
+INSERT INTO `nurserecord` VALUES (40, 0, 33, 3, '2023-11-24 13:36:56', '日常血压测量', 1, 2);
+INSERT INTO `nurserecord` VALUES (41, 0, 27, 17, '2023-11-24 13:37:18', '指甲修剪金和保养', 1, 2);
+INSERT INTO `nurserecord` VALUES (42, 0, 27, 20, '2023-11-24 13:37:55', '陪同外出购物', 1, 2);
+INSERT INTO `nurserecord` VALUES (43, 0, 27, 2, '2023-11-24 13:38:37', '按照医嘱进行喂药', 1, 3);
+INSERT INTO `nurserecord` VALUES (44, 0, 27, 1, '2023-11-24 13:39:22', '仪器型号：XY09,吸氧服务', 1, 3);
+INSERT INTO `nurserecord` VALUES (45, 0, 27, 1, '2023-11-24 18:05:24', '吸氧护理', 1, 2);
+INSERT INTO `nurserecord` VALUES (46, 0, 27, 3, '2023-11-24 13:36:56', '日常血压测量', 1, 2);
+INSERT INTO `nurserecord` VALUES (47, 0, 27, 17, '2023-11-24 13:37:18', '指甲修剪金和保养', 1, 2);
+INSERT INTO `nurserecord` VALUES (48, 0, 35, 20, '2023-11-24 13:37:55', '陪同外出购物', 1, 2);
+INSERT INTO `nurserecord` VALUES (49, 0, 35, 2, '2023-11-24 13:38:37', '按照医嘱进行喂药', 1, 3);
+INSERT INTO `nurserecord` VALUES (50, 0, 35, 1, '2023-11-24 13:39:22', '仪器型号：XY09,吸氧服务', 1, 3);
+INSERT INTO `nurserecord` VALUES (51, 0, 35, 1, '2023-11-24 18:05:24', '吸氧护理', 1, 2);
+INSERT INTO `nurserecord` VALUES (52, 0, 28, 3, '2023-11-24 13:36:56', '日常血压测量', 1, 2);
+INSERT INTO `nurserecord` VALUES (53, 0, 28, 17, '2023-11-24 13:37:18', '指甲修剪金和保养', 1, 2);
+INSERT INTO `nurserecord` VALUES (54, 0, 28, 3, '2023-11-24 13:36:56', '日常血压测量', 1, 2);
+INSERT INTO `nurserecord` VALUES (55, 0, 28, 17, '2023-11-24 13:37:18', '指甲修剪金和保养', 1, 2);
+INSERT INTO `nurserecord` VALUES (56, 0, 28, 20, '2023-11-24 13:37:55', '陪同外出购物', 1, 2);
+INSERT INTO `nurserecord` VALUES (57, 0, 29, 2, '2023-11-24 13:38:37', '按照医嘱进行喂药', 1, 3);
+INSERT INTO `nurserecord` VALUES (58, 0, 31, 1, '2023-11-24 13:39:22', '仪器型号：XY09,吸氧服务', 1, 3);
+INSERT INTO `nurserecord` VALUES (59, 0, 31, 1, '2023-11-24 18:05:24', '吸氧护理', 1, 2);
+INSERT INTO `nurserecord` VALUES (60, 0, 31, 3, '2023-11-24 13:36:56', '日常血压测量', 1, 2);
+INSERT INTO `nurserecord` VALUES (61, 0, 28, 17, '2023-11-24 13:37:18', '指甲修剪金和保养', 1, 2);
+INSERT INTO `nurserecord` VALUES (62, 0, 28, 20, '2023-11-24 13:37:55', '陪同外出购物', 1, 2);
+INSERT INTO `nurserecord` VALUES (63, 0, 28, 2, '2023-11-24 13:38:37', '按照医嘱进行喂药', 1, 3);
+INSERT INTO `nurserecord` VALUES (64, 0, 28, 1, '2023-11-24 13:39:22', '仪器型号：XY09,吸氧服务', 1, 3);
+INSERT INTO `nurserecord` VALUES (65, 0, 28, 1, '2023-11-24 18:05:24', '吸氧护理', 1, 2);
+INSERT INTO `nurserecord` VALUES (66, 0, 34, 3, '2023-11-24 13:36:56', '日常血压测量', 1, 2);
+INSERT INTO `nurserecord` VALUES (67, 0, 34, 17, '2023-11-24 13:37:18', '指甲修剪金和保养', 1, 2);
+INSERT INTO `nurserecord` VALUES (68, 0, 34, 20, '2023-11-24 13:37:55', '陪同外出购物', 1, 2);
+INSERT INTO `nurserecord` VALUES (69, 0, 34, 2, '2023-11-24 13:38:37', '按照医嘱进行喂药', 1, 3);
+INSERT INTO `nurserecord` VALUES (70, 0, 34, 1, '2023-11-24 13:39:22', '仪器型号：XY09,吸氧服务', 1, 3);
+INSERT INTO `nurserecord` VALUES (71, 0, 34, 1, '2023-11-24 18:05:24', '吸氧护理', 1, 2);
 
 -- ----------------------------
 -- Table structure for outward

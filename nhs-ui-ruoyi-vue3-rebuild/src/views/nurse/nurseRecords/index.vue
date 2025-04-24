@@ -12,7 +12,7 @@
                     </el-form-item>
 
                     <el-table v-loading="loading"
-                        :data="nurseRecordsList.slice((pageNum - 1) * pageSize, pageNum * pageSize)"
+                        :data="filterednurseRecordsList.slice((pageNum - 1) * pageSize, pageNum * pageSize)"
                         style="width: 100%;">
                         <el-table-column label="序号" width="50" type="index" align="center">
                             <template #default="scope">
@@ -72,7 +72,7 @@ let queryParams = ref({
     nursingName: undefined
 });
 
-const currentSelected = ref({});
+const currentSelected = ref(-1);
 
 const handleChildSelected = (res) => {
     if (res.customerId == null || res.customerId == undefined || res.customerId == -1) {
@@ -80,8 +80,7 @@ const handleChildSelected = (res) => {
     } else {
         currentSelected.value = res.customerId;
     }
-    console.log(currentSelected.value);
-
+    getList();
 }
 
 // 计算过滤后的护理记录列表
@@ -91,29 +90,20 @@ const filterednurseRecordsList = ref(nurseRecordsList.value);
 function getList() {
     loading.value = true;
     initData(queryParams.value).then(response => {
-        console.log(response);
-
         nurseRecordsList.value = response.data;
-
-
         // 客户信息子组件赋值
         const customerInfoArray = response.data.flatMap(item => item.customerInfo);
         const uniqueCustomerInfo = Array.from(new Set(customerInfoArray.map(JSON.stringify)), JSON.parse);
         customersList.value = uniqueCustomerInfo;
-
-        console.log(`nurseRecordsList.value:`, nurseRecordsList.value);
-
 
         // 在前端实现筛选功能
         if (currentSelected.value == -1 || currentSelected.value == null || currentSelected.value == undefined) {
             filterednurseRecordsList.value = nurseRecordsList.value;
         } else {
             filterednurseRecordsList.value = nurseRecordsList.value.filter(record =>
-                record.customerId.includes(currentSelected.value)
+                record.customerInfo[0].id === currentSelected.value
             );
         }
-
-        console.log(`filterednurseRecordsList.value:`, filterednurseRecordsList.value);
 
         total.value = filterednurseRecordsList.value.length;
         loading.value = false;
