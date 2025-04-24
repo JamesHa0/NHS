@@ -5,6 +5,7 @@ import com.jameshao.nhsserver.common.JSONReturn;
 import com.jameshao.nhsserver.po.Nurserecord;
 import com.jameshao.nhsserver.service.NurserecordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,6 +37,21 @@ public class NurseRecordsController {
         try{
             List<Nurserecord> list =  nurseRecordService.getByCustomerId(customerId);
             return jsonReturn.returnSuccess(list);
+        }catch(Exception e){
+            e.printStackTrace();
+            return jsonReturn.returnError(e.getMessage());
+        }
+    }
+
+    @RequestMapping("/add")
+    public String add(@RequestBody Nurserecord nurserecord){
+        try{
+            boolean save = nurseRecordService.save(nurserecord);
+            if(save){
+                return jsonReturn.returnSuccess();
+            }else{
+                return jsonReturn.returnFailed();
+            }
         }catch(Exception e){
             e.printStackTrace();
             return jsonReturn.returnError(e.getMessage());

@@ -2,6 +2,7 @@ package com.jameshao.nhsserver.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.jameshao.nhsserver.common.JSONReturn;
 import com.jameshao.nhsserver.po.Customer;
 import com.jameshao.nhsserver.service.CustomerService;
@@ -19,10 +20,13 @@ public class CustomerController {
     @Autowired
     private JSONReturn jsonReturn;
 
-    @RequestMapping("/get_all_customers")
-    public String getAllCustomers() {
-        try {
-            List<Customer> list = customerService.list();
+    @RequestMapping("/list")
+    public String getCustomers(String customerName) {
+        try{
+            LambdaQueryWrapper<Customer> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.like(!ObjectUtils.isEmpty(customerName),Customer::getCustomerName, customerName)
+                    .eq(Customer::getIsDeleted, 0);
+            List<Customer> list = customerService.list(queryWrapper);
             return jsonReturn.returnSuccess(list);
         } catch (Exception e) {
             e.printStackTrace();

@@ -73,6 +73,21 @@ public class UserController {
         }
     }
 
+    // 查询所有用户
+    @RequestMapping("/user/list")
+    public String list(String nickname){
+        try{
+            LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.like(!ObjectUtils.isEmpty(nickname),User::getNickname, nickname)
+                    .eq(User::getIsDeleted, 0);
+            List<User> list = userService.list(queryWrapper);
+            return jsonReturn.returnSuccess(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return jsonReturn.returnError(e.getMessage());
+        }
+    }
+
     //添加用户
     @RequestMapping("adduser")
     public String addOne(User user){

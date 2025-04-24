@@ -69,7 +69,7 @@
                     <el-input v-model="addForm.executionCycle" />
                 </el-form-item>
                 <el-form-item label="执行次数" :label-width="100" type="number">
-                    <el-input v-model="addForm.executionTimes" />
+                    <el-input-number v-model="addForm.executionTimes" />
                 </el-form-item>
 
             </el-form>
@@ -113,7 +113,7 @@
                     <el-input v-model="editForm.executionCycle" />
                 </el-form-item>
                 <el-form-item label="执行次数" :label-width="100">
-                    <el-input v-model="editForm.executionTimes" />
+                    <el-input-number v-model="editForm.executionTimes" />
                 </el-form-item>
 
             </el-form>
@@ -151,7 +151,7 @@ let addForm = ref({
     message: '',
     status: '',
     executionCycle: '',
-    executionTimes: ''
+    executionTimes: 0
 });
 let beforeEditForm = ref({
     id: '',
@@ -238,7 +238,7 @@ function submitAdd() {
                     message: '',
                     status: '',
                     executionCycle: '',
-                    executionTimes: ''
+                    executionTimes: 0
                 });
                 proxy.$modal.msgSuccess("添加成功");
             })
