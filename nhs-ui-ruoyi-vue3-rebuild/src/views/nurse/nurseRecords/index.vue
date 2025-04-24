@@ -2,7 +2,8 @@
     <div class="app-container">
         <el-row :gutter="10">
             <el-col :span="8">
-                <customers :customersList="customersList" v-if="customersList.length > 0" />
+                <customers :customersList="customersList" v-if="customersList.length > 0"
+                    @selectOne="handleChildSelected" />
             </el-col>
             <el-col :span="16">
                 <el-form :model="queryParams" ref="queryRef" :inline="true" @submit.native.prevent>
@@ -23,7 +24,7 @@
                             :show-overflow-tooltip="true" width="80" />
                         <el-table-column label="护理项目" align="center" prop="nurseContentInfo[0].nursingName"
                             :show-overflow-tooltip="true" />
-                        <el-table-column label="护理时间" align="center" :show-overflow-tooltip="true" width="100">
+                        <el-table-column label="护理时间" align="center" :show-overflow-tooltip="true" width="105">
                             <template #default="scope">
                                 {{ formatDate(scope.row.nursingTime) }}
                             </template>
@@ -71,6 +72,21 @@ let queryParams = ref({
     nursingName: undefined
 });
 
+const currentSelected = ref({});
+
+const handleChildSelected = (res) => {
+    if (res.customerId == null || res.customerId == undefined || res.customerId == -1) {
+        currentSelected.value = -1;
+    } else {
+        currentSelected.value = res.customerId;
+    }
+    console.log(currentSelected.value);
+
+}
+
+// 计算过滤后的护理记录列表
+const filterednurseRecordsList = ref(nurseRecordsList.value);
+
 /** 查询护理记录列表 */
 function getList() {
     loading.value = true;
@@ -78,14 +94,28 @@ function getList() {
         console.log(response);
 
         nurseRecordsList.value = response.data;
-        total.value = response.data.length;
+
 
         // 客户信息子组件赋值
         const customerInfoArray = response.data.flatMap(item => item.customerInfo);
         const uniqueCustomerInfo = Array.from(new Set(customerInfoArray.map(JSON.stringify)), JSON.parse);
         customersList.value = uniqueCustomerInfo;
 
+        console.log(`nurseRecordsList.value:`, nurseRecordsList.value);
 
+
+        // 在前端实现筛选功能
+        if (currentSelected.value == -1 || currentSelected.value == null || currentSelected.value == undefined) {
+            filterednurseRecordsList.value = nurseRecordsList.value;
+        } else {
+            filterednurseRecordsList.value = nurseRecordsList.value.filter(record =>
+                record.customerId.includes(currentSelected.value)
+            );
+        }
+
+        console.log(`filterednurseRecordsList.value:`, filterednurseRecordsList.value);
+
+        total.value = filterednurseRecordsList.value.length;
         loading.value = false;
     });
 }

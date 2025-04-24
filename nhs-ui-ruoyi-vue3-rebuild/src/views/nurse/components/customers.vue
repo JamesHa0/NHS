@@ -17,7 +17,8 @@
                 <div class="card-header">客户列表</div>
             </template>
             <el-table v-loading="loading"
-                :data="filteredCustomersList.slice((pageNum - 1) * pageSize, pageNum * pageSize)" style="width: 100%;">
+                :data="filteredCustomersList.slice((pageNum - 1) * pageSize, pageNum * pageSize)" style="width: 100%;"
+                highlight-current-row @current-change="row_change" ref="customerTable">
                 <el-table-column label="序号" width="50" type="index" align="center">
                     <template #default="scope">
                         <span>{{ (pageNum - 1) * pageSize + scope.$index + 1 }}</span>
@@ -25,7 +26,7 @@
                 </el-table-column>
                 <el-table-column label="ID" align="center" prop="id" :show-overflow-tooltip="true" v-if=false />
                 <el-table-column label="姓名" align="center" prop="customerName" :show-overflow-tooltip="true"
-                    width="70" />
+                    width="110" />
                 <el-table-column label="性别" align="center" prop="customerSex" :show-overflow-tooltip="true" width="50">
                     <template #default="scope">
                         <span v-if="scope.row.customerSex == 0">男</span>
@@ -40,7 +41,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="护理级别" align="center" prop="levelName" :show-overflow-tooltip="true"
-                    width="80" />
+                    width="110" />
             </el-table>
 
             <pagination v-show="total > 0" :total="total" v-model:page="pageNum" v-model:limit="pageSize"
@@ -60,10 +61,28 @@ const loading = ref(true);
 const total = ref(0);
 const pageNum = ref(1);
 const pageSize = ref(5);
+const customerTable = ref(null);
 
 let queryParams = ref({
     customerName: undefined
 });
+
+const emit = defineEmits(['selectOne']);
+
+const row_change = (row) => {
+    if (row == null || row == undefined) {
+        let param = { customerId: -1 }
+        // 触发事件并传递数据给父组件
+        emit('selectOne', param)
+    } else {
+        let param = {
+            customerId: row.id
+        }
+        // 触发事件并传递数据给父组件
+        emit('selectOne', param)
+    }
+
+}
 
 const props = defineProps({
     //接收父组件传递过来的值
@@ -100,7 +119,9 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
     proxy.resetForm("queryRef");
-    queryParams.value.customerName = undefined;
+    if (customerTable.value) {
+        customerTable.value.setCurrentRow(null);
+    }
     handleQuery();
 }
 
@@ -136,7 +157,7 @@ getList();
     margin: 0 0 0 5px;
 }
 
-.card-box :deep(.el-card__body) {
+/* .card-box :deep(.el-card__body) {
     padding: 10px 1px 20px 2px;
-}
+} */
 </style>
