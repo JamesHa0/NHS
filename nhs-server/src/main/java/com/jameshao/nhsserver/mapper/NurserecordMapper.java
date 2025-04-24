@@ -28,7 +28,8 @@ public interface NurserecordMapper extends BaseMapper<Nurserecord> {
     })
     @Select("SELECT * FROM nurserecord " +
             "WHERE is_deleted = '0' " +
-            "AND (customer_id = #{customerId} OR #{customerId} IS NULL)")
+            "AND (customer_id = #{customerId} OR #{customerId} IS NULL) " +
+            "ORDER BY nursing_time DESC")
     List<Nurserecord> getByCustomerId(Integer customerId);
 }
 
