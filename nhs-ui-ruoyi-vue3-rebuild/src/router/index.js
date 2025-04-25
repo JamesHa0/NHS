@@ -108,6 +108,12 @@ export const constantRoutes = [
         name: 'nurseRecords',
         meta: { title: '护理记录', icon: 'excel' }
       },
+      {
+        path: 'nurseSetting',
+        component: () => import('@/views/nurse/nurseSetting/index'),
+        name: 'nurseSetting',
+        meta: { title: '客户护理设置', icon: 'dict' }
+      }
     ]
   }
 ]

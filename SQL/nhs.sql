@@ -11,7 +11,7 @@
  Target Server Version : 80037 (8.0.37)
  File Encoding         : 65001
 
- Date: 25/04/2025 10:48:55
+ Date: 25/04/2025 11:10:53
 */
 
 SET NAMES utf8mb4;
@@ -337,14 +337,14 @@ INSERT INTO `menu` VALUES (18, NULL, '护理项目', 'list', '/nurseItem', 4);
 INSERT INTO `menu` VALUES (19, NULL, '客户护理设置', 'dict', '/nurseSetting', 4);
 INSERT INTO `menu` VALUES (20, NULL, '护理记录', 'log', '/nurseRecords', 4);
 INSERT INTO `menu` VALUES (21, NULL, '设置服务对象', 'people', '/serviceCustomerSetting', 5);
-INSERT INTO `menu` VALUES (22, '2', '健康管家', 'Coin', NULL, 0);
-INSERT INTO `menu` VALUES (23, NULL, '日常护理', 'Help', '/dailyNurse', 22);
+INSERT INTO `menu` VALUES (22, '2', '健康管家', 'druid', '/nurse', 0);
+INSERT INTO `menu` VALUES (23, NULL, '日常护理', 'dict', '/nurseSetting', 22);
 INSERT INTO `menu` VALUES (24, NULL, '服务关注', 'example', '/serviceCare', 5);
 INSERT INTO `menu` VALUES (25, NULL, '基础数据维护', 'system', '/listUser', 6);
-INSERT INTO `menu` VALUES (26, '1', '客户管理', 'User', NULL, 0);
-INSERT INTO `menu` VALUES (27, NULL, '外出登记', 'Location', '/outRecords', 26);
-INSERT INTO `menu` VALUES (28, NULL, '退住登记', 'DArrowLeft', '/checkOut', 26);
-INSERT INTO `menu` VALUES (29, NULL, '护理记录', 'ScaleToOriginal', '/nurseRecordsToUser', 22);
+INSERT INTO `menu` VALUES (26, '1', '客户管理', 'user', '/customer', 0);
+INSERT INTO `menu` VALUES (27, NULL, '外出登记', 'logininfor', '/outRecords', 26);
+INSERT INTO `menu` VALUES (28, NULL, '退住登记', 'eye', '/checkOut', 26);
+INSERT INTO `menu` VALUES (29, NULL, '护理记录', 'log', '/nurseRecords', 22);
 INSERT INTO `menu` VALUES (30, NULL, '膳食日历', 'date', '/meal', 2);
 INSERT INTO `menu` VALUES (31, NULL, '客户喜好', 'post', '/preference', 2);
 
