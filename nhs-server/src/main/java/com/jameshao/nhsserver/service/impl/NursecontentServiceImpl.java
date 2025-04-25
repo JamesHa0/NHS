@@ -16,11 +16,11 @@ import org.springframework.stereotype.Service;
 public class NursecontentServiceImpl extends ServiceImpl<NursecontentMapper, Nursecontent>
     implements NursecontentService{
     @Autowired
-    private NursecontentMapper NursecontentMapper;
+    private NursecontentMapper nursecontentMapper;
 
     @Override
     public boolean deleteById(Integer id) {
-        return NursecontentMapper.deletebyid(id);
+        return nursecontentMapper.deletebyid(id);
     }
 }
 
