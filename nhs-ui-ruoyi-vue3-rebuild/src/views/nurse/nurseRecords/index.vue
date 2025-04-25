@@ -64,7 +64,7 @@
                         <el-option v-for="item in customers" :key="item.id" :label="item.customerName" :value="item.id">
                             <span style="float: left">{{ item.customerName }}（{{ getSex(item.customerSex) }}，{{
                                 item.customerAge
-                                }}岁）</span>
+                            }}岁）</span>
                             <span style="float: right; color: #8492a6; font-size: 13px">
                                 所属楼房: {{ item.buildingNo }} | 房间号: {{ item.roomNo }} | 床号: {{ item.bedId }}
                             </span>
@@ -161,8 +161,7 @@ import customer from "../components/customer.vue";
 import { list as getCustomers } from "@/api/customer/customer";
 import { list as getItems } from "@/api/nurse/nurseItem";
 import { list as getUsers } from "@/api/user/user";
-import useUserStore from '@/store/modules/user'
-import { set } from "nprogress";
+import useUserStore from '@/store/modules/user';
 
 const { proxy } = getCurrentInstance();
 
