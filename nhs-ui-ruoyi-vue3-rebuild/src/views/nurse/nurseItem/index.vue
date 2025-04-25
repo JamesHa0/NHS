@@ -153,16 +153,6 @@ let addForm = ref({
     executionCycle: '',
     executionTimes: 0
 });
-let beforeEditForm = ref({
-    id: '',
-    serialNumber: '',
-    nursingName: '',
-    servicePrice: '',
-    message: '',
-    status: '',
-    executionCycle: '',
-    executionTimes: ''
-});
 let editForm = ref({
     id: '',
     serialNumber: '',
@@ -171,7 +161,7 @@ let editForm = ref({
     message: '',
     status: '',
     executionCycle: '',
-    executionTimes: ''
+    executionTimes: 0
 });
 const statusOptions = ref([
     { id: 1, statusName: "已启用" },
@@ -256,7 +246,6 @@ function submitAdd() {
 
 /** 编辑按钮操作 */
 function editNurseItem(row) {
-    beforeEditForm = row;
     editForm = row;
     editFormVisible.value = true;
 }

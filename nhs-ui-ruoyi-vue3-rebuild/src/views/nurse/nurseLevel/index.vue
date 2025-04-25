@@ -217,11 +217,6 @@ let addForm = ref({
     levelName: '',
     message: ''
 });
-let beforeEditForm = ref({
-    id: '',
-    levelName: '',
-    message: ''
-});
 let editForm = ref({
     id: '',
     levelName: '',
@@ -318,7 +313,6 @@ function toggleExpandAll() {
 
 /** 编辑按钮操作 */
 function editNurseItem(row) {
-    beforeEditForm = row;
     editForm = row;
     editFormVisible.value = true;
 }
