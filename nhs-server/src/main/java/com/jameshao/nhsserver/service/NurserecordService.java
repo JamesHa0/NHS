@@ -13,4 +13,6 @@ import java.util.List;
 public interface NurserecordService extends IService<Nurserecord> {
 
     List<Nurserecord> getByCustomerId(Integer customerId);
+
+    boolean deleteById(Integer id);
 }

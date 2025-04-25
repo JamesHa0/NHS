@@ -11,7 +11,7 @@
  Target Server Version : 80037 (8.0.37)
  File Encoding         : 65001
 
- Date: 24/04/2025 09:39:48
+ Date: 25/04/2025 10:48:55
 */
 
 SET NAMES utf8mb4;
@@ -363,7 +363,7 @@ CREATE TABLE `nursecontent`  (
   `execution_times` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '执行次数',
   `is_deleted` int NULL DEFAULT 0 COMMENT '逻辑删除标记（0：显示；1：隐藏）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of nursecontent
@@ -388,6 +388,14 @@ INSERT INTO `nursecontent` VALUES (21, 'HLXM0020', '瑜伽辅导', '80/次', '',
 INSERT INTO `nursecontent` VALUES (22, 'test', '测试', '111', NULL, 1, '1', '1', 1);
 INSERT INTO `nursecontent` VALUES (23, 'tses2', 'test2', '222', 'tset2', 2, '2', '2', 1);
 INSERT INTO `nursecontent` VALUES (24, 'HLXM0000', 'HLXM0000', '00', '******', 2, '0', '0', 0);
+INSERT INTO `nursecontent` VALUES (27, '12313213', '1231231', '123123', '123123', 2, 'e21dwdq', '2casca', 1);
+INSERT INTO `nursecontent` VALUES (28, '123123213', '2123', '1dasadadwadw1122222222222222222222222', 'qwd', 2, 'qwd', 'qwdqw', 1);
+INSERT INTO `nursecontent` VALUES (29, 'qdw', 'qdqs', 'dqd', 'dqsd', 1, 'qsd', 'qd', 1);
+INSERT INTO `nursecontent` VALUES (30, 'qdw', 'qdqs', '123123', 'dqsd', 1, 'qsd', 'qd', 1);
+INSERT INTO `nursecontent` VALUES (31, 'qdwdq', 'dqwdqwd', 'qsdq', 'sqdqsd', 2, 'dqwdwq', 'dqwd', 1);
+INSERT INTO `nursecontent` VALUES (32, 'qdwdq', 'dqwdqwd', '13213213', 'sqdqsd', 2, 'dqwdwq', 'dqwd', 1);
+INSERT INTO `nursecontent` VALUES (33, 'a1ewewd', '1we1e', '1e2e1', 'dqwd', 2, 'dqwdq', 'dsqdqs', 1);
+INSERT INTO `nursecontent` VALUES (34, 'adewfw', 'dwqw1d', '12d1', 'd12d', 2, '12d12', 'd12d', 1);
 
 -- ----------------------------
 -- Table structure for nurselevel
@@ -469,12 +477,12 @@ CREATE TABLE `nurserecord`  (
   `is_deleted` int NOT NULL DEFAULT 0 COMMENT '逻辑删除标记（0：显示；1：隐藏）',
   `customer_id` int NOT NULL COMMENT '客户ID',
   `item_id` int NOT NULL COMMENT '护理项目ID',
-  `nursing_time` datetime NOT NULL COMMENT '护理时间',
+  `nursing_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '护理时间',
   `nursing_content` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '护理内容',
   `nursing_count` int NOT NULL COMMENT '护理数量',
   `user_id` int NOT NULL COMMENT '护理人员ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 72 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 85 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of nurserecord
@@ -489,7 +497,7 @@ INSERT INTO `nurserecord` VALUES (15, 0, 40, 3, '2025-03-20 13:36:56', '日常�
 INSERT INTO `nurserecord` VALUES (16, 0, 40, 17, '2022-09-25 13:37:18', '指甲修剪金和保养', 1, 2);
 INSERT INTO `nurserecord` VALUES (17, 0, 40, 20, '2023-11-24 13:37:55', '陪同外出购物', 1, 2);
 INSERT INTO `nurserecord` VALUES (18, 0, 40, 2, '2023-05-13 13:38:37', '按照医嘱进行喂药', 1, 3);
-INSERT INTO `nurserecord` VALUES (19, 0, 40, 1, '2025-03-25 13:39:22', '仪器型号：XY09,吸氧服务', 1, 3);
+INSERT INTO `nurserecord` VALUES (19, 0, 40, 1, '2025-03-26 05:39:22', '仪器型号：XY09,吸氧服务', 1, 3);
 INSERT INTO `nurserecord` VALUES (20, 0, 40, 3, '2023-11-24 13:36:56', '日常血压测量', 1, 2);
 INSERT INTO `nurserecord` VALUES (21, 0, 40, 17, '2023-10-04 13:37:18', '指甲修剪金和保养', 1, 2);
 INSERT INTO `nurserecord` VALUES (22, 0, 40, 20, '2025-04-09 13:37:55', '陪同外出购物', 1, 2);
@@ -542,6 +550,18 @@ INSERT INTO `nurserecord` VALUES (68, 0, 34, 20, '2023-11-24 13:37:55', '陪同�
 INSERT INTO `nurserecord` VALUES (69, 0, 34, 2, '2023-11-24 13:38:37', '按照医嘱进行喂药', 1, 3);
 INSERT INTO `nurserecord` VALUES (70, 0, 34, 1, '2023-11-24 13:39:22', '仪器型号：XY09,吸氧服务', 1, 3);
 INSERT INTO `nurserecord` VALUES (71, 0, 34, 1, '2023-11-24 18:05:24', '吸氧护理', 1, 2);
+INSERT INTO `nurserecord` VALUES (72, 1, 27, 24, '2025-04-25 10:29:23', '123', 1, 2);
+INSERT INTO `nurserecord` VALUES (73, 0, 37, 24, '2025-04-24 07:00:00', '测试内容', 1, 2);
+INSERT INTO `nurserecord` VALUES (74, 1, 37, 1, '2025-04-25 10:29:01', '测试时间', 1, 2);
+INSERT INTO `nurserecord` VALUES (75, 1, 27, 24, '2025-04-25 10:28:50', '测试时间2', 2, 6);
+INSERT INTO `nurserecord` VALUES (77, 1, 27, 24, '2025-04-25 10:29:16', '空时间测试', 0, 1);
+INSERT INTO `nurserecord` VALUES (78, 1, 27, 24, '2025-04-25 10:29:15', '空时间测试2', 0, 1);
+INSERT INTO `nurserecord` VALUES (79, 1, 27, 24, '2025-04-25 10:29:13', '空时间测试3', 3, 1);
+INSERT INTO `nurserecord` VALUES (80, 1, 27, 24, '2025-04-25 10:29:09', '空时间测试4', 4, 1);
+INSERT INTO `nurserecord` VALUES (81, 1, 27, 24, '2025-04-25 10:29:07', '空时间测试5', 5, 1);
+INSERT INTO `nurserecord` VALUES (82, 1, 27, 24, '2025-04-25 10:29:06', '空时间测试6', 6, 1);
+INSERT INTO `nurserecord` VALUES (83, 1, 27, 24, '2025-04-25 10:29:04', '空时间测试', 0, 1);
+INSERT INTO `nurserecord` VALUES (84, 1, 27, 24, '2025-04-25 10:27:48', '空时间测试', 0, 1);
 
 -- ----------------------------
 -- Table structure for outward

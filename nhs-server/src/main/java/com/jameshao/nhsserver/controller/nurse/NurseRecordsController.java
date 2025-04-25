@@ -5,10 +5,14 @@ import com.jameshao.nhsserver.common.JSONReturn;
 import com.jameshao.nhsserver.po.Nurserecord;
 import com.jameshao.nhsserver.service.NurserecordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -46,8 +50,45 @@ public class NurseRecordsController {
     @RequestMapping("/add")
     public String add(@RequestBody Nurserecord nurserecord){
         try{
+            if (nurserecord.getNursingTime() == null){
+                Date date = new Date();
+                LocalDateTime localDateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+                LocalDateTime newLocalDateTime = localDateTime.plusHours(8);
+                Date newDate = Date.from(newLocalDateTime.atZone(ZoneId.systemDefault()).toInstant());
+                nurserecord.setNursingTime(newDate);
+            }
             boolean save = nurseRecordService.save(nurserecord);
             if(save){
+                return jsonReturn.returnSuccess();
+            }else{
+                return jsonReturn.returnFailed();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return jsonReturn.returnError(e.getMessage());
+        }
+    }
+
+    @RequestMapping("/update")
+    public String update(@RequestBody Nurserecord nurserecord){
+        try{
+            boolean update = nurseRecordService.updateById(nurserecord);
+            if(update){
+                return jsonReturn.returnSuccess();
+            }else{
+                return jsonReturn.returnFailed();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return jsonReturn.returnError(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete")
+    public String delete(Integer id){
+        try{
+            boolean delete = nurseRecordService.deleteById(id);
+            if(delete){
                 return jsonReturn.returnSuccess();
             }else{
                 return jsonReturn.returnFailed();

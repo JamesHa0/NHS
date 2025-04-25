@@ -31,6 +31,8 @@ public interface NurserecordMapper extends BaseMapper<Nurserecord> {
             "AND (customer_id = #{customerId} OR #{customerId} IS NULL) " +
             "ORDER BY nursing_time DESC")
     List<Nurserecord> getByCustomerId(Integer customerId);
+
+    boolean deleteById(Integer id);
 }
 
 

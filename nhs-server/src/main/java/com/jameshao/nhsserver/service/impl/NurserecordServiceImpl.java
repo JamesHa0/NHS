@@ -24,6 +24,11 @@ public class NurserecordServiceImpl extends ServiceImpl<NurserecordMapper, Nurse
     public List<Nurserecord> getByCustomerId(Integer customerId) {
         return nurserecordMapper.getByCustomerId(customerId);
     }
+
+    @Override
+    public boolean deleteById(Integer id) {
+        return nurserecordMapper.deleteById(id);
+    }
 }
 
 

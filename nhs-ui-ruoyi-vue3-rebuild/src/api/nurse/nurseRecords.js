@@ -28,7 +28,7 @@ export function update(data) {
 }
 
 // 删除护理记录
-export function deleteItem(id) {
+export function deleteRecord(id) {
     return request({
         url: '/nurse/nurseRecords/delete',
         method: 'delete',

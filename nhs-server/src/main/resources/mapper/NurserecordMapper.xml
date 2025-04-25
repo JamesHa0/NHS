@@ -20,4 +20,7 @@
         item_id,nursing_time,nursing_content,
         nursing_count,user_id
     </sql>
+    <update id="deleteById">
+        update nurserecord set is_deleted = 1 where id = #{id}
+    </update>
 </mapper>
