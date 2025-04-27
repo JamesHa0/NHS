@@ -35,13 +35,13 @@
                 </el-table-column>
                 <el-table-column label="年龄" align="center" prop="customerAge" :show-overflow-tooltip="true"
                     width="50" />
+                <el-table-column label="护理级别" align="center" prop="levelName" :show-overflow-tooltip="true"
+                    width="110" />
                 <el-table-column label="床位" align="center" :show-overflow-tooltip="true" width="86">
                     <template #default="scope">
                         <span>{{ scope.row.roomNo }} - {{ scope.row.bedId }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="护理级别" align="center" prop="levelName" :show-overflow-tooltip="true"
-                    width="110" />
             </el-table>
 
             <pagination v-show="total > 0" :total="total" v-model:page="pageNum" v-model:limit="pageSize"
@@ -54,6 +54,8 @@
 
 
 <script setup>
+import { ref } from 'vue';
+
 
 const { proxy } = getCurrentInstance();
 
@@ -70,7 +72,8 @@ let queryParams = ref({
 const emit = defineEmits(['selectOne']);
 
 const row_change = (row) => {
-    if (row == null || row == undefined) {
+    console.log(`row_change`, row);
+    if (row == null || row == undefined || row == -1) {
         let param = { customerId: -1 }
         // 触发事件并传递数据给父组件
         emit('selectOne', param)
@@ -92,13 +95,26 @@ const props = defineProps({
 const { customersList } = toRefs(props)
 
 // 计算过滤后的客户列表
-const filteredCustomersList = ref(customersList.value);
+//const filteredCustomersList = ref(customersList.value);
+const filteredCustomersList = ref();
 
 /** 查询护理记录列表 */
 function getList() {
     loading.value = true;
+    let getPushId = customersList.value.getPushId;
+
+    if (getPushId) {
+        filteredCustomersList.value = customersList.value.filter(customer =>
+            String(customer.id).includes(getPushId)
+        );
+        let param = {
+            customerId: Number(getPushId)
+        }
+        emit('selectOne', param)
+    }
+
     // 在前端实现搜索功能
-    if (!queryParams.value.customerName) {
+    else if (!queryParams.value.customerName) {
         filteredCustomersList.value = customersList.value;
     } else {
         filteredCustomersList.value = customersList.value.filter(customer =>
@@ -118,9 +134,12 @@ function handleQuery() {
 
 /** 重置按钮操作 */
 function resetQuery() {
+    if (customersList.value.getPushId) {
+        delete customersList.value.getPushId;
+    }
     proxy.resetForm("queryRef");
     if (customerTable.value) {
-        customerTable.value.setCurrentRow(null);
+        customerTable.value.setCurrentRow(-1);
     }
     handleQuery();
 }

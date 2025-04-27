@@ -1,105 +1,99 @@
 <template>
     <div class="app-container">
-        <el-row :gutter="10">
-            <el-col :span="8">
-                <customer :customersList="customersList" v-if="customersList.length > 0"
-                    @selectOne="handleChildSelected" />
-            </el-col>
-            <el-col :span="16">
-                <el-form :inline="true" @submit.native.prevent>
-                    <el-form-item label="护理记录">
-                        <el-button type="primary" icon="Plus" @click="addNurseRecord">添加</el-button>
-                    </el-form-item>
+        <el-form :model="queryParams" ref="queryRef" :inline="true" @submit.native.prevent>
+            <el-form-item label="客户列表" prop="customerName">
+                <el-input v-model="queryParams.customerName" placeholder="请输入要查询的客户姓名" clearable style="width: 200px"
+                    @keyup.enter="handleQuery" />
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+                <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+            </el-form-item>
+        </el-form>
+        <el-table v-loading="loading" :data="customerList.slice((pageNum - 1) * pageSize, pageNum * pageSize)"
+            style="width: 100%;">
+            <el-table-column label="序号" width="50" type="index" align="center">
+                <template #default="scope">
+                    <span>{{ (pageNum - 1) * pageSize + scope.$index + 1 }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="ID" align="center" prop="id" :show-overflow-tooltip="true" v-if=false />
+            <el-table-column label="姓名" align="center" prop="customerName" :show-overflow-tooltip="true" width="70" />
+            <el-table-column label="性别" align="center" prop="customerSex" :show-overflow-tooltip="true" width="50">
+                <template #default="scope">
+                    <span v-if="scope.row.customerSex == 0">男</span>
+                    <span v-else-if="scope.row.customerSex == 1">女</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="年龄" align="center" prop="customerAge" :show-overflow-tooltip="true" width="50" />
+            <el-table-column label="联系电话" align="center" prop="contactTel" :show-overflow-tooltip="true" width="80" />
+            <el-table-column label="楼房床号" align="center" prop="contactTel" :show-overflow-tooltip="true" width="125">
+                <template #default="scope">
+                    <span>{{ scope.row.buildingNo }}楼{{ scope.row.roomNo }} - {{ scope.row.bedId }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="入住时间" align="center" :show-overflow-tooltip="true" width="115">
+                <template #default="scope">
+                    {{ formatDate(scope.row.checkinDate) }}
+                </template>
+            </el-table-column>
+            <el-table-column label="合同到期时间" align="center" :show-overflow-tooltip="true" width="115">
+                <template #default="scope">
+                    {{ formatDate(scope.row.expirationDate) }}
+                </template>
+            </el-table-column>
+            <el-table-column label="身心状况" align="center" prop="psychosomaticState" :show-overflow-tooltip="true"
+                width="80" />
+            <el-table-column label="注意事项" align="center" prop="attention" :show-overflow-tooltip="true" />
+            <el-table-column label="护理级别" align="center" prop="levelName" :show-overflow-tooltip="true" width="80" />
+            <el-table-column label="家属" align="center" prop="familyMember" :show-overflow-tooltip="true" width="70" />
+            <el-table-column label="健康管家" align="center" :show-overflow-tooltip="true" width="80">
+                <template #default="scope">
+                    <span v-if="scope.row.nickName">{{ scope.row.nickName }}</span>
+                    <span v-else>无</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="115">
+                <template #default="scope">
+                    <el-tooltip content="查看护理记录" effect="dark" placement="top">
+                        <el-button type="primary" icon="View" @click="toNurseRecord(scope.row)" />
+                    </el-tooltip>
+                    <el-tooltip content="更改护理级别" effect="dark" placement="top">
+                        <el-button type="success" icon="Operation" @click="addNurseItem(scope.row)" />
+                    </el-tooltip>
+                </template>
+            </el-table-column>
+        </el-table>
 
-                    <el-table v-loading="loading"
-                        :data="filterednurseRecordsList.slice((pageNum - 1) * pageSize, pageNum * pageSize)"
-                        style="width: 100%;">
-                        <el-table-column label="序号" width="50" type="index" align="center">
-                            <template #default="scope">
-                                <span>{{ (pageNum - 1) * pageSize + scope.$index + 1 }}</span>
-                            </template>
-                        </el-table-column>
-                        <el-table-column label="ID" align="center" prop="id" :show-overflow-tooltip="true" v-if=false />
-                        <el-table-column label="客户姓名" align="center" prop="customerInfo[0].customerName"
-                            :show-overflow-tooltip="true" width="80" />
-                        <el-table-column label="护理项目" align="center" prop="nurseContentInfo[0].nursingName"
-                            :show-overflow-tooltip="true" />
-                        <el-table-column label="护理时间" align="center" :show-overflow-tooltip="true" width="120">
-                            <template #default="scope">
-                                {{ formatDate(scope.row.nursingTime) }}
-                            </template>
-                        </el-table-column>
-                        <el-table-column label="数量" align="center" prop="nursingCount" :show-overflow-tooltip="true"
-                            width="50" />
-                        <el-table-column label="护理内容" align="center" prop="nursingContent"
-                            :show-overflow-tooltip="true" />
-                        <el-table-column label="护理人员" align="center" prop="userInfo[0].nickname"
-                            :show-overflow-tooltip="true" width="80" />
-                        <el-table-column label="操作" align="center" class-name="small-padding fixed-width"
-                            v-if="isManager">
-                            <template #default="scope">
-                                <el-tooltip content="编辑" effect="dark" placement="top">
-                                    <el-button type="primary" icon="Edit" @click="editNurseRecord(scope.row)" />
-                                </el-tooltip>
-                                <el-tooltip content="删除" effect="dark" placement="top">
-                                    <el-button type="danger" icon="Delete" @click="handleDelete(scope.row)" />
-                                </el-tooltip>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-
-                    <pagination v-show="total > 0" :total="total" v-model:page="pageNum" v-model:limit="pageSize" />
-
-                </el-form>
-            </el-col>
-        </el-row>
+        <pagination v-show="total > 0" :total="total" v-model:page="pageNum" v-model:limit="pageSize" />
 
 
-
-        <!--添加护理记录的对话框  BEGIN-->
-        <el-dialog v-model="addFormVisible" title="添加护理记录" width="700">
+        <!--添加项目信息的对话框  BEGIN-->
+        <el-dialog v-model="addFormVisible" title="添加客户项目" width="500">
             <el-form :model="addForm" :rules="rules" ref="addFormRef">
-                <el-form-item label="客户姓名" :label-width="100" prop="customerId">
-                    <el-select v-model="addForm.customerId" filterable placeholder="请选择客户">
-                        <el-option v-for="item in customers" :key="item.id" :label="item.customerName" :value="item.id">
-                            <span style="float: left">{{ item.customerName }}（{{ getSex(item.customerSex) }}，{{
-                                item.customerAge
-                            }}岁）</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px">
-                                所属楼房: {{ item.buildingNo }} | 房间号: {{ item.roomNo }} | 床号: {{ item.bedId }}
-                            </span>
-                        </el-option>
+                <el-form-item label="项目编号" :label-width="100" prop="serialNumber">
+                    <el-input v-model="addForm.serialNumber" />
+                </el-form-item>
+                <el-form-item label="名称" :label-width="100" prop="nursingName">
+                    <el-input v-model="addForm.nursingName" />
+                </el-form-item>
+                <el-form-item label="价格" :label-width="100" prop="servicePrice">
+                    <el-input v-model="addForm.servicePrice" />
+                </el-form-item>
+                <el-form-item label="描述" :label-width="100">
+                    <el-input v-model="addForm.message" />
+                </el-form-item>
+                <el-form-item label="状态" :label-width="100">
+                    <el-select v-model="addForm.status">
+                        <el-option v-for="item in statusOptions" :key="item.id" :label="item.statusName"
+                            :value="item.id" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="护理项目" :label-width="100" prop="itemId">
-                    <el-select v-model="addForm.itemId" filterable placeholder="请选择护理项目">
-                        <el-option v-for="item in items" :key="item.id" :label="item.nursingName" :value="item.id">
-                            <span style="float: left">{{ item.serialNumber }} | {{ item.nursingName }}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px">
-                                价格: {{ item.servicePrice }} | 执行周期: {{ item.executionCycle }} | 执行次数: {{
-                                    item.executionTimes }}
-                            </span>
-                        </el-option>
-                    </el-select>
+                <el-form-item label="执行周期" :label-width="100">
+                    <el-input v-model="addForm.executionCycle" />
                 </el-form-item>
-                <el-form-item label="护理时间" :label-width="100">
-                    <el-date-picker v-model="addForm.nursingTime" type="datetime" placeholder="选择日期时间"
-                        value-format="YYYY-MM-DDTHH:mm:ss" />
-                </el-form-item>
-                <el-form-item label="护理内容" :label-width="100">
-                    <el-input v-model="addForm.nursingContent" />
-                </el-form-item>
-                <el-form-item label="护理数量" :label-width="100" type="number">
-                    <el-input-number v-model="addForm.nursingCount" />
-                </el-form-item>
-                <el-form-item label="护理人员" :label-width="100" prop="userId">
-                    <el-select v-if="isManager" v-model="addForm.userId" filterable placeholder="请选择护理人员">
-                        <el-option v-for="item in users" :key="item.id" :label="item.nickname" :value="item.id">
-                            <span>{{ item.nickname }} | </span>
-                            <span style="color: #8492a6; font-size: 13px"> {{ getRoleName(item.roleId) }} </span>
-                        </el-option>
-                    </el-select>
-                    <el-input v-else :placeholder="userName" disabled />
+                <el-form-item label="执行次数" :label-width="100" type="number">
+                    <el-input-number v-model="addForm.executionTimes" />
                 </el-form-item>
 
             </el-form>
@@ -112,32 +106,38 @@
                 </div>
             </template>
         </el-dialog>
-        <!--添加护理记录的对话框  END-->
+        <!--添加项目信息的对话框  END-->
 
-        <!--修改护理记录的对话框  BEGIN-->
-        <el-dialog v-model="editFormVisible" title="修改护理记录" width="700">
+
+        <!--编辑项目信息的对话框  BEGIN-->
+        <el-dialog v-model="editFormVisible" title="客户项目信息" width="500">
             <el-form :model="editForm" :rules="rules" ref="editFormRef">
-                <el-form-item label="护理记录ID" :label-width="100" v-if="false">
+                <el-form-item label="项目ID" :label-width="100" v-if="false">
                     <el-input v-model="editForm.id" disabled />
                 </el-form-item>
-                <el-form-item label="护理时间" :label-width="100">
-                    <el-date-picker v-model="editForm.nursingTime" type="datetime" placeholder="选择日期时间"
-                        value-format="YYYY-MM-DDTHH:mm:ss" />
+                <el-form-item label="项目编号" :label-width="100" prop="serialNumber">
+                    <el-input v-model="editForm.serialNumber" />
                 </el-form-item>
-                <el-form-item label="护理内容" :label-width="100">
-                    <el-input v-model="editForm.nursingContent" />
+                <el-form-item label="名称" :label-width="100" prop="nursingName">
+                    <el-input v-model="editForm.nursingName" />
                 </el-form-item>
-                <el-form-item label="护理数量" :label-width="100" type="number">
-                    <el-input-number v-model="editForm.nursingCount" />
+                <el-form-item label="价格" :label-width="100" prop="servicePrice">
+                    <el-input v-model="editForm.servicePrice" />
                 </el-form-item>
-                <el-form-item label="护理人员" :label-width="100" prop="userId">
-                    <el-select v-if="isManager" v-model="editForm.userId" filterable placeholder="请选择护理人员">
-                        <el-option v-for="item in users" :key="item.id" :label="item.nickname" :value="item.id">
-                            <span>{{ item.nickname }} | </span>
-                            <span style="color: #8492a6; font-size: 13px"> {{ getRoleName(item.roleId) }} </span>
-                        </el-option>
+                <el-form-item label="描述" :label-width="100">
+                    <el-input v-model="editForm.message" />
+                </el-form-item>
+                <el-form-item label="状态" :label-width="100">
+                    <el-select v-model="editForm.status">
+                        <el-option v-for="item in statusOptions" :key="item.id" :label="item.statusName"
+                            :value="item.id" />
                     </el-select>
-                    <el-input v-else :placeholder="editForm.userName" disabled />
+                </el-form-item>
+                <el-form-item label="执行周期" :label-width="100">
+                    <el-input v-model="editForm.executionCycle" />
+                </el-form-item>
+                <el-form-item label="执行次数" :label-width="100">
+                    <el-input-number v-model="editForm.executionTimes" />
                 </el-form-item>
 
             </el-form>
@@ -150,111 +150,68 @@
                 </div>
             </template>
         </el-dialog>
-        <!--添加护理记录的对话框  END-->
-
+        <!--编辑项目信息的对话框  END-->
     </div>
 </template>
 
 <script setup name="NurseItem">
-import { list as initData, deleteRecord, update, add } from "@/api/nurse/nurseRecords";
-import customer from "../components/customer.vue";
-import { list as getCustomers } from "@/api/customer/customer";
-import { list as getItems } from "@/api/nurse/nurseItem";
-import { list as getUsers } from "@/api/user/user";
-import useUserStore from '@/store/modules/user'
-import { set } from "nprogress";
+import { listDetails as initData } from "@/api/customer/customer";
+import { useRouter } from 'vue-router';
 
 const { proxy } = getCurrentInstance();
 
-const nurseRecordsList = ref([]);
-const customersList = ref([]);
+const customerList = ref([]);
 const loading = ref(true);
 const total = ref(0);
 const pageNum = ref(1);
 const pageSize = ref(10);
+const router = useRouter();
 
 let addFormVisible = ref(false);
 let editFormVisible = ref(false);
-const addFormRef = ref(null);
-const editFormRef = ref(null);
-
-const rules = ref({
-    customerId: [
-        { required: true, message: '请选择客户', trigger: 'blur' }
-    ],
-    itemId: [
-        { required: true, message: '请选择护理项目', trigger: 'blur' }
-    ],
-    userId: [
-        { required: true, message: '请选择护理人员', trigger: 'blur' }
-    ]
-});
-
-const customers = ref([]);
-const items = ref([]);
-const users = ref([]);
-const isManager = ref(false);
-const userId = ref();
-const userName = ref();
-
 
 let addForm = ref({
-    customerId: '',
-    itemId: '',
-    nursingTime: '',
-    nursingContent: '',
-    nursingCount: 0,
-    userId: ''
+    serialNumber: '',
+    nursingName: '',
+    servicePrice: '',
+    message: '',
+    status: '',
+    executionCycle: '',
+    executionTimes: 0
 });
 let editForm = ref({
     id: '',
-    customerId: '',
-    itemId: '',
-    nursingTime: '',
-    nursingContent: '',
-    nursingCount: 0,
-    userId: ''
+    serialNumber: '',
+    nursingName: '',
+    servicePrice: '',
+    message: '',
+    status: '',
+    executionCycle: '',
+    executionTimes: 0
+});
+const statusOptions = ref([
+    { id: 1, statusName: "已启用" },
+    { id: 2, statusName: "已停用" }
+])
+
+let queryParams = ref({
+    customerName: undefined
 });
 
+const rules = ref({
+    serialNumber: [
+        { required: true, message: '项目编号不能为空', trigger: 'blur' }
+    ],
+    nursingName: [
+        { required: true, message: '名称不能为空', trigger: 'blur' }
+    ],
+    servicePrice: [
+        { required: true, message: '价格不能为空', trigger: 'blur' }
+    ],
+});
+const addFormRef = ref(null);
+const editFormRef = ref(null);
 
-const currentSelected = ref(-1);
-
-// 当子组件触发事件时，更新currentSelected的值
-const handleChildSelected = (res) => {
-    if (res.customerId == null || res.customerId == undefined || res.customerId == -1) {
-        currentSelected.value = -1;
-    } else {
-        currentSelected.value = res.customerId;
-    }
-    getList();
-}
-
-// 计算过滤后的护理记录列表
-const filterednurseRecordsList = ref(nurseRecordsList.value);
-
-/** 查询护理记录列表 */
-function getList() {
-    loading.value = true;
-    initData().then(response => {
-        nurseRecordsList.value = response.data;
-        // 客户信息子组件赋值
-        const customerInfoArray = response.data.flatMap(item => item.customerInfo);
-        const uniqueCustomerInfo = Array.from(new Set(customerInfoArray.map(JSON.stringify)), JSON.parse);
-        customersList.value = uniqueCustomerInfo;
-
-        // 在前端实现筛选功能
-        if (currentSelected.value == -1 || currentSelected.value == null || currentSelected.value == undefined) {
-            filterednurseRecordsList.value = nurseRecordsList.value;
-        } else {
-            filterednurseRecordsList.value = nurseRecordsList.value.filter(record =>
-                record.customerInfo[0].id === currentSelected.value
-            );
-        }
-
-        total.value = filterednurseRecordsList.value.length;
-        loading.value = false;
-    });
-}
 
 // 格式化时间戳
 function formatDate(timestamp) {
@@ -267,126 +224,40 @@ function formatDate(timestamp) {
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
 
-    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-/** 设置是否管理员 */
-function setManager() {
-    if (useUserStore().roles === 1) {
-        isManager.value = true;
-        // 查用户
-        getUsers().then(response => {
-            users.value = response.data;
-        });
-    } else {
-        userId.value = useUserStore().userId;
-        userName.value = useUserStore().name;
-    }
-}
 
-/** 添加按钮操作 */
-function addNurseRecord() {
-    // 查客户
-    getCustomers().then(response => {
-        customers.value = response.data;
-        // 查项目
-        getItems().then(response => {
-            items.value = response.data;
-            if (!isManager.value) {
-                addForm.value.userId = userId.value;
-            }
-        });
-    });
-    addFormVisible.value = true;
-}
+/** 查询客户列表 */
+function getList() {
+    loading.value = true;
+    initData(queryParams.value).then(response => {
+        console.log(response);
 
-// 获取性别
-function getSex(sex) {
-    if (sex === 0) {
-        return '男';
-    } else if (sex === 1) {
-        return '女';
-    }
-    return '';
-}
-
-// 获取角色名称
-function getRoleName(roleId) {
-    if (roleId === 1) {
-        return '管理员';
-    } else if (roleId === 2) {
-        return '健康管家';
-    }
-    return '未知角色';
-}
-
-/** 提交添加项目 */
-function submitAdd() {
-    addFormRef.value.validate((valid) => {
-        if (valid) {
-            addFormVisible.value = false;
-            add(addForm.value).then(response => {
-                getList();
-                addForm = ref({
-                    customerId: '',
-                    itemId: '',
-                    nursingTime: '',
-                    nursingContent: '',
-                    nursingCount: 0,
-                    userId: ''
-                });
-                proxy.$modal.msgSuccess("添加成功");
-            })
-                .catch(() => {
-                    getList();
-                    proxy.$modal.msgError("添加失败");
-                });
-        } else {
-            proxy.$modal.msgError('必选项不能为空');
-            return false;
-        }
+        customerList.value = response.data;
+        console.log(customerList.value)
+        total.value = response.data.length;
+        loading.value = false;
     });
 }
 
-
-/** 编辑按钮操作 */
-function editNurseRecord(row) {
-
-    editForm.value = {
-        id: row.id,
-        nursingTime: formatDate(row.nursingTime),
-        nursingContent: row.nursingContent,
-        nursingCount: row.nursingCount,
-        userName: row.userInfo[0].nickname
-    };
-    editFormVisible.value = true;
+/** 搜索按钮操作 */
+function handleQuery() {
+    pageNum.value = 1;
+    getList();
 }
 
-/** 提交编辑记录 */
-function submitEdit() {
-    update(editForm.value).then(response => {
-        getList();
-        proxy.$modal.msgSuccess("编辑成功");
-    })
-        .catch(() => {
-            getList();
-            proxy.$modal.msgError("编辑失败");
-        });
-
+/** 重置按钮操作 */
+function resetQuery() {
+    proxy.resetForm("queryRef");
+    handleQuery();
 }
 
-/** 删除按钮操作 */
-function handleDelete(row) {
-    proxy.$modal.confirm('是否删除该记录?').then(function () {
-        return deleteRecord(row.id);
-    }).then(() => {
-        getList();
-        proxy.$modal.msgSuccess("删除成功");
-    }).catch(() => { });
+/** 查看护理记录按钮操作 */
+function toNurseRecord(row) {
+    let id = row.id;
+    router.push({ name: 'nurseRecords', query: { id } });
 }
 
 getList();
-setManager();
 </script>
-
-<style scoped></style>

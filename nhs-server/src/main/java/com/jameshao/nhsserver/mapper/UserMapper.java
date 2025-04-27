@@ -14,6 +14,9 @@ public interface UserMapper extends BaseMapper<User> {
     @Select("SELECT * FROM user WHERE id = #{id} AND is_deleted = '0'")
     User getUserById(Integer id);
 
+    @Select("SELECT nickname FROM user WHERE id = #{id}")
+    String getNameById(Integer id);
+
 }
 
 

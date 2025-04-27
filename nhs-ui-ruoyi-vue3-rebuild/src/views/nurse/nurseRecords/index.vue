@@ -64,7 +64,7 @@
                         <el-option v-for="item in customers" :key="item.id" :label="item.customerName" :value="item.id">
                             <span style="float: left">{{ item.customerName }}（{{ getSex(item.customerSex) }}，{{
                                 item.customerAge
-                            }}岁）</span>
+                                }}岁）</span>
                             <span style="float: right; color: #8492a6; font-size: 13px">
                                 所属楼房: {{ item.buildingNo }} | 房间号: {{ item.roomNo }} | 床号: {{ item.bedId }}
                             </span>
@@ -162,6 +162,7 @@ import { list as getCustomers } from "@/api/customer/customer";
 import { list as getItems } from "@/api/nurse/nurseItem";
 import { list as getUsers } from "@/api/user/user";
 import useUserStore from '@/store/modules/user';
+import { useRoute, useRouter } from 'vue-router';
 
 const { proxy } = getCurrentInstance();
 
@@ -195,7 +196,9 @@ const users = ref([]);
 const isManager = ref(false);
 const userId = ref();
 const userName = ref();
-
+const route = useRoute();
+const router = useRouter();
+const getPushId = route.query.id;
 
 let addForm = ref({
     customerId: '',
@@ -220,7 +223,7 @@ const currentSelected = ref(-1);
 
 // 当子组件触发事件时，更新currentSelected的值
 const handleChildSelected = (res) => {
-    if (res.customerId == null || res.customerId == undefined || res.customerId == -1) {
+    if (res.customerId == null || res.customerId == undefined || res.customerId == -1 || isNaN(res.customerId)) {
         currentSelected.value = -1;
     } else {
         currentSelected.value = res.customerId;
@@ -240,7 +243,9 @@ function getList() {
         const customerInfoArray = response.data.flatMap(item => item.customerInfo);
         const uniqueCustomerInfo = Array.from(new Set(customerInfoArray.map(JSON.stringify)), JSON.parse);
         customersList.value = uniqueCustomerInfo;
-
+        if (getPushId != null && getPushId != undefined) {
+            customersList.value.getPushId = getPushId;
+        }
         // 在前端实现筛选功能
         if (currentSelected.value == -1 || currentSelected.value == null || currentSelected.value == undefined) {
             filterednurseRecordsList.value = nurseRecordsList.value;
@@ -386,6 +391,11 @@ function handleDelete(row) {
 
 getList();
 setManager();
+onMounted(() => {
+    // 清除 query 参数
+    const { path } = route;
+    router.replace({ path });
+});
 </script>
 
 <style scoped></style>

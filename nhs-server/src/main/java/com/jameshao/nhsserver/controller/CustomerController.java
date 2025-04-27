@@ -34,6 +34,17 @@ public class CustomerController {
         }
     }
 
+    @RequestMapping("/detail")
+    public String getCustomerDetailsByName(String customerName) {
+        try{
+            List<Customer> list = customerService.getCustomerDetailsByName(customerName);
+            return jsonReturn.returnSuccess(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return jsonReturn.returnError(e.getMessage());
+        }
+    }
+
     @RequestMapping("/listById")
     public String getById(String customerIds){
         try {

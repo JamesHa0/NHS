@@ -126,6 +126,9 @@ public class Customer {
     private String familyMember;
 
     @TableField(exist = false)
+    private String nickName;
+
+    @TableField(exist = false)
     private String levelName;
 
     @Override
