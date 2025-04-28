@@ -7,6 +7,7 @@ import com.jameshao.nhsserver.common.JSONReturn;
 import com.jameshao.nhsserver.po.Customer;
 import com.jameshao.nhsserver.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -73,6 +74,22 @@ public class CustomerController {
             return jsonReturn.returnSuccess(list);
 
         } catch (Exception e) {
+            e.printStackTrace();
+            return jsonReturn.returnError(e.getMessage());
+        }
+    }
+
+
+    @RequestMapping("/update")
+    public String update(@RequestBody Customer customer){
+        try{
+            boolean update = customerService.updateById(customer);
+            if(update){
+                return jsonReturn.returnSuccess();
+            }else{
+                return jsonReturn.returnFailed();
+            }
+        }catch(Exception e){
             e.printStackTrace();
             return jsonReturn.returnError(e.getMessage());
         }

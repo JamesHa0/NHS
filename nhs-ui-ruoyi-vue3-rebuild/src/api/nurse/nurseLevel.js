@@ -1,13 +1,23 @@
 import request from '@/utils/request'
 
-// 查询护理项目列表
-export function list(query) {
+// 查询护理项目列表(带相应护理内容)
+export function details(query) {
     return request({
         url: '/nurse/nurseLevel/items',
         method: 'get',
         params: query
     })
 }
+
+// (通过id)查护理级别信息
+export function list(id) {
+    return request({
+        url: '/nurse/nurseLevel/list',
+        method: 'get',
+        params: { id }
+    })
+}
+
 
 // 提交新增项目
 export function add(data) {

@@ -195,7 +195,7 @@
 </template>
 
 <script setup name="NurseItem">
-import { list as initData, deleteItem, update, add, addItems, deleteLevelItem } from "@/api/nurse/nurseLevel";
+import { details as initData, deleteItem, update, add, addItems, deleteLevelItem } from "@/api/nurse/nurseLevel";
 import { list as listNurseItem } from "@/api/nurse/nurseItem"
 
 const { proxy } = getCurrentInstance();

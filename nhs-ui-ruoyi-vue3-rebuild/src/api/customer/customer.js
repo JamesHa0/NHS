@@ -26,3 +26,12 @@ export function listDetails(data) {
         params: data
     })
 }
+
+// 提交修改客户护理级别
+export function update(data) {
+    return request({
+        url: '/customer/update',
+        method: 'post',
+        data: data
+    })
+}

@@ -11,7 +11,7 @@
  Target Server Version : 80037 (8.0.37)
  File Encoding         : 65001
 
- Date: 25/04/2025 11:10:53
+ Date: 28/04/2025 15:42:42
 */
 
 SET NAMES utf8mb4;
@@ -174,7 +174,7 @@ CREATE TABLE `customer`  (
 -- ----------------------------
 -- Records of customer
 -- ----------------------------
-INSERT INTO `customer` VALUES (27, 0, '刘茂元', 76, 0, '610104194707211657', '1001', '606', '2023-11-17', '2025-11-30', '18176756743', 6, '', NULL, '1947-07-21', NULL, NULL, 'O', '@/assets/tou.png', -1, 1, '刘其元');
+INSERT INTO `customer` VALUES (27, 0, '刘茂元', 76, 0, '610104194707211657', '1001', '606', '2023-11-05', '2025-11-18', '18176756743', 6, '良好', '注意饮食规律', '1947-07-09', NULL, NULL, 'O', '@/assets/tou.png', -1, 2, '刘其元');
 INSERT INTO `customer` VALUES (28, 0, '高廉武', 83, 0, '610404194103010017', '1002', '606', '2023-11-17', '2024-11-30', '13767675481', 9, '', NULL, '1941-03-01', NULL, NULL, 'A', '@/assets/tou.png', 5, 2, '高校蓝');
 INSERT INTO `customer` VALUES (29, 0, '刘玉珍', 72, 1, '610402194112240335', '2002', '606', '2023-11-17', '2025-11-27', '13534786754', 35, '', NULL, '1951-12-24', NULL, NULL, 'B', '@/assets/tou.png', -1, 1, '刘宇');
 INSERT INTO `customer` VALUES (30, 0, '石秀英', 73, 1, '610422195102220029', '2018', '606', '2023-11-17', '2025-12-31', '13867541321', 52, '', NULL, '1951-02-22', NULL, NULL, 'O', '@/assets/tou.png', 5, 1, '石杰颖');
@@ -477,12 +477,12 @@ CREATE TABLE `nurserecord`  (
   `is_deleted` int NOT NULL DEFAULT 0 COMMENT '逻辑删除标记（0：显示；1：隐藏）',
   `customer_id` int NOT NULL COMMENT '客户ID',
   `item_id` int NOT NULL COMMENT '护理项目ID',
-  `nursing_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '护理时间',
+  `nursing_time` datetime NOT NULL COMMENT '护理时间',
   `nursing_content` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '护理内容',
   `nursing_count` int NOT NULL COMMENT '护理数量',
   `user_id` int NOT NULL COMMENT '护理人员ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 85 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 92 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of nurserecord
@@ -551,7 +551,7 @@ INSERT INTO `nurserecord` VALUES (69, 0, 34, 2, '2023-11-24 13:38:37', '按照�
 INSERT INTO `nurserecord` VALUES (70, 0, 34, 1, '2023-11-24 13:39:22', '仪器型号：XY09,吸氧服务', 1, 3);
 INSERT INTO `nurserecord` VALUES (71, 0, 34, 1, '2023-11-24 18:05:24', '吸氧护理', 1, 2);
 INSERT INTO `nurserecord` VALUES (72, 1, 27, 24, '2025-04-25 10:29:23', '123', 1, 2);
-INSERT INTO `nurserecord` VALUES (73, 0, 37, 24, '2025-04-24 07:00:00', '测试内容', 1, 2);
+INSERT INTO `nurserecord` VALUES (73, 0, 37, 24, '2025-04-28 07:41:12', '测试内容', 1, 2);
 INSERT INTO `nurserecord` VALUES (74, 1, 37, 1, '2025-04-25 10:29:01', '测试时间', 1, 2);
 INSERT INTO `nurserecord` VALUES (75, 1, 27, 24, '2025-04-25 10:28:50', '测试时间2', 2, 6);
 INSERT INTO `nurserecord` VALUES (77, 1, 27, 24, '2025-04-25 10:29:16', '空时间测试', 0, 1);
@@ -562,6 +562,13 @@ INSERT INTO `nurserecord` VALUES (81, 1, 27, 24, '2025-04-25 10:29:07', '空时�
 INSERT INTO `nurserecord` VALUES (82, 1, 27, 24, '2025-04-25 10:29:06', '空时间测试6', 6, 1);
 INSERT INTO `nurserecord` VALUES (83, 1, 27, 24, '2025-04-25 10:29:04', '空时间测试', 0, 1);
 INSERT INTO `nurserecord` VALUES (84, 1, 27, 24, '2025-04-25 10:27:48', '空时间测试', 0, 1);
+INSERT INTO `nurserecord` VALUES (85, 1, 27, 24, '2025-04-28 07:41:05', '时间', 1, 1);
+INSERT INTO `nurserecord` VALUES (86, 1, 27, 24, '2025-04-28 22:49:01', '无时间', 0, 1);
+INSERT INTO `nurserecord` VALUES (87, 1, 27, 24, '2025-04-28 14:49:42', '22', 2, 1);
+INSERT INTO `nurserecord` VALUES (88, 1, 27, 24, '2025-04-28 07:24:49', '无时间', 0, 1);
+INSERT INTO `nurserecord` VALUES (89, 1, 27, 24, '2025-04-28 07:40:57', '添加时间', 1, 1);
+INSERT INTO `nurserecord` VALUES (90, 1, 27, 24, '2025-04-28 07:41:35', '添加', 1, 1);
+INSERT INTO `nurserecord` VALUES (91, 1, 27, 24, '2025-04-28 07:41:43', '添加2', 2, 1);
 
 -- ----------------------------
 -- Table structure for outward

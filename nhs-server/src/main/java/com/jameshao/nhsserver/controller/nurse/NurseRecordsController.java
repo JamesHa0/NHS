@@ -53,8 +53,7 @@ public class NurseRecordsController {
             if (nurserecord.getNursingTime() == null){
                 Date date = new Date();
                 LocalDateTime localDateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-                LocalDateTime newLocalDateTime = localDateTime.plusHours(8);
-                Date newDate = Date.from(newLocalDateTime.atZone(ZoneId.systemDefault()).toInstant());
+                Date newDate = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
                 nurserecord.setNursingTime(newDate);
             }
             boolean save = nurseRecordService.save(nurserecord);

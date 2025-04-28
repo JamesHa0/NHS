@@ -26,7 +26,7 @@
                             :show-overflow-tooltip="true" />
                         <el-table-column label="护理时间" align="center" :show-overflow-tooltip="true" width="120">
                             <template #default="scope">
-                                {{ formatDate(scope.row.nursingTime) }}
+                                {{ parseTime(scope.row.nursingTime) }}
                             </template>
                         </el-table-column>
                         <el-table-column label="数量" align="center" prop="nursingCount" :show-overflow-tooltip="true"
@@ -64,7 +64,7 @@
                         <el-option v-for="item in customers" :key="item.id" :label="item.customerName" :value="item.id">
                             <span style="float: left">{{ item.customerName }}（{{ getSex(item.customerSex) }}，{{
                                 item.customerAge
-                                }}岁）</span>
+                            }}岁）</span>
                             <span style="float: right; color: #8492a6; font-size: 13px">
                                 所属楼房: {{ item.buildingNo }} | 房间号: {{ item.roomNo }} | 床号: {{ item.bedId }}
                             </span>
@@ -83,8 +83,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="护理时间" :label-width="100">
-                    <el-date-picker v-model="addForm.nursingTime" type="datetime" placeholder="选择日期时间"
-                        value-format="YYYY-MM-DDTHH:mm:ss" />
+                    <el-date-picker v-model="addForm.nursingTime" type="datetime" placeholder="选择日期时间" />
                 </el-form-item>
                 <el-form-item label="护理内容" :label-width="100">
                     <el-input v-model="addForm.nursingContent" />
@@ -121,8 +120,7 @@
                     <el-input v-model="editForm.id" disabled />
                 </el-form-item>
                 <el-form-item label="护理时间" :label-width="100">
-                    <el-date-picker v-model="editForm.nursingTime" type="datetime" placeholder="选择日期时间"
-                        value-format="YYYY-MM-DDTHH:mm:ss" />
+                    <el-date-picker v-model="editForm.nursingTime" type="datetime" placeholder="选择日期时间" />
                 </el-form-item>
                 <el-form-item label="护理内容" :label-width="100">
                     <el-input v-model="editForm.nursingContent" />
@@ -260,20 +258,6 @@ function getList() {
     });
 }
 
-// 格式化时间戳
-function formatDate(timestamp) {
-    const date = new Date(timestamp);
-    date.setHours(date.getHours() - 8); // 手动减去8小时
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-
-    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-}
-
 /** 设置是否管理员 */
 function setManager() {
     if (useUserStore().roles === 1) {
@@ -355,10 +339,9 @@ function submitAdd() {
 
 /** 编辑按钮操作 */
 function editNurseRecord(row) {
-
     editForm.value = {
         id: row.id,
-        nursingTime: formatDate(row.nursingTime),
+        nursingTime: row.nursingTime,
         nursingContent: row.nursingContent,
         nursingCount: row.nursingCount,
         userName: row.userInfo[0].nickname
@@ -368,6 +351,9 @@ function editNurseRecord(row) {
 
 /** 提交编辑记录 */
 function submitEdit() {
+    editFormVisible.value = false;
+    console.log(editForm.value);
+
     update(editForm.value).then(response => {
         getList();
         proxy.$modal.msgSuccess("编辑成功");

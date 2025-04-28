@@ -34,12 +34,12 @@
             </el-table-column>
             <el-table-column label="入住时间" align="center" :show-overflow-tooltip="true" width="115">
                 <template #default="scope">
-                    {{ formatDate(scope.row.checkinDate) }}
+                    <span>{{ parseTime(scope.row.checkinDate) }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="合同到期时间" align="center" :show-overflow-tooltip="true" width="115">
                 <template #default="scope">
-                    {{ formatDate(scope.row.expirationDate) }}
+                    {{ parseTime(scope.row.expirationDate) }}
                 </template>
             </el-table-column>
             <el-table-column label="身心状况" align="center" prop="psychosomaticState" :show-overflow-tooltip="true"
@@ -59,7 +59,7 @@
                         <el-button type="primary" icon="View" @click="toNurseRecord(scope.row)" />
                     </el-tooltip>
                     <el-tooltip content="更改护理级别" effect="dark" placement="top">
-                        <el-button type="success" icon="Operation" @click="addNurseItem(scope.row)" />
+                        <el-button type="success" icon="Operation" @click="handleChange(scope.row)" />
                     </el-tooltip>
                 </template>
             </el-table-column>
@@ -67,77 +67,25 @@
 
         <pagination v-show="total > 0" :total="total" v-model:page="pageNum" v-model:limit="pageSize" />
 
-
-        <!--添加项目信息的对话框  BEGIN-->
-        <el-dialog v-model="addFormVisible" title="添加客户项目" width="500">
-            <el-form :model="addForm" :rules="rules" ref="addFormRef">
-                <el-form-item label="项目编号" :label-width="100" prop="serialNumber">
-                    <el-input v-model="addForm.serialNumber" />
-                </el-form-item>
-                <el-form-item label="名称" :label-width="100" prop="nursingName">
-                    <el-input v-model="addForm.nursingName" />
-                </el-form-item>
-                <el-form-item label="价格" :label-width="100" prop="servicePrice">
-                    <el-input v-model="addForm.servicePrice" />
-                </el-form-item>
-                <el-form-item label="描述" :label-width="100">
-                    <el-input v-model="addForm.message" />
-                </el-form-item>
-                <el-form-item label="状态" :label-width="100">
-                    <el-select v-model="addForm.status">
-                        <el-option v-for="item in statusOptions" :key="item.id" :label="item.statusName"
-                            :value="item.id" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="执行周期" :label-width="100">
-                    <el-input v-model="addForm.executionCycle" />
-                </el-form-item>
-                <el-form-item label="执行次数" :label-width="100" type="number">
-                    <el-input-number v-model="addForm.executionTimes" />
-                </el-form-item>
-
-            </el-form>
-            <template #footer>
-                <div class="dialog-footer">
-                    <el-button @click="addFormVisible = false">取消</el-button>
-                    <el-button type="primary" @click="submitAdd()">
-                        确定
-                    </el-button>
-                </div>
-            </template>
-        </el-dialog>
-        <!--添加项目信息的对话框  END-->
-
-
-        <!--编辑项目信息的对话框  BEGIN-->
-        <el-dialog v-model="editFormVisible" title="客户项目信息" width="500">
-            <el-form :model="editForm" :rules="rules" ref="editFormRef">
-                <el-form-item label="项目ID" :label-width="100" v-if="false">
+        <!--更改客户护理级别的对话框  BEGIN-->
+        <el-dialog v-model="editFormVisible" title="客户护理级别" width="400">
+            <el-form :model="editForm">
+                <el-form-item label="客户ID" :label-width="100" v-if="false">
                     <el-input v-model="editForm.id" disabled />
                 </el-form-item>
-                <el-form-item label="项目编号" :label-width="100" prop="serialNumber">
-                    <el-input v-model="editForm.serialNumber" />
+                <el-form-item label="客户姓名" :label-width="100" prop="customerName">
+                    <el-input v-model="editForm.customerName" disabled />
                 </el-form-item>
-                <el-form-item label="名称" :label-width="100" prop="nursingName">
-                    <el-input v-model="editForm.nursingName" />
-                </el-form-item>
-                <el-form-item label="价格" :label-width="100" prop="servicePrice">
-                    <el-input v-model="editForm.servicePrice" />
-                </el-form-item>
-                <el-form-item label="描述" :label-width="100">
-                    <el-input v-model="editForm.message" />
-                </el-form-item>
-                <el-form-item label="状态" :label-width="100">
-                    <el-select v-model="editForm.status">
-                        <el-option v-for="item in statusOptions" :key="item.id" :label="item.statusName"
-                            :value="item.id" />
+                <el-form-item label="护理级别" :label-width="100" prop="levelId">
+                    <el-select v-model="editForm.levelId" filterable placeholder="请选择护理级别">
+                        <el-option v-for="item in levels" :key="item.id" :label="item.levelName" :value="item.id">
+                            <span style="float: left">{{ item.levelName }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px">
+                                <el-tag v-if="item.levelStatus == 1" type="success">已启用</el-tag>
+                                <el-tag v-else-if="item.levelStatus == 2" type="danger">已停用</el-tag>
+                            </span>
+                        </el-option>
                     </el-select>
-                </el-form-item>
-                <el-form-item label="执行周期" :label-width="100">
-                    <el-input v-model="editForm.executionCycle" />
-                </el-form-item>
-                <el-form-item label="执行次数" :label-width="100">
-                    <el-input-number v-model="editForm.executionTimes" />
                 </el-form-item>
 
             </el-form>
@@ -155,7 +103,8 @@
 </template>
 
 <script setup name="NurseItem">
-import { listDetails as initData } from "@/api/customer/customer";
+import { listDetails as initData, update } from "@/api/customer/customer";
+import { list as getLevels } from "@/api/nurse/nurseLevel";
 import { useRouter } from 'vue-router';
 
 const { proxy } = getCurrentInstance();
@@ -167,65 +116,19 @@ const pageNum = ref(1);
 const pageSize = ref(10);
 const router = useRouter();
 
-let addFormVisible = ref(false);
 let editFormVisible = ref(false);
 
-let addForm = ref({
-    serialNumber: '',
-    nursingName: '',
-    servicePrice: '',
-    message: '',
-    status: '',
-    executionCycle: '',
-    executionTimes: 0
-});
+let levels = ref([]);
+
 let editForm = ref({
     id: '',
-    serialNumber: '',
-    nursingName: '',
-    servicePrice: '',
-    message: '',
-    status: '',
-    executionCycle: '',
-    executionTimes: 0
+    customerName: '',
+    levelId: ''
 });
-const statusOptions = ref([
-    { id: 1, statusName: "已启用" },
-    { id: 2, statusName: "已停用" }
-])
 
 let queryParams = ref({
     customerName: undefined
 });
-
-const rules = ref({
-    serialNumber: [
-        { required: true, message: '项目编号不能为空', trigger: 'blur' }
-    ],
-    nursingName: [
-        { required: true, message: '名称不能为空', trigger: 'blur' }
-    ],
-    servicePrice: [
-        { required: true, message: '价格不能为空', trigger: 'blur' }
-    ],
-});
-const addFormRef = ref(null);
-const editFormRef = ref(null);
-
-
-// 格式化时间戳
-function formatDate(timestamp) {
-    const date = new Date(timestamp);
-    date.setHours(date.getHours() - 8); // 手动减去8小时
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
 
 
 /** 查询客户列表 */
@@ -257,6 +160,31 @@ function resetQuery() {
 function toNurseRecord(row) {
     let id = row.id;
     router.push({ name: 'nurseRecords', query: { id } });
+}
+
+
+/** 更改按钮操作 */
+function handleChange(row) {
+    editForm.value = row;
+    getLevels().then(response => {
+        levels.value = response.data;
+    });
+    editFormVisible.value = true;
+}
+
+/** 提交更改 */
+function submitEdit() {
+    editFormVisible.value = false;
+    console.log(editForm.value);
+
+    update(editForm.value).then(response => {
+        getList();
+        proxy.$modal.msgSuccess("编辑成功");
+    })
+        .catch(() => {
+            getList();
+            proxy.$modal.msgError("编辑失败");
+        });
 }
 
 getList();
