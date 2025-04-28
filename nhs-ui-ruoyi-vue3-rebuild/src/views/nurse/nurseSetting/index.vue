@@ -135,10 +135,7 @@ let queryParams = ref({
 function getList() {
     loading.value = true;
     initData(queryParams.value).then(response => {
-        console.log(response);
-
         customerList.value = response.data;
-        console.log(customerList.value)
         total.value = response.data.length;
         loading.value = false;
     });
@@ -175,7 +172,6 @@ function handleChange(row) {
 /** 提交更改 */
 function submitEdit() {
     editFormVisible.value = false;
-    console.log(editForm.value);
 
     update(editForm.value).then(response => {
         getList();

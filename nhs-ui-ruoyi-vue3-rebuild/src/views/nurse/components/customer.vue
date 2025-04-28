@@ -72,7 +72,7 @@ let queryParams = ref({
 const emit = defineEmits(['selectOne']);
 
 const row_change = (row) => {
-    console.log(`row_change`, row);
+
     if (row == null || row == undefined || row == -1) {
         let param = { customerId: -1 }
         // 触发事件并传递数据给父组件

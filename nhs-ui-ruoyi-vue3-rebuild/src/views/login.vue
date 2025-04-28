@@ -95,7 +95,6 @@ function handleLogin() {
       }
       // 调用action的登录方法
       userStore.login(loginForm.value).then(() => {
-        console.log("调用登录方法成功");
         const query = route.query;
         const otherQueryParams = Object.keys(query).reduce((acc, cur) => {
           if (cur !== "redirect") {
@@ -105,7 +104,6 @@ function handleLogin() {
         }, {});
         router.push({ path: redirect.value || "/", query: otherQueryParams });
       }).catch(() => {
-        console.log("调用登录方法失败");
         loading.value = false;
         // 重新获取验证码
         if (captchaEnabled.value) {
