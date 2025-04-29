@@ -72,7 +72,7 @@ const emit = defineEmits(['selectOne']);
 const row_change = (row) => {
 
     if (row == null || row == undefined || row == -1) {
-        let param = { userId: -1 }
+        let param = { userId: -2 }
         // 触发事件并传递数据给父组件
         emit('selectOne', param)
     } else {

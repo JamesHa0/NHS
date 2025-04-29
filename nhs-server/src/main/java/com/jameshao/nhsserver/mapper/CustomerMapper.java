@@ -37,6 +37,19 @@ public interface CustomerMapper extends BaseMapper<Customer> {
             "</where>" +
             "</script>")
     List<Customer> getCustomerDetailsByName(String customerName);
+
+    @Select("<script>" +
+            "SELECT c.*, u.nickname, n.level_name FROM customer c " +
+            "LEFT JOIN user u ON c.user_id = u.id " +
+            "LEFT JOIN nurselevel n ON c.level_id = n.id " +
+            "<where>" +
+            "<if test='userId != null and userId != \"\" and userId != -2 '>" +
+            "AND c.user_id = #{userId} " +
+            "</if>" +
+            "</where>" +
+            "</script>"
+    )
+    List<Customer> getCustomerByUserId(Integer userId);
 }
 
 

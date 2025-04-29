@@ -14,4 +14,5 @@ public interface CustomerService extends IService<Customer> {
 
     List<Customer> getCustomerDetailsByName(String customerName);
 
+    List<Customer> getCustomerByUserId(Integer userId);
 }

@@ -18,11 +18,16 @@ import java.util.List;
 public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer>
     implements CustomerService{
     @Autowired
-    CustomerMapper CustomerMapper;
+    CustomerMapper customerMapper;
 
     @Override
     public List<Customer> getCustomerDetailsByName(String customerName) {
-        return CustomerMapper.getCustomerDetailsByName(customerName);
+        return customerMapper.getCustomerDetailsByName(customerName);
+    }
+
+    @Override
+    public List<Customer> getCustomerByUserId(Integer userId) {
+            return customerMapper.getCustomerByUserId(userId);
     }
 }
 

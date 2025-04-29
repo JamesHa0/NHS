@@ -371,18 +371,10 @@ function getNurseItemList(id) {
         listNurseItem().then(listResponse => {
             const allItems = listResponse.data || [];
 
-            // 将两个数组的 id 分别存入 Set
-            const idSetById = new Set(itemsById.map(item => item.id));
-            const idSetAll = new Set(allItems.map(item => item.id));
-
-            // 找出两个数组中不重复的 id 集合
-            const uniqueIds = new Set([
-                ...[...idSetById].filter(id => !idSetAll.has(id)),
-                ...[...idSetAll].filter(id => !idSetById.has(id))
-            ]);
-
-            // 根据不重复的 id 集合筛选出对应的项目
-            const finalItems = [...itemsById, ...allItems].filter(item => uniqueIds.has(item.id));
+            // 过滤出 allItems 中不在 itemsById 里的项目
+            const finalItems = allItems.filter(item => {
+                return !itemsById.some(existingItem => existingItem.id === item.id);
+            });
 
             nurseItemForm.value = finalItems;
         })
