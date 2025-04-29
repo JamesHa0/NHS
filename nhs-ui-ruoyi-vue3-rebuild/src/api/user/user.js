@@ -8,3 +8,13 @@ export function list(data) {
         params: data
     })
 }
+
+
+// 根据id查用户信息
+export function listById(data) {
+    return request({
+        url: '/user/listById',
+        method: 'get',
+        params: data
+    })
+}

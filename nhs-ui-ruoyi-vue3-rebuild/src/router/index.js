@@ -115,6 +115,26 @@ export const constantRoutes = [
         meta: { title: '客户护理设置', icon: 'dict' }
       }
     ]
+  },
+  {
+    path: '/health',
+    component: Layout,
+    hidden: true,
+    redirect: 'noredirect',
+    children: [
+      {
+        path: 'serviceCustomerSetting',
+        component: () => import('@/views/health/serviceCustomerSetting/index'),
+        name: 'serviceCustomerSetting',
+        meta: { title: '设置服务对象', icon: 'online' }
+      },
+      {
+        path: 'serviceCare',
+        component: () => import('@/views/health/serviceCare/index'),
+        name: 'serviceCare',
+        meta: { title: '服务关注', icon: 'list' }
+      }
+    ]
   }
 ]
 

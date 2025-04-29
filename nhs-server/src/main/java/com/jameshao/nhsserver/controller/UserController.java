@@ -88,6 +88,20 @@ public class UserController {
         }
     }
 
+    // 根据id查询用户
+    @RequestMapping("/user/listById")
+    public String listById(Integer id){
+        try{
+            LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(User::getId, id);
+            List<User> list = userService.list(queryWrapper);
+            return jsonReturn.returnSuccess(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return jsonReturn.returnError(e.getMessage());
+        }
+    }
+
     //添加用户
     @RequestMapping("adduser")
     public String addOne(User user){
