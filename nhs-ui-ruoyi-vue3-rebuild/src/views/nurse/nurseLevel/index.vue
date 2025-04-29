@@ -157,7 +157,7 @@
 
         <!--添加护理内容的对话框  BEGIN-->
         <el-dialog v-model="addItemFormVisible" title="添加护理内容" width="800">
-            <el-form :model="addItemForm">
+            <el-form :model="addItemForm" :rules="rules" ref="addItemFormRef">
                 <el-form-item label="护理级别ID" :label-width="100" v-if="false">
                     <el-input v-model="addItemForm.id" disabled />
                 </el-form-item>
@@ -165,7 +165,7 @@
                     <el-input v-model="addItemForm.levelName" disabled />
                 </el-form-item>
 
-                <el-form-item label="护理项目" :label-width="100">
+                <el-form-item label="护理项目" :label-width="100" prop="nurseItemIds">
                     <el-select v-model="addItemForm.nurseItemIds" multiple filterable placeholder="请选择护理项目">
                         <el-option v-for="item in nurseItemForm" :key="item.id" :label="item.nursingName"
                             :value="item.id">
@@ -244,10 +244,14 @@ let queryItemParams = ref({
 const rules = ref({
     levelName: [
         { required: true, message: '请输入护理级别', trigger: 'blur' }
+    ],
+    nurseItemIds: [
+        { required: true, message: '请选择护理项目', trigger: 'blur' }
     ]
 });
 const addFormRef = ref(null);
 const editFormRef = ref(null);
+const addItemFormRef = ref(null);
 
 /** 查询护理级别列表 */
 function getList() {
@@ -392,21 +396,27 @@ function getNurseItemList(id) {
 
 /** 提交添加护理内容 */
 function submitAddItem() {
-    addItemFormVisible.value = false;
-    const data = {
-        levelId: addItemForm.id,
-        nurseItemIds: addItemForm.nurseItemIds.join(',')
-    }
-    addItems(data).then(response => {
-        getList();
-        proxy.$modal.msgSuccess("添加项目成功");
-    })
-        .catch(() => {
-            getList();
-            proxy.$modal.msgError("添加项目失败");
-        });
-
-    proxy.$modal.msgSuccess("添加成功");
+    addItemFormRef.value.validate((valid) => {
+        if (valid) {
+            addItemFormVisible.value = false;
+            const data = {
+                levelId: addItemForm.id,
+                nurseItemIds: addItemForm.nurseItemIds.join(',')
+            }
+            addItems(data).then(response => {
+                getList();
+                proxy.$modal.msgSuccess("添加项目成功");
+            })
+                .catch(() => {
+                    getList();
+                    proxy.$modal.msgError("添加项目失败");
+                });
+            proxy.$modal.msgSuccess("添加成功");
+        } else {
+            proxy.$modal.msgError('护理项目不能为空');
+            return false;
+        }
+    });
 }
 
 
