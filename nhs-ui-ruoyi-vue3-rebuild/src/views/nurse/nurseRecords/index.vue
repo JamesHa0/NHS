@@ -64,7 +64,7 @@
                         <el-option v-for="item in customers" :key="item.id" :label="item.customerName" :value="item.id">
                             <span style="float: left">{{ item.customerName }}（{{ getSex(item.customerSex) }}，{{
                                 item.customerAge
-                            }}岁）</span>
+                                }}岁）</span>
                             <span style="float: right; color: #8492a6; font-size: 13px">
                                 所属楼房: {{ item.buildingNo }} | 房间号: {{ item.roomNo }} | 床号: {{ item.bedId }}
                             </span>
@@ -352,7 +352,6 @@ function editNurseRecord(row) {
 /** 提交编辑记录 */
 function submitEdit() {
     editFormVisible.value = false;
-    console.log(editForm.value);
 
     update(editForm.value).then(response => {
         getList();
