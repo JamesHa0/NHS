@@ -25,15 +25,21 @@ export default defineConfig(({ mode, command }) => {
     },
     // vite 相关配置
     server: {
-      port: 88,
+      port: 89,
       host: true,
       open: true,
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy
         '/dev-api': {
-          target: 'http://localhost:8088',
+          target: 'http://47.239.28.73:8089',
           changeOrigin: true,
           rewrite: (p) => p.replace(/^\/dev-api/, '')
+        },
+        // 新增的 stage-api 代理规则
+        '/stage-api': {
+          target: 'http://47.239.28.73:8089',
+          changeOrigin: true,
+          rewrite: (p) => p.replace(/^\/stage-api/, '')
         }
       }
     },
